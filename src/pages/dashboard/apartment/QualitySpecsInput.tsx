@@ -62,7 +62,6 @@ QualitySpecsInputProps) {
               value={spec}
               placeholder={placeholderMap[key]}
               onChange={(e) => onChange(key, e.target.value)}
-              required
             />
           </div>
         );
