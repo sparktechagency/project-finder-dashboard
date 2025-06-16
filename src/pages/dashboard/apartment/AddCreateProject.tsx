@@ -135,7 +135,7 @@ export default function AddCreateProject({
       const res = await createProject(formData).unwrap();
       if (res.message) {
         toast.success("Project created successfully");
-        // form.reset();
+        form.reset();
       } else {
         toast.error("Failed to create project. Please try again.");
       }
