@@ -51,7 +51,7 @@ export default function Projects() {
   const handleDelete = (id: string) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "You want to delete this apartment",
+      text: "You want to delete this project",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -61,7 +61,7 @@ export default function Projects() {
       if (result.isConfirmed) {
         await deleteProject(id);
 
-        Swal.fire("Deleted!", "The deleteProject has been deleted.", "success");
+        Swal.fire("Deleted!", "The project has been deleted.", "success");
       }
     });
   };

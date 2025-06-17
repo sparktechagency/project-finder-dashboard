@@ -2,29 +2,10 @@ import React, { useState } from "react";
 import AddCreateProject from "./AddCreateProject";
 
 export default function ProjectForm() {
-  // const [images, setImages] = useState<{
-  //   payment?: string;
-  //   quality?: string;
-  //   floor?: string;
-  // }>({});
   const [imageSections, setImageSections] = useState<(File | null)[]>([]);
   const [qualitySpecs, setQualitySpecs] = useState<{ [key: string]: string }>({
     category: "",
-    generalAmenites: "",
-    connectivity: "",
-    ecoFriendly: "",
-    parking: "",
-    receational: "",
-    accessiblity: "",
-    nearbyFacilities: "",
   });
-
-  // const handleFileChange =
-  //   (key: keyof typeof images) => (e: React.ChangeEvent<HTMLInputElement>) => {
-  //     const file = e.target.files?.[0];
-  //     if (!file) return;
-  //     setImages((prev) => ({ ...prev, [key]: URL.createObjectURL(file) }));
-  //   };
 
   type FileData = {
     url: string;
@@ -91,13 +72,16 @@ export default function ProjectForm() {
       // @ts-expect-error imageSections prop type mismatch with ApartmentFormChild, intentional for now
       imageSections={imageSections}
       qualitySpecs={qualitySpecs}
+      setQualitySpecs={setQualitySpecs}
       handleFileChange={handleFileChange}
       handleImageChange={handleImageChange}
       addImageSection={addImageSection}
+      setImageSections={setImageSections}
       handleQualityChange={handleQualityChange}
       handleInputAdd={handleInputAdd}
       handleRemove={handleRemove}
       files={files}
+      setFiles={setFiles}
     />
   );
 }

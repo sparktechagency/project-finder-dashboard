@@ -43,22 +43,6 @@ export default function LocationPicker({
     setAddress(e.target.value);
   };
 
-  // Handle Enter key press to search location
-  // const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-  //   if (e.key === "Enter" && address.trim()) {
-  //     const geocoder = new google.maps.Geocoder();
-  //     geocoder.geocode({ address: address.trim() }, (results, status) => {
-  //       if (status === "OK" && results && results[0]) {
-  //         const location = results[0].geometry.location;
-  //         setMarkerPosition({ lat: location.lat(), lng: location.lng() });
-  //         setAddress(results[0].formatted_address);
-  //       } else {
-  //         alert("Place not found");
-  //       }
-  //     });
-  //   }
-  // };
-
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== "Enter" || !address.trim()) return;
     e.preventDefault();

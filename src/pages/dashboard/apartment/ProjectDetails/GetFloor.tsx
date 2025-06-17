@@ -13,6 +13,7 @@ import { imageUrl } from "@/redux/api/baseApi";
 import { useState } from "react";
 import Pagination from "@/components/layout/shared/Pagination";
 import { useGetProjectsFloorQuery } from "@/redux/apiSlice/apartments/apartments";
+import EditFloorModal from "./EditFloorModal";
 
 interface ApartmentData {
   _id: string;
@@ -58,6 +59,7 @@ export default function GetFloor() {
             <TableHead>Projects Name</TableHead>
             <TableHead>floorPlanPDF</TableHead>
             <TableHead>Price</TableHead>
+            <TableHead>Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -84,6 +86,9 @@ export default function GetFloor() {
                 </a>
               </TableCell>
               <TableCell>€{invoice.price}</TableCell>
+              <TableCell className="pl-3">
+                <EditFloorModal invoice={invoice} />
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

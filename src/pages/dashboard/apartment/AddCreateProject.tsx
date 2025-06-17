@@ -20,8 +20,13 @@ interface ApartmentFormProps {
       type?: string;
     };
   };
+  setFiles: any;
+  setImageSections: any;
   imageSections: File[];
   qualitySpecs: { [key: string]: string };
+  setQualitySpecs: React.Dispatch<
+    React.SetStateAction<{ [key: string]: string }>
+  >;
 
   handleFileChange: (
     key: "payment" | "quality" | "floor"
@@ -41,8 +46,11 @@ interface ApartmentFormProps {
 export default function AddCreateProject({
   // images,
   files,
+  setFiles,
   imageSections,
+  setImageSections,
   qualitySpecs,
+  setQualitySpecs,
   handleFileChange,
   handleImageChange,
   addImageSection,
@@ -98,6 +106,11 @@ export default function AddCreateProject({
       }
     });
 
+    if (!imageSections || imageSections.length === 0) {
+      toast.error("Please upload at least one apartment image.");
+      return;
+    }
+
     // Append quality specification PDF
     const quality = data.get("quality");
     if (quality && quality instanceof File) {
@@ -113,8 +126,13 @@ export default function AddCreateProject({
 
     formData.append("contact", JSON.stringify(contactData));
 
-    // Append features
-    formData.append("features", JSON.stringify(qualitySpecs));
+    const featuresArray = Object.values(qualitySpecs).filter(
+      (value) => value.trim() !== ""
+    );
+
+    featuresArray.forEach((feature) => {
+      formData.append("features", feature);
+    });
 
     // Append coordinates
     if (markerPosition) {
@@ -133,14 +151,42 @@ export default function AddCreateProject({
 
     try {
       const res = await createProject(formData).unwrap();
+
       if (res.message) {
         toast.success("Project created successfully");
         form.reset();
+        // reset features
+        setQualitySpecs({ category: "" });
+
+        // Reset file input
+        setFiles((prev: any) => ({
+          ...prev,
+          payment: { url: "", type: "" },
+          quality: { url: "", type: "" },
+        }));
+
+        // Reset image sections
+        setImageSections([null]);
+
+        // map marker position
+        setMarkerPosition({ lat: 0, lng: 0 });
       } else {
-        toast.error("Failed to create project. Please try again.");
+        toast.error(res?.message || "Failed to create project");
       }
-    } catch (error) {
-      console.error("Error submitting form:", error);
+    } catch (error: any) {
+      toast.error("Error submitting form:", error);
+
+      const messages = error?.data?.errorMessages;
+
+      if (Array.isArray(messages)) {
+        messages.forEach((err: any) => {
+          toast.error(`${err.path}: ${err.message}`);
+        });
+      } else {
+        toast.error(
+          error?.data?.message || error?.message || "Something went wrong"
+        );
+      }
     }
   };
 
@@ -216,7 +262,6 @@ export default function AddCreateProject({
             fileType={files.payment?.type}
             onChange={handleFileChange("payment")}
             label="Payment Plan"
-            // accept="image/jpeg,image/png,image/gif"
             accept="application/pdf"
           />
 

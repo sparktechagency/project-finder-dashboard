@@ -45,6 +45,16 @@ const projects = api.injectEndpoints({
       },
       invalidatesTags: ["package"],
     }),
+    updateProjectFloor: builder.mutation({
+      query: ({ id, data }) => {
+        return {
+          url: `/floor/${id}`,
+          method: "PATCH",
+          body: data,
+        };
+      },
+      invalidatesTags: ["package"],
+    }),
   }),
 });
 
@@ -54,4 +64,5 @@ export const {
   useGetProjectsFloorQuery,
   useCreateProjectFloorMutation,
   useDeleteProjectMutation,
+  useUpdateProjectFloorMutation,
 } = projects;
