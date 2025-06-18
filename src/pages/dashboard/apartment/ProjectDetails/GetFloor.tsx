@@ -13,7 +13,7 @@ import { imageUrl } from "@/redux/api/baseApi";
 import { useState } from "react";
 import Pagination from "@/components/layout/shared/Pagination";
 import { useGetProjectsFloorQuery } from "@/redux/apiSlice/apartments/apartments";
-import EditFloorModal from "./EditFloorModal";
+import EditFloorModal from "@/AllEditModal/EditFloorModal";
 
 interface ApartmentData {
   _id: string;

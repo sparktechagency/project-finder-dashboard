@@ -18,7 +18,19 @@ const phase = api.injectEndpoints({
       }),
       invalidatesTags: ["package"],
     }),
+    updatePhaseDetails: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/phase/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["package"],
+    }),
   }),
 });
 
-export const { useGetPhaseDetailsQuery, useCreatePhaseDetailsMutation } = phase;
+export const {
+  useGetPhaseDetailsQuery,
+  useCreatePhaseDetailsMutation,
+  useUpdatePhaseDetailsMutation,
+} = phase;

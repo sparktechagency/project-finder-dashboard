@@ -11,7 +11,7 @@ import { useState } from "react";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   useDeleteProjectMutation,
   useGetProjectsQuery,
@@ -21,6 +21,7 @@ import ErrorPage from "@/error/ErrorPage";
 import AddPhaseModal from "@/modal/AddPhaseModal";
 import ApartmentCreateModal from "@/modal/AddFloorModal";
 import { imageUrl } from "@/redux/api/baseApi";
+import ProjectEditModal from "@/AllEditModal/ProjectEditModal";
 
 interface ApartmentData {
   _id: string;
@@ -91,6 +92,7 @@ export default function Projects() {
             <TableHead>Commission</TableHead>
             <TableHead>Price</TableHead>
             <TableHead>Completion Year</TableHead>
+            <TableHead>Project</TableHead>
             <TableHead>Add Floor</TableHead>
             <TableHead>Add Phase</TableHead>
             <TableHead>Action</TableHead>
@@ -138,6 +140,13 @@ export default function Projects() {
                   : null}
               </TableCell>
               <TableCell>
+                <Link to="/projectForm">
+                  <button className="border border-gray-200 py-2 px-3 rounded-2xl cursor-pointer">
+                    Add Project
+                  </button>
+                </Link>
+              </TableCell>
+              <TableCell>
                 <button
                   className="border border-gray-300 px-4 py-2 rounded-2xl cursor-pointer"
                   onClick={() => {
@@ -152,20 +161,25 @@ export default function Projects() {
                 <AddPhaseModal apartment={invoice._id} />
               </TableCell>
               <TableCell>
-                <button
-                  className="mr-3"
-                  onClick={() =>
-                    navigate(`/projects-details?id=${invoice?._id}`)
-                  }
-                >
-                  <MdOutlineRemoveRedEye
-                    size={22}
-                    className="text-[#6CA0DC] cursor-pointer"
-                  />
-                </button>
-                <button onClick={() => handleDelete(invoice._id)}>
-                  <RiDeleteBin6Line className="text-[22px] text-red-400 cursor-pointer" />
-                </button>
+                <div className="flex gap-2">
+                  <button>
+                    <ProjectEditModal invoice={invoice} />
+                  </button>
+                  <button
+                    className="mr"
+                    onClick={() =>
+                      navigate(`/projects-details?id=${invoice?._id}`)
+                    }
+                  >
+                    <MdOutlineRemoveRedEye
+                      size={22}
+                      className="text-[#6CA0DC] cursor-pointer"
+                    />
+                  </button>
+                  <button onClick={() => handleDelete(invoice._id)}>
+                    <RiDeleteBin6Line className="text-[22px] text-red-400 cursor-pointer" />
+                  </button>
+                </div>
               </TableCell>
             </TableRow>
           ))}

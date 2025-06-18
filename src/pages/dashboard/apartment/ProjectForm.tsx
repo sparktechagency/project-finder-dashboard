@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import AddCreateProject from "./AddCreateProject";
 
 export default function ProjectForm() {
-  const [imageSections, setImageSections] = useState<(File | null)[]>([]);
+  const [imageSections, setImageSections] = useState<File[]>([]);
+
   const [qualitySpecs, setQualitySpecs] = useState<{ [key: string]: string }>({
     category: "",
   });
@@ -28,21 +29,17 @@ export default function ProjectForm() {
       }));
     };
 
-  const handleImageChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number
-  ) => {
-    const file = e.target.files?.[0] || null;
-    setImageSections((prev) => {
-      const newArr = [...prev];
-      newArr[index] = file;
-      return newArr;
-    });
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+
+    const selectedFiles = Array.from(files);
+    setImageSections((prev) => [...prev, ...selectedFiles]);
   };
 
-  const addImageSection = () => {
-    setImageSections((prev) => [...prev, null]);
-  };
+  // const addImageSection = () => {
+  //   setImageSections((prev) => [...prev, null]);
+  // };
 
   const handleQualityChange = (key: string, value: string) => {
     setQualitySpecs((prev) => {
@@ -68,14 +65,11 @@ export default function ProjectForm() {
 
   return (
     <AddCreateProject
-      // images={images}
-      // @ts-expect-error imageSections prop type mismatch with ApartmentFormChild, intentional for now
       imageSections={imageSections}
       qualitySpecs={qualitySpecs}
       setQualitySpecs={setQualitySpecs}
       handleFileChange={handleFileChange}
       handleImageChange={handleImageChange}
-      addImageSection={addImageSection}
       setImageSections={setImageSections}
       handleQualityChange={handleQualityChange}
       handleInputAdd={handleInputAdd}

@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { FaPlus } from "react-icons/fa6";
 import { FormField } from "./FormField";
 import { ImageUpload } from "./ImageUpload";
 import { QualitySpecsInput } from "./QualitySpecsInput";
@@ -11,9 +9,9 @@ import { company, completionYear, location } from "./Allname";
 import LocationPicker from "../map/Map";
 import { useCreateProjectMutation } from "@/redux/apiSlice/apartments/apartments";
 import toast from "react-hot-toast";
+import ProjectsImages from "./ProjectsImage";
 
 interface ApartmentFormProps {
-  // images: Record<string, string>;
   files: {
     [key: string]: {
       url: string;
@@ -37,7 +35,6 @@ interface ApartmentFormProps {
     index: number
   ) => void;
 
-  addImageSection: () => void;
   handleQualityChange: (value: string, key: string) => void;
   handleInputAdd: (key: string) => void;
   handleRemove: (key: string) => void;
@@ -53,7 +50,6 @@ export default function AddCreateProject({
   setQualitySpecs,
   handleFileChange,
   handleImageChange,
-  addImageSection,
   handleQualityChange,
   handleInputAdd,
   handleRemove,
@@ -174,7 +170,7 @@ export default function AddCreateProject({
         toast.error(res?.message || "Failed to create project");
       }
     } catch (error: any) {
-      toast.error("Error submitting form:", error);
+      toast.error(error.message);
 
       const messages = error?.data?.errorMessages;
 
@@ -190,53 +186,20 @@ export default function AddCreateProject({
     }
   };
 
+  const handleRemoveImage = (index: number) => {
+    setImageSections((prev: File[]) =>
+      prev.filter((_, i: number) => i !== index)
+    );
+  };
+
   return (
     <form className=" p-4 space-y-6" onSubmit={handleSubmit}>
-      {/* Apartment Images */}
-      <div>
-        <Label className="block mb-2 text-black font-medium ">
-          Projects Images
-        </Label>
-        <div className="flex items-center space-x-4">
-          {(imageSections.length > 0 ? imageSections : [null]).map(
-            (file, idx) => (
-              <div
-                key={idx}
-                className="w-24 h-24 border border-gray-300 rounded-md bg-gray-50 overflow-hidden flex items-center justify-center relative cursor-pointer"
-              >
-                {file ? (
-                  <img
-                    src={URL.createObjectURL(file)}
-                    alt={`upload-${idx}`}
-                    className="h-full w-full object-cover rounded-md"
-                    onLoad={(e) =>
-                      URL.revokeObjectURL((e.target as HTMLImageElement).src)
-                    } // revoke to avoid memory leaks
-                  />
-                ) : (
-                  <span className="text-gray-400">No Image</span>
-                )}
-                <input
-                  type="file"
-                  accept="image/jpeg,image/png,image/gif"
-                  onChange={(e) => handleImageChange(e, idx)}
-                  className="absolute inset-0 opacity-0 cursor-pointer"
-                  multiple={false}
-                />
-              </div>
-            )
-          )}
-
-          <button
-            type="button"
-            onClick={addImageSection}
-            className="flex h-24 w-24 items-center justify-center rounded-md border border-gray-300 text-gray-500 hover:bg-gray-100"
-            aria-label="Add new image upload section"
-          >
-            <FaPlus />
-          </button>
-        </div>
-      </div>
+      {/* Apartment component */}
+      <ProjectsImages
+        imageSections={imageSections}
+        handleRemoveImage={handleRemoveImage}
+        handleImageChange={handleImageChange}
+      />
 
       <div className="grid grid-cols-2 gap-6">
         {/* Left Column */}

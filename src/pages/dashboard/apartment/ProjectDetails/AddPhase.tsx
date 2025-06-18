@@ -12,6 +12,7 @@ import ErrorPage from "@/error/ErrorPage";
 import { useGetPhaseDetailsQuery } from "@/redux/apiSlice/phase/phase";
 import Pagination from "@/components/layout/shared/Pagination";
 import { useState } from "react";
+import PhaseEditModal from "@/AllEditModal/PhaseEditModal";
 
 interface ApartmentData {
   _id: string;
@@ -61,6 +62,7 @@ export default function AddPhase() {
             {/* <TableHead className="">Bad Size</TableHead> */}
 
             <TableHead className="">Date</TableHead>
+            <TableHead className="">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -72,6 +74,9 @@ export default function AddPhase() {
               </TableCell>
 
               <TableCell className="">{invoice.date.split("T")[0]}</TableCell>
+              <TableCell className="pl-3">
+                <PhaseEditModal invoice={invoice} />
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
