@@ -23,6 +23,7 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
   const [qualityFile, setQualityFile] = useState<File | null>(null);
   const [paymentFile, setPaymentFile] = useState<File | null>(null);
   const [priceFile, setPriceFile] = useState<File | null>(null);
+  const [selectedDate, setSelectedDate] = useState<string | undefined>();
 
   const handleFileChangeQuality = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -65,6 +66,10 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
       data.append("pricePdf", priceFile);
     }
 
+    if (selectedDate) {
+      data.append("CompletionDate", selectedDate);
+    }
+
     try {
       const res = await updateProject({ id: invoice?._id, data }).unwrap();
       if (res?.success) {
@@ -86,7 +91,7 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
         <BiSolidEditAlt size={24} className="cursor-pointer" />
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>Edit Project</DialogTitle>
@@ -123,11 +128,29 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
             </div>
             <div className="grid gap-3">
               <Label htmlFor="CompletionDate">CompletionDate</Label>
-              <Input
-                id="CompletionDate"
-                name="CompletionDate"
-                defaultValue={invoice.CompletionDate}
-              />
+
+              <div className="grid gap-3">
+                <input
+                  type="date"
+                  name="date"
+                  onChange={(e) => {
+                    const date = e.target.value;
+                    if (date) {
+                      setSelectedDate(date);
+                    } else {
+                      setSelectedDate(undefined);
+                    }
+                  }}
+                  value={selectedDate ? selectedDate : ""}
+                  style={{
+                    height: 45,
+                    border: "1px solid #ccc",
+                    borderRadius: "4px",
+                    padding: "8px",
+                    width: "100%",
+                  }}
+                />
+              </div>
             </div>
 
             {/* upload image qualitySpecificationPDF*/}
