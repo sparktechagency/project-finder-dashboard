@@ -11,9 +11,9 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import {
-  useCreateProjectFloorMutation,
-  useGetProjectsFloorQuery,
-} from "@/redux/apiSlice/apartments/apartments";
+  useCreateFloorMutation,
+  useGetFloorQuery,
+} from "@/redux/apiSlice/floor/floor";
 
 interface Props {
   isOpen: boolean;
@@ -22,8 +22,8 @@ interface Props {
 }
 
 export default function AddFloorModal({ isOpen, onClose, apartmentId }: Props) {
-  const [createProjectFloor] = useCreateProjectFloorMutation();
-  const { refetch } = useGetProjectsFloorQuery(undefined);
+  const [createProjectFloor] = useCreateFloorMutation();
+  const { refetch } = useGetFloorQuery(undefined);
 
   const [pdfFile, setPdfFile] = useState<File | null>(null);
 

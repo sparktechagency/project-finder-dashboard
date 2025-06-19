@@ -26,33 +26,12 @@ const projects = api.injectEndpoints({
       }),
       invalidatesTags: ["package"],
     }),
-
-    getProjectsFloor: builder.query({
-      query: () => ({
-        url: "/floor",
-        method: "GET",
+    updateProject: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/apartment/${id}`,
+        method: "PATCH",
+        body: data,
       }),
-      providesTags: ["package"],
-    }),
-
-    createProjectFloor: builder.mutation({
-      query: (data) => {
-        return {
-          url: "/floor/create",
-          method: "POST",
-          body: data,
-        };
-      },
-      invalidatesTags: ["package"],
-    }),
-    updateProjectFloor: builder.mutation({
-      query: ({ id, data }) => {
-        return {
-          url: `/floor/${id}`,
-          method: "PATCH",
-          body: data,
-        };
-      },
       invalidatesTags: ["package"],
     }),
   }),
@@ -61,8 +40,6 @@ const projects = api.injectEndpoints({
 export const {
   useGetProjectsQuery,
   useCreateProjectMutation,
-  useGetProjectsFloorQuery,
-  useCreateProjectFloorMutation,
   useDeleteProjectMutation,
-  useUpdateProjectFloorMutation,
+  useUpdateProjectMutation,
 } = projects;

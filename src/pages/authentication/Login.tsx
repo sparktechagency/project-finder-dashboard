@@ -24,9 +24,13 @@ export default function Login() {
   const onSubmit = async (form: FormData) => {
     try {
       const result = await login(form).unwrap();
-      toast.success("Login successful", { id: "login" });
-      localStorage.setItem("accessToken", result.data.accessToken);
-      navigate("/");
+      if (result.success) {
+        toast.success("Login successfully", { id: "login" });
+        localStorage.setItem("accessToken", result.data.accessToken);
+        navigate("/");
+      } else {
+        toast.error(result.message, { id: "login" });
+      }
     } catch (err: any) {
       toast.error(
         err?.data?.message || err?.error || "Login failed. Please try again.",

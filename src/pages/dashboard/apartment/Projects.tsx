@@ -31,6 +31,7 @@ interface ApartmentData {
   price: number;
   paymentPlanPDF: string;
   qualitySpecificationPDF: string;
+  pricePdf: string;
   location: string;
   CompletionDate: string;
   contact: {
@@ -88,6 +89,7 @@ export default function Projects() {
             <TableHead>Projects Name</TableHead>
             <TableHead>Payment Plan</TableHead>
             <TableHead>Quality Specification</TableHead>
+            <TableHead>Price Pdf</TableHead>
             <TableHead>Location</TableHead>
             <TableHead>Commission</TableHead>
             <TableHead>Price</TableHead>
@@ -123,6 +125,20 @@ export default function Projects() {
                     invoice.qualitySpecificationPDF?.[0]?.startsWith("http")
                       ? invoice.qualitySpecificationPDF?.[0]
                       : `${imageUrl}${invoice.qualitySpecificationPDF?.[0]}`
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-700 hover:underline"
+                >
+                  View PDF
+                </a>
+              </TableCell>
+              <TableCell>
+                <a
+                  href={
+                    invoice.pricePdf?.startsWith("http")
+                      ? invoice.pricePdf
+                      : `${imageUrl}${invoice.pricePdf}`
                   }
                   target="_blank"
                   rel="noopener noreferrer"

@@ -27,7 +27,7 @@ interface ApartmentFormProps {
   >;
 
   handleFileChange: (
-    key: "payment" | "quality" | "floor"
+    key: "payment" | "quality" | "floor" | "pricePdf"
   ) => (e: React.ChangeEvent<HTMLInputElement>) => void;
 
   handleImageChange: (
@@ -92,6 +92,12 @@ export default function AddCreateProject({
     formData.append("companyName", companyName);
     // Append payment plan image
     const paymentFile = data.get("paymentPlanPDF");
+
+    const pricePdf = data.get("pricePdf");
+    if (pricePdf && pricePdf instanceof File) {
+      formData.append("pricePdf", pricePdf);
+    }
+
     if (paymentFile && paymentFile instanceof File) {
       formData.append("paymentPlanPDF", paymentFile);
     }
@@ -159,6 +165,7 @@ export default function AddCreateProject({
           ...prev,
           payment: { url: "", type: "" },
           quality: { url: "", type: "" },
+          pricePdf: { url: "", type: "" },
         }));
 
         // Reset image sections
@@ -169,20 +176,9 @@ export default function AddCreateProject({
       } else {
         toast.error(res?.message || "Failed to create project");
       }
-    } catch (error: any) {
-      toast.error(error.message);
-
-      const messages = error?.data?.errorMessages;
-
-      if (Array.isArray(messages)) {
-        messages.forEach((err: any) => {
-          toast.error(`${err.path}: ${err.message}`);
-        });
-      } else {
-        toast.error(
-          error?.data?.message || error?.message || "Something went wrong"
-        );
-      }
+    } catch (error) {
+      const errorMessage = (error as Error)?.message || "An error occurred";
+      toast.error(errorMessage);
     }
   };
 
@@ -219,6 +215,14 @@ export default function AddCreateProject({
             placeholder="Enter Commission"
           />
 
+          <ImageUpload
+            id="pricePdf"
+            fileUrl={files.pricePdf?.url || ""}
+            fileType={files.pricePdf?.type}
+            onChange={handleFileChange("pricePdf")}
+            label="Price Pdf"
+            accept="application/pdf"
+          />
           <ImageUpload
             id="paymentPlanPDF"
             fileUrl={files.payment?.url || ""}

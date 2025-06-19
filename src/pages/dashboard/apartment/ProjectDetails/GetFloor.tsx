@@ -12,8 +12,9 @@ import ErrorPage from "@/error/ErrorPage";
 import { imageUrl } from "@/redux/api/baseApi";
 import { useState } from "react";
 import Pagination from "@/components/layout/shared/Pagination";
-import { useGetProjectsFloorQuery } from "@/redux/apiSlice/apartments/apartments";
+
 import EditFloorModal from "@/AllEditModal/EditFloorModal";
+import { useGetFloorQuery } from "@/redux/apiSlice/floor/floor";
 
 interface ApartmentData {
   _id: string;
@@ -26,8 +27,7 @@ interface ApartmentData {
 }
 
 export default function GetFloor() {
-  const { data, isFetching, isError, isLoading } =
-    useGetProjectsFloorQuery(undefined);
+  const { data, isFetching, isError, isLoading } = useGetFloorQuery(undefined);
   const searchParams = new URLSearchParams(window.location.search);
   const apartmentId = searchParams.get("id");
 
@@ -72,19 +72,24 @@ export default function GetFloor() {
                 {invoice.floorPlan}
               </TableCell>
               <TableCell>
-                <a
-                  href={
-                    invoice.floorPlanPDF?.startsWith("http")
-                      ? invoice.floorPlanPDF
-                      : `${imageUrl}${invoice.floorPlanPDF}`
-                  }
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-700 hover:underline"
-                >
-                  View PDF
-                </a>
+                {invoice.floorPlanPDF ? (
+                  <a
+                    href={
+                      invoice.floorPlanPDF.startsWith("http")
+                        ? invoice.floorPlanPDF
+                        : `${imageUrl}${invoice.floorPlanPDF}`
+                    }
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-700 hover:underline"
+                  >
+                    View PDF
+                  </a>
+                ) : (
+                  <span className="text-gray-500 italic">No PDF</span>
+                )}
               </TableCell>
+
               <TableCell>€{invoice.price}</TableCell>
               <TableCell className="pl-3">
                 <EditFloorModal invoice={invoice} />
