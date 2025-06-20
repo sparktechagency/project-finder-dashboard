@@ -42,6 +42,7 @@ interface ApartmentData {
 export default function Projects() {
   const { data, isFetching, isError, isLoading } =
     useGetProjectsQuery(undefined);
+
   const [deleteProject] = useDeleteProjectMutation();
   const navigate = useNavigate();
   const [userDetails, setUserDetails] = useState<ApartmentData | null>(null);
@@ -147,7 +148,7 @@ export default function Projects() {
                   View PDF
                 </a>
               </TableCell>
-              <TableCell>{invoice.location}</TableCell>
+              <TableCell>{invoice.location.slice(0, 10)}...</TableCell>
               <TableCell className="pl-9">{invoice.commission}%</TableCell>
               <TableCell>€{invoice.price}</TableCell>
               <TableCell className="">

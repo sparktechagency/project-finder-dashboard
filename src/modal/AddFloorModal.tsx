@@ -44,15 +44,9 @@ export default function AddFloorModal({ isOpen, onClose, apartmentId }: Props) {
     if (isNaN(Number(formData.get("badSize"))))
       return toast.error("Bed size must be a number");
 
-    // const badSize = formData.get("badSize");
-
     if (apartmentId) {
       formData.append("apartmentId", apartmentId);
     }
-
-    // if (badSize) {
-    //   formData.append("badSize", Number(badSize).toString());
-    // }
 
     if (pdfFile) formData.append("floorPlanPDF", pdfFile);
 
@@ -65,7 +59,7 @@ export default function AddFloorModal({ isOpen, onClose, apartmentId }: Props) {
         refetch();
       }
     } catch (error: any) {
-      toast.error(error?.data?.message || "Failed to create apartment details");
+      toast.error(error?.data?.message || "Failed to Add project ");
     }
   };
 

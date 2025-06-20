@@ -27,11 +27,13 @@ const projects = api.injectEndpoints({
       invalidatesTags: ["package"],
     }),
     updateProject: builder.mutation({
-      query: ({ id, data }) => ({
-        url: `/apartment/${id}`,
-        method: "PATCH",
-        body: data,
-      }),
+      query: ({ id, data }) => {
+        return {
+          url: `/apartment/${id}`,
+          method: "PATCH",
+          body: data,
+        };
+      },
       invalidatesTags: ["package"],
     }),
   }),

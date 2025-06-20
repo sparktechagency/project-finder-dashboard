@@ -37,7 +37,7 @@ export default function Header() {
       className={`flex justify-between h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear
   group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12
   my-3 ${
-    currentPath === "/apartmentForm" ? "mb-0" : "mb-14"
+    currentPath === "/apartmentForm" ? "mb-0" : "mb-4"
   } bg-[#F6F6F6] ml-4 rounded-2xl`}
     >
       <div className="flex items-center gap-2 px-4">

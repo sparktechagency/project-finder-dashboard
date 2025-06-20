@@ -38,8 +38,8 @@ export default function ChangePassword() {
       } else {
         toast.error("Failed to change password. Please try again.");
       }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      console.error("Error changing password:", error);
       toast.error("Failed to change password. Please try again.");
     }
   };

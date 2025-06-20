@@ -16,7 +16,6 @@ import toast from "react-hot-toast";
 import { BiSolidEditAlt } from "react-icons/bi";
 
 export default function PhaseEditModal({ invoice }: { invoice: any }) {
-  console.log(invoice);
   const [updatePhaseDetails] = useUpdatePhaseDetailsMutation();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

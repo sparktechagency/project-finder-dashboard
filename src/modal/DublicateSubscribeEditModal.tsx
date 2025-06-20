@@ -118,8 +118,8 @@ export default function DublicateSubscribeEditModal({
         await createSubscription(data).unwrap();
       }
       onClose();
-    } catch (error) {
-      console.error("Error creating subscription:", error);
+    } catch {
+      toast.error("failed subscription");
     }
   };
 

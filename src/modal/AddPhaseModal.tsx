@@ -34,13 +34,13 @@ export default function AddPhaseModal({ apartment }: { apartment: string }) {
       try {
         const res = await createPhaseDetails(data).unwrap();
         if (res.success) {
-          toast.success("Phase details created successfully");
+          toast.success("Phase created successfully");
           form.reset();
         } else {
-          toast.error("Failed to create phase details");
+          toast.error("Failed to create phase ");
         }
-      } catch (error) {
-        console.error("Error creating phase details:", error);
+      } catch {
+        toast.error("Error creating phase ");
       } finally {
         setSelectedDate(undefined); // Reset date after submit
         setIsOpen(false); // Close the dialog after submission

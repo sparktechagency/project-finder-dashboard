@@ -16,7 +16,6 @@ import toast from "react-hot-toast";
 import { BiSolidEditAlt } from "react-icons/bi";
 
 export default function EditFloorModal({ invoice }: { invoice: any }) {
-  console.log(invoice.floorPlanPDF);
   const [updateFloor] = useUpdateFloorMutation();
   const [pdfFile, setPdfFile] = useState<File | null>(null);
 

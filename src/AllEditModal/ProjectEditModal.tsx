@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import LocationPicker from "@/pages/dashboard/map/Map";
 import { imageUrl } from "@/redux/api/baseApi";
 import { useUpdateProjectMutation } from "@/redux/apiSlice/apartments/apartments";
 
@@ -24,6 +25,12 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
   const [paymentFile, setPaymentFile] = useState<File | null>(null);
   const [priceFile, setPriceFile] = useState<File | null>(null);
   const [selectedDate, setSelectedDate] = useState<string | undefined>();
+  const [address, setAddress] = useState("");
+
+  const [markerPosition, setMarkerPosition] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
 
   const handleFileChangeQuality = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -70,6 +77,11 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
       data.append("CompletionDate", selectedDate);
     }
 
+    // map
+    if (address) {
+      data.append("location", address);
+    }
+
     try {
       const res = await updateProject({ id: invoice?._id, data }).unwrap();
       if (res?.success) {
@@ -91,13 +103,13 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
         <BiSolidEditAlt size={24} className="cursor-pointer" />
       </DialogTrigger>
 
-      <DialogContent className="">
+      <DialogContent className="max-h-[80vh] overflow-y-auto">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>Edit Project</DialogTitle>
           </DialogHeader>
 
-          <div className="grid gap-4 mt-6">
+          <div className="grid gap-4 lg:mt-6">
             <div className="grid gap-3">
               <Label htmlFor="apartmentName">Project Name</Label>
               <Input
@@ -110,14 +122,7 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
               <Label htmlFor="price">Price</Label>
               <Input id="price" name="price" defaultValue={invoice.price} />
             </div>
-            <div className="grid gap-3">
-              <Label htmlFor="location">Location</Label>
-              <Input
-                id="location"
-                name="location"
-                defaultValue={invoice.location}
-              />
-            </div>
+
             <div className="grid gap-3">
               <Label htmlFor="location">Commission</Label>
               <Input
@@ -193,7 +198,7 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
             </div>
             {/* upload image payment plan */}
             <div>
-              <Label htmlFor="paymentPlanPDF" className="text-black">
+              <Label htmlFor="paymentPlanPDF" className="text-black mt-2">
                 PaymentPlan PDF
               </Label>
               <input
@@ -231,7 +236,7 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
             </div>
             {/* upload image payment plan */}
             <div>
-              <Label htmlFor="pricePdf" className="text-black">
+              <Label htmlFor="pricePdf" className="text-black mt-2">
                 pricePdf PDF
               </Label>
               <input
@@ -265,10 +270,23 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
                 )}
               </div>
             </div>
+
+            <div className="grid gap-3">
+              <LocationPicker
+                address={address}
+                setAddress={setAddress}
+                markerPosition={markerPosition}
+                setMarkerPosition={setMarkerPosition}
+                location={invoice.location}
+              />
+            </div>
           </div>
 
           <DialogFooter>
-            <Button type="submit" className="mt-4 bg-[#1D7889] text-white">
+            <Button
+              type="submit"
+              className="mt-4 bg-[#1D7889] text-white hover:bg-[#1D7889]"
+            >
               Submit
             </Button>
           </DialogFooter>

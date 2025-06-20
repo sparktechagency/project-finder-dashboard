@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -7,17 +7,22 @@ import toast from "react-hot-toast";
 type LocationPickerProps = {
   markerPosition: { lat: number; lng: number } | null;
   setMarkerPosition: (pos: { lat: number; lng: number }) => void;
+  address: string;
+  setAddress: (address: string) => void;
+  location: string;
 };
 
 export default function LocationPicker({
   markerPosition,
   setMarkerPosition,
+  address,
+  setAddress,
+  location,
 }: LocationPickerProps) {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_API_KEY,
   });
 
-  const [address, setAddress] = useState("");
   useEffect(() => {
     if (!markerPosition) return;
 
@@ -75,14 +80,14 @@ export default function LocationPicker({
         id="location"
         type="text"
         placeholder="Enter place name and press Enter"
-        value={address}
+        value={location}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
         className="mb-2"
         required
       />
 
-      <div style={{ height: "300px", width: "100%" }}>
+      <div style={{ height: "200px", width: "100%" }}>
         <GoogleMap
           mapContainerStyle={{ width: "100%", height: "100%" }}
           center={markerPosition || { lat: 37.7749, lng: -122.4194 }}
