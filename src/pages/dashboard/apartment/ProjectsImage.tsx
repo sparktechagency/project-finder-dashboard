@@ -23,7 +23,7 @@ export default function ProjectsImages({
             key={idx}
             className="w-24 h-24 border border-gray-300 rounded-md bg-gray-50 overflow-hidden flex items-center justify-center relative group"
           >
-            {file ? (
+            {file && (
               <>
                 <img
                   src={URL.createObjectURL(file)}
@@ -42,8 +42,6 @@ export default function ProjectsImages({
                   <IoMdClose size={14} />
                 </button>
               </>
-            ) : (
-              <span className="text-gray-400 text-sm">No Image</span>
             )}
 
             {/* Hidden file input for replacement */}

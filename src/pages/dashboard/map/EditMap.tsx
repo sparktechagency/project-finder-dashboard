@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -7,20 +7,19 @@ import toast from "react-hot-toast";
 type LocationPickerProps = {
   markerPosition: { lat: number; lng: number } | null;
   setMarkerPosition: (pos: { lat: number; lng: number }) => void;
-  // address: string;
-  // setAddress: (address: string) => void;
-  // location: string;
+  address: string;
+  setAddress: (address: string) => void;
 };
 
-export default function LocationPicker({
+export default function EditMap({
   markerPosition,
   setMarkerPosition,
+  address,
+  setAddress,
 }: LocationPickerProps) {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_API_KEY,
   });
-
-  const [address, setAddress] = useState("");
 
   useEffect(() => {
     if (!markerPosition) return;

@@ -9,7 +9,8 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import LocationPicker from "@/pages/dashboard/map/Map";
+import EditMap from "@/pages/dashboard/map/EditMap";
+
 import { imageUrl } from "@/redux/api/baseApi";
 import { useUpdateProjectMutation } from "@/redux/apiSlice/apartments/apartments";
 
@@ -25,7 +26,8 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
   const [paymentFile, setPaymentFile] = useState<File | null>(null);
   const [priceFile, setPriceFile] = useState<File | null>(null);
   const [selectedDate, setSelectedDate] = useState<string | undefined>();
-  const [address, setAddress] = useState("");
+  const [address, setAddress] = useState(invoice.location || "");
+  console.log(address);
 
   const [markerPosition, setMarkerPosition] = useState<{
     lat: number;
@@ -272,12 +274,11 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
             </div>
 
             <div className="grid gap-3">
-              <LocationPicker
+              <EditMap
                 address={address}
                 setAddress={setAddress}
                 markerPosition={markerPosition}
                 setMarkerPosition={setMarkerPosition}
-                location={invoice.location}
               />
             </div>
           </div>
