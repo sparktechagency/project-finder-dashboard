@@ -14,11 +14,12 @@ import EditMap from "@/pages/dashboard/map/EditMap";
 import { imageUrl } from "@/redux/api/baseApi";
 import { useUpdateProjectMutation } from "@/redux/apiSlice/apartments/apartments";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import toast from "react-hot-toast";
 
 import { BiSolidEditAlt } from "react-icons/bi";
+import ProjectsImagesEditModal from "./ProjectImagesEditModal";
 
 export default function ProjectEditModal({ invoice }: { invoice: any }) {
   const [updateProject] = useUpdateProjectMutation();
@@ -27,6 +28,39 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
   const [priceFile, setPriceFile] = useState<File | null>(null);
   const [selectedDate, setSelectedDate] = useState<string | undefined>();
   const [address, setAddress] = useState(invoice.location || "");
+
+  // images state
+  const [imageSections, setImageSections] = useState<File[]>([]);
+  const imageLinks = imageSections
+    ?.filter((item: any) => {
+      if (item?.url?.startsWith("/")) return item?.url;
+    })
+    .map((item: any) => item.url);
+
+  const imageFiles = imageSections?.filter((item: any) => item instanceof File);
+
+  useEffect(() => {
+    if (invoice?.apartmentImage) {
+      const imageFiles = invoice.apartmentImage.map((image: string) => ({
+        url: image,
+      }));
+      setImageSections(imageFiles);
+    }
+  }, [invoice]);
+
+  const handleRemoveImage = (index: number) => {
+    setImageSections((prev: File[]) =>
+      prev.filter((_, i: number) => i !== index)
+    );
+  };
+
+  const handleAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+
+    const selectedFiles = Array.from(files);
+    setImageSections((prev) => [...prev, ...selectedFiles]);
+  };
 
   const [markerPosition, setMarkerPosition] = useState<{
     lat: number;
@@ -62,29 +96,44 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
     e.preventDefault();
 
     const form = e.currentTarget;
-    const data = new FormData(form);
+    const formData = new FormData(form);
 
     if (qualityFile) {
-      data.append("qualitySpecificationPDF", qualityFile);
+      formData.append("qualitySpecificationPDF", qualityFile);
     }
     if (paymentFile) {
-      data.append("paymentPlanPDF", paymentFile);
+      formData.append("paymentPlanPDF", paymentFile);
     }
     if (priceFile) {
-      data.append("pricePdf", priceFile);
+      formData.append("pricePdf", priceFile);
     }
 
     if (selectedDate) {
-      data.append("CompletionDate", selectedDate);
+      formData.append("CompletionDate", selectedDate);
     }
 
     // map
     if (address) {
-      data.append("location", address);
+      formData.append("location", address);
+    }
+
+    // append image files
+    if (imageFiles?.length > 0) {
+      imageFiles.forEach((item) => {
+        formData.append("apartmentImage", item);
+      });
+    }
+
+    // append image links
+    if (imageLinks?.length > 0) {
+      formData.append("existImage", JSON.stringify(imageLinks));
     }
 
     try {
-      const res = await updateProject({ id: invoice?._id, data }).unwrap();
+      const res = await updateProject({
+        id: invoice?._id,
+        data: formData,
+      }).unwrap();
       if (res?.success) {
         toast.success("succesfully project update ");
       } else {
@@ -111,6 +160,16 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
           </DialogHeader>
 
           <div className="grid gap-4 lg:mt-6">
+            <div>
+              <Label htmlFor="apartmentName"></Label>
+              <div className="grid grid-cols-1 gap-4 mt-2">
+                <ProjectsImagesEditModal
+                  imageSections={imageSections}
+                  handleRemoveImage={handleRemoveImage}
+                  handleAddImage={handleAddImage}
+                />
+              </div>
+            </div>
             <div className="grid gap-3">
               <Label htmlFor="apartmentName">Project Name</Label>
               <Input

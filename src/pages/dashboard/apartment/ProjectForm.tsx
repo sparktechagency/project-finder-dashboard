@@ -37,10 +37,6 @@ export default function ProjectForm() {
     setImageSections((prev) => [...prev, ...selectedFiles]);
   };
 
-  // const addImageSection = () => {
-  //   setImageSections((prev) => [...prev, null]);
-  // };
-
   const handleQualityChange = (key: string, value: string) => {
     setQualitySpecs((prev) => {
       return {

@@ -26,7 +26,6 @@ export default function ForgetPassword() {
       const res = await forgetPassword(data).unwrap(); // unwrap to catch errors properly
 
       if (res?.success) {
-        console.log(data.email);
         toast.success("Check your email");
         navigate(`/verify-otp?email=${data?.email}`);
       }

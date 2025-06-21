@@ -6,9 +6,9 @@ import path from "path";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  server: {
-    host: "147.93.94.210",
-  },
+  // server: {
+  //   host: "147.93.94.210",
+  // },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

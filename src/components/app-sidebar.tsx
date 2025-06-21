@@ -27,6 +27,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 // This is sample data.
 const data = {
   navMain: [
@@ -88,14 +89,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const navigate = useNavigate();
 
   const handleLogOut = () => {
-    // Remove cookies
-    document.cookie =
-      "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    document.cookie =
-      "refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    // localStorage.removeItem("email");
-    // localStorage.removeItem("resetToken");
-    // localStorage.removeItem("accessToken");
+    Cookies.remove("accessToken");
     navigate("/login");
   };
   return (

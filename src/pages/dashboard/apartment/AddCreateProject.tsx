@@ -5,11 +5,15 @@ import { ImageUpload } from "./ImageUpload";
 import { QualitySpecsInput } from "./QualitySpecsInput";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import SelectItems from "./SelectItem";
-import { company, completionYear, location } from "./Allname";
 import LocationPicker from "../map/Map";
 import { useCreateProjectMutation } from "@/redux/apiSlice/apartments/apartments";
 import toast from "react-hot-toast";
 import ProjectsImages from "./ProjectsImage";
+import {
+  company,
+  completionYear,
+  location,
+} from "@/components/layout/shared/AllName";
 
 interface ApartmentFormProps {
   files: {
