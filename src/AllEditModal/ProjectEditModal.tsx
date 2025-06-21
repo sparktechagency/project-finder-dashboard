@@ -27,7 +27,6 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
   const [priceFile, setPriceFile] = useState<File | null>(null);
   const [selectedDate, setSelectedDate] = useState<string | undefined>();
   const [address, setAddress] = useState(invoice.location || "");
-  console.log(address);
 
   const [markerPosition, setMarkerPosition] = useState<{
     lat: number;

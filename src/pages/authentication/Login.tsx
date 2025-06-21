@@ -9,6 +9,8 @@ import { useLoginMutation } from "@/redux/apiSlice/auth/auth";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
+import Cookies from "js-cookie";
+
 type FormData = { email: string; password: string };
 
 export default function Login() {
@@ -26,7 +28,7 @@ export default function Login() {
       const result = await login(form).unwrap();
       if (result.success) {
         toast.success("Login successfully", { id: "login" });
-        localStorage.setItem("accessToken", result.data.accessToken);
+        Cookies.set("accessToken", result.data.accessToken);
         navigate("/");
       } else {
         toast.error(result.message, { id: "login" });

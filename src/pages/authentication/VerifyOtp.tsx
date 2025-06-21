@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom"; // or useRouter from next/navigation
+import { useNavigate, useSearchParams } from "react-router-dom"; // or useRouter from next/navigation
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,8 +16,8 @@ export default function VerifyOtp() {
   const [OtpVerify] = useOtpVerifyMutation();
   const [resendOtp] = useResendOtpMutation(); // Assuming you have a resend OTP mutation
   const navigate = useNavigate();
-  const email = localStorage.getItem("email");
-  const adminEmail = email ? JSON.parse(email) : null;
+  const [params] = useSearchParams();
+  const email = params.get("email");
 
   const {
     register,
@@ -27,7 +27,7 @@ export default function VerifyOtp() {
 
   const handleResendCode = async () => {
     const data = {
-      email: adminEmail,
+      email,
     };
 
     await resendOtp(data).unwrap();
@@ -40,7 +40,7 @@ export default function VerifyOtp() {
     const otp = Number(data.otp);
 
     const verifyData = {
-      email: adminEmail,
+      email: email,
       oneTimeCode: otp,
     };
 

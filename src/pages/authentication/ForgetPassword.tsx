@@ -26,10 +26,9 @@ export default function ForgetPassword() {
       const res = await forgetPassword(data).unwrap(); // unwrap to catch errors properly
 
       if (res?.success) {
+        console.log(data.email);
         toast.success("Check your email");
-        if (data.email)
-          localStorage.setItem("email", JSON.stringify(data.email));
-        navigate("/verify-otp");
+        navigate(`/verify-otp?email=${data?.email}`);
       }
     } catch (error: any) {
       toast.error(error?.data?.message || "Email is not verified");

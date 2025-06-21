@@ -88,9 +88,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const navigate = useNavigate();
 
   const handleLogOut = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("email");
-    localStorage.removeItem("resetToken");
+    // Remove cookies
+    document.cookie =
+      "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie =
+      "refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    // localStorage.removeItem("email");
+    // localStorage.removeItem("resetToken");
+    // localStorage.removeItem("accessToken");
     navigate("/login");
   };
   return (
