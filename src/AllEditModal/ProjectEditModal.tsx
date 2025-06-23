@@ -249,7 +249,7 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
                     rel="noopener noreferrer"
                     className="text-blue-700 hover:underline"
                   >
-                    View PDF
+                    Edit PDF
                   </a>
                 ) : (
                   <span className="text-4xl">+</span>
@@ -287,7 +287,7 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
                     rel="noopener noreferrer"
                     className="text-blue-700 hover:underline"
                   >
-                    View PDF
+                    Edit PDF
                   </a>
                 ) : (
                   <span className="text-4xl">+</span>
@@ -323,7 +323,7 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
                     rel="noopener noreferrer"
                     className="text-blue-700 hover:underline"
                   >
-                    View PDF
+                    Edit PDF
                   </a>
                 ) : (
                   <span className="text-4xl">+</span>

@@ -41,7 +41,7 @@ const auth = api.injectEndpoints({
 
     resendOtp: builder.mutation({
       query: (data) => ({
-        url: "",
+        url: "/auth/resend-otp",
         method: "POST",
         body: data,
       }),
