@@ -112,7 +112,7 @@ export default function EditFloorModal({ invoice }: { invoice: any }) {
                     rel="noopener noreferrer"
                     className="text-blue-600 underline"
                   >
-                    View PDF
+                    Edit PDF
                   </a>
                 ) : (
                   <span className="text-4xl">+</span>
