@@ -24,6 +24,7 @@ export default function Login() {
   }
 
   const onSubmit = async (form: FormData) => {
+    toast.loading("Processing....", { id: "login" });
     try {
       const result = await login(form).unwrap();
       if (result.success) {

@@ -40,11 +40,12 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
   const imageFiles = imageSections?.filter((item: any) => item instanceof File);
 
   useEffect(() => {
-    if (invoice?.apartmentImage) {
+    if (invoice?.apartmentImage || invoice.CompletionDate) {
       const imageFiles = invoice.apartmentImage.map((image: string) => ({
         url: image,
       }));
       setImageSections(imageFiles);
+      setSelectedDate(invoice.CompletionDate?.slice(0, 10));
     }
   }, [invoice]);
 
@@ -200,13 +201,9 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
                   name="date"
                   onChange={(e) => {
                     const date = e.target.value;
-                    if (date) {
-                      setSelectedDate(date);
-                    } else {
-                      setSelectedDate(undefined);
-                    }
+                    setSelectedDate(date || undefined);
                   }}
-                  value={selectedDate ? selectedDate : ""}
+                  value={selectedDate || ""}
                   style={{
                     height: 45,
                     border: "1px solid #ccc",
