@@ -193,7 +193,7 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
               />
             </div>
             <div className="grid gap-3">
-              <Label htmlFor="CompletionDate">CompletionDate</Label>
+              <Label htmlFor="CompletionDate">Update Date</Label>
 
               <div className="grid gap-3">
                 <input
