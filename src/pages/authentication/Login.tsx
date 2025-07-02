@@ -3,11 +3,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Checkbox } from "@radix-ui/react-checkbox";
 import { useLoginMutation } from "@/redux/apiSlice/auth/auth";
 import toast from "react-hot-toast";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import Cookies from "js-cookie";
 
@@ -16,12 +16,15 @@ type FormData = { email: string; password: string };
 export default function Login() {
   const [login, { isLoading }] = useLoginMutation();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const navigate = useNavigate();
   const { register, handleSubmit } = useForm<FormData>();
 
-  if (isLoading) {
-    toast.loading("Loading...", { id: "login" });
-  }
+  useEffect(() => {
+    if (isLoading) {
+      toast.loading("Loading...", { id: "login" });
+    } else {
+      toast.dismiss("login");
+    }
+  }, [isLoading]);
 
   const onSubmit = async (form: FormData) => {
     toast.loading("Processing....", { id: "login" });
@@ -30,7 +33,7 @@ export default function Login() {
       if (result.success) {
         toast.success("Login successfully", { id: "login" });
         Cookies.set("accessToken", result.data.accessToken);
-        navigate("/");
+        window.location.href = "/";
       } else {
         toast.error(result.message, { id: "login" });
       }

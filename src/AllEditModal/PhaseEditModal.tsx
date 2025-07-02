@@ -7,6 +7,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useUpdatePhaseDetailsMutation } from "@/redux/apiSlice/phase/phase";
@@ -14,9 +22,17 @@ import { useUpdatePhaseDetailsMutation } from "@/redux/apiSlice/phase/phase";
 import toast from "react-hot-toast";
 
 import { BiSolidEditAlt } from "react-icons/bi";
+import { quater } from "@/components/layout/shared/AllName";
+import { useState } from "react";
 
 export default function PhaseEditModal({ invoice }: { invoice: any }) {
   const [updatePhaseDetails] = useUpdatePhaseDetailsMutation();
+  const [select, setSelect] = useState("");
+
+  const handleSelect = (value: string) => {
+    setSelect(value);
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -73,6 +89,26 @@ export default function PhaseEditModal({ invoice }: { invoice: any }) {
                 name="date"
                 defaultValue={invoice.date.split("T")[0]}
               />
+            </div>
+
+            <div className="my-4">
+              <Label htmlFor="quater" className="mb-2 text-black">
+                Quater
+              </Label>
+              <Select name="quater" value={select} onValueChange={handleSelect}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="select quater" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {quater.map((opt) => (
+                      <SelectItem key={opt} value={opt}>
+                        {opt}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
           </div>
 

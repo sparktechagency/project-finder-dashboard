@@ -61,7 +61,8 @@ export default function AddPhase() {
 
             {/* <TableHead className="">Bad Size</TableHead> */}
 
-            <TableHead className="">Date</TableHead>
+            <TableHead className="">Year</TableHead>
+            <TableHead className="">Quater</TableHead>
             <TableHead className="">Action</TableHead>
           </TableRow>
         </TableHeader>
@@ -73,7 +74,11 @@ export default function AddPhase() {
                 {invoice.phase}
               </TableCell>
 
-              <TableCell className="">{invoice.date.split("T")[0]}</TableCell>
+              <TableCell className="">
+                {new Date(invoice.date).getFullYear()}
+              </TableCell>
+              <TableCell className="">Q1</TableCell>
+
               <TableCell className="pl-3">
                 <PhaseEditModal invoice={invoice} />
               </TableCell>

@@ -1,3 +1,4 @@
+import { quater } from "@/components/layout/shared/AllName";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -9,6 +10,14 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useCreatePhaseDetailsMutation } from "@/redux/apiSlice/phase/phase";
 
 import React, { useState } from "react";
@@ -18,12 +27,15 @@ export default function AddPhaseModal({ apartment }: { apartment: string }) {
   const [createPhaseDetails] = useCreatePhaseDetailsMutation();
   const [selectedDate, setSelectedDate] = useState<string | undefined>();
   const [isOpen, setIsOpen] = useState(false);
+  const [select, setSelect] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     const data = new FormData(form);
     const phase = data.get("phase");
+    const quater = data.get("quater");
+    console.log(quater);
 
     if (phase && selectedDate) {
       const data = {
@@ -46,6 +58,10 @@ export default function AddPhaseModal({ apartment }: { apartment: string }) {
         setIsOpen(false); // Close the dialog after submission
       }
     }
+  };
+
+  const handleSelect = (value: string) => {
+    setSelect(value);
   };
 
   return (
@@ -96,6 +112,26 @@ export default function AddPhaseModal({ apartment }: { apartment: string }) {
                 }}
                 required
               />
+            </div>
+
+            <div className="my-4">
+              <Label htmlFor="quater" className="mb-2 text-black">
+                Quater
+              </Label>
+              <Select name="quater" value={select} onValueChange={handleSelect}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="select quater" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {quater.map((opt) => (
+                      <SelectItem key={opt} value={opt}>
+                        {opt}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
           </div>
           <DialogFooter>

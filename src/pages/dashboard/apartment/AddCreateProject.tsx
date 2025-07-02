@@ -312,7 +312,7 @@ export default function AddCreateProject({
           {/* sales company */}
           <SelectItems
             options={company}
-            title="Sales Company Name"
+            title="Sales Company Names"
             placeholder="Select company Name"
             value={selectValues.salesCompany}
             onSelect={(value) => handleSelectChange("salesCompany", value)}
