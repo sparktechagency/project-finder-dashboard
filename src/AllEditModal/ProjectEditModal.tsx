@@ -10,16 +10,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import EditMap from "@/pages/dashboard/map/EditMap";
-
 import { imageUrl } from "@/redux/api/baseApi";
 import { useUpdateProjectMutation } from "@/redux/apiSlice/apartments/apartments";
-
 import { useEffect, useState } from "react";
-
 import toast from "react-hot-toast";
-
 import { BiSolidEditAlt } from "react-icons/bi";
 import ProjectsImagesEditModal from "./ProjectImagesEditModal";
+import { ContactProjectEdit } from "./ContactProjectEdit";
 
 export default function ProjectEditModal({ invoice }: { invoice: any }) {
   const [updateProject] = useUpdateProjectMutation();
@@ -28,6 +25,20 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
   const [priceFile, setPriceFile] = useState<File | null>(null);
   const [selectedDate, setSelectedDate] = useState<string | undefined>();
   const [address, setAddress] = useState(invoice.location || "");
+  const [contactAddress, setContactAddress] = useState({
+    name: invoice?.contact || "",
+  });
+
+  //  contact info sales
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setContactAddress({
+      ...contactAddress,
+      name: {
+        ...contactAddress.name,
+        [e.target.name]: e.target.value,
+      },
+    });
+  };
 
   // images state
   const [imageSections, setImageSections] = useState<File[]>([]);
@@ -98,6 +109,7 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
 
     const form = e.currentTarget;
     const formData = new FormData(form);
+    const values = Object.fromEntries(formData.entries());
 
     if (qualityFile) {
       formData.append("qualitySpecificationPDF", qualityFile);
@@ -124,6 +136,15 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
         formData.append("apartmentImage", item);
       });
     }
+
+    // Append nested contact
+    const contactData = {
+      phone: values.phone,
+      email: values.email,
+      companyName: values.companyName,
+    };
+
+    formData.append("contact", JSON.stringify(contactData));
 
     // append image links
     if (imageLinks?.length > 0) {
@@ -334,6 +355,33 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
                 setAddress={setAddress}
                 markerPosition={markerPosition}
                 setMarkerPosition={setMarkerPosition}
+              />
+            </div>
+
+            <div>
+              <ContactProjectEdit
+                type="number"
+                id="phone"
+                label="Contact Number"
+                placeholder="Enter Contact Number"
+                contactAddress={contactAddress?.name?.phone}
+                onChange={handleChange}
+              />
+              <ContactProjectEdit
+                type="text"
+                id="email"
+                label="Email"
+                placeholder="Enter Your Email"
+                contactAddress={contactAddress?.name?.email}
+                onChange={handleChange}
+              />
+              <ContactProjectEdit
+                type="text"
+                id="companyName"
+                label="Sales Company Names"
+                placeholder="Enter Developer name"
+                contactAddress={contactAddress.name?.companyName}
+                onChange={handleChange}
               />
             </div>
           </div>
