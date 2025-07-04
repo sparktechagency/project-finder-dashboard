@@ -56,7 +56,7 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
         url: image,
       }));
       setImageSections(imageFiles);
-      setSelectedDate(invoice.CompletionDate?.slice(0, 10));
+      setSelectedDate(invoice?.CompletionDate?.slice(0, 10));
     }
   }, [invoice]);
 

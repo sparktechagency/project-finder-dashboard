@@ -23,11 +23,21 @@ import toast from "react-hot-toast";
 
 import { BiSolidEditAlt } from "react-icons/bi";
 import { quater } from "@/components/layout/shared/AllName";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function PhaseEditModal({ invoice }: { invoice: any }) {
+  console.log(invoice);
   const [updatePhaseDetails] = useUpdatePhaseDetailsMutation();
   const [select, setSelect] = useState("");
+  const [selectDate, setSelectedDate] = useState<string>("");
+
+  useEffect(() => {
+    if (invoice?.date || invoice.phase) {
+      setSelect(invoice.phase);
+      const year = new Date(invoice.date).getFullYear().toString();
+      setSelectedDate(year);
+    }
+  }, [invoice]);
 
   const handleSelect = (value: string) => {
     setSelect(value);
@@ -38,13 +48,13 @@ export default function PhaseEditModal({ invoice }: { invoice: any }) {
 
     const form = e.currentTarget;
     const data = new FormData(form);
-
     const phase = data.get("phase");
     const date = data.get("date");
 
+    // If your backend expects full date format, convert year to ISO date
     const updatePhase = {
       phase,
-      date,
+      date: date ? `${date}-01-01` : undefined,
     };
 
     try {
@@ -53,18 +63,15 @@ export default function PhaseEditModal({ invoice }: { invoice: any }) {
         data: updatePhase,
       }).unwrap();
       if (res.success) {
-        toast.success("Floor plan updated successfully");
+        toast.success("Phase updated successfully");
       } else {
-        toast.error("Failed to update floor plan");
+        toast.error("Failed to update phase");
       }
-    } catch (error) {
-      const errorMessage =
-        error && typeof error === "object" && "message" in error
-          ? (error as { message: string }).message
-          : "An unknown error occurred";
-      toast.error(`Failed to update floor plan: ${errorMessage}`);
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Something went wrong");
     }
   };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -78,26 +85,13 @@ export default function PhaseEditModal({ invoice }: { invoice: any }) {
           </DialogHeader>
 
           <div className="grid gap-4 mt-6">
-            <div className="grid gap-3">
-              <Label htmlFor="phase">Phase</Label>
-              <Input id="phase" name="phase" defaultValue={invoice.phase} />
-            </div>
-            <div className="grid gap-3">
-              <Label htmlFor="date">Date</Label>
-              <Input
-                id="date"
-                name="date"
-                defaultValue={invoice.date.split("T")[0]}
-              />
-            </div>
-
             <div className="my-4">
-              <Label htmlFor="quater" className="mb-2 text-black">
+              <Label htmlFor="phase" className="mb-2 ">
                 Quater
               </Label>
-              <Select name="quater" value={select} onValueChange={handleSelect}>
+              <Select name="phase" value={select} onValueChange={handleSelect}>
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="select quater" />
+                  <SelectValue placeholder="Select quater" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
@@ -109,6 +103,21 @@ export default function PhaseEditModal({ invoice }: { invoice: any }) {
                   </SelectGroup>
                 </SelectContent>
               </Select>
+            </div>
+
+            <div className="grid gap-3">
+              <Label htmlFor="date">Year</Label>
+              <Input
+                id="date"
+                name="date"
+                type="number"
+                min="1900"
+                max="2099"
+                step="1"
+                placeholder="YYYY"
+                value={selectDate}
+                onChange={(e) => setSelectedDate(e.target.value)}
+              />
             </div>
           </div>
 

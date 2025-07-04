@@ -10,8 +10,6 @@ import {
 import Loading from "@/components/layout/shared/Loading";
 import ErrorPage from "@/error/ErrorPage";
 import { useGetPhaseDetailsQuery } from "@/redux/apiSlice/phase/phase";
-import Pagination from "@/components/layout/shared/Pagination";
-import { useState } from "react";
 import PhaseEditModal from "@/AllEditModal/PhaseEditModal";
 
 interface ApartmentData {
@@ -33,16 +31,6 @@ export default function AddPhase() {
       return item.apartment === apartmentId;
     }) || [];
 
-  // pagination state
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
-
-  const totalPages = Math.ceil(phaseDetails.length / itemsPerPage);
-  const paginatedItems = phaseDetails.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
   if (isLoading || isFetching) {
     return <Loading />;
   }
@@ -57,17 +45,13 @@ export default function AddPhase() {
         <TableHeader>
           <TableRow className="bg-[#F6F6F6] h-12">
             <TableHead className=" rounded-tl-lg">Serial ID</TableHead>
-            <TableHead className="">Phase</TableHead>
-
-            {/* <TableHead className="">Bad Size</TableHead> */}
-
-            <TableHead className="">Year</TableHead>
             <TableHead className="">Quater</TableHead>
+            <TableHead className="">Year</TableHead>
             <TableHead className="">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {paginatedItems?.map((invoice: ApartmentData, index: number) => (
+          {phaseDetails?.map((invoice: ApartmentData, index: number) => (
             <TableRow key={invoice._id} className="">
               <TableCell className="font-medium p-3">{index + 1}</TableCell>
               <TableCell className="flex items-center gap-2 pl-5">
@@ -77,7 +61,6 @@ export default function AddPhase() {
               <TableCell className="">
                 {new Date(invoice.date).getFullYear()}
               </TableCell>
-              <TableCell className="">Q1</TableCell>
 
               <TableCell className="pl-3">
                 <PhaseEditModal invoice={invoice} />
@@ -86,15 +69,6 @@ export default function AddPhase() {
           ))}
         </TableBody>
       </Table>
-
-      {/* Pagination Controls */}
-      <div className="flex justify-center items-center mt-4">
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={(page) => setCurrentPage(page)}
-        />
-      </div>
     </>
   );
 }

@@ -22,6 +22,7 @@ import AddPhaseModal from "@/modal/AddPhaseModal";
 import ApartmentCreateModal from "@/modal/AddFloorModal";
 import { imageUrl } from "@/redux/api/baseApi";
 import ProjectEditModal from "@/AllEditModal/ProjectEditModal";
+import Pagination from "@/components/layout/shared/Pagination";
 
 interface ApartmentData {
   _id: string;
@@ -40,8 +41,12 @@ interface ApartmentData {
 }
 
 export default function Projects() {
-  const { data, isFetching, isError, isLoading } =
-    useGetProjectsQuery(undefined);
+  const [currentPage, setCurrentPage] = useState(1);
+  const { data, isFetching, isError, isLoading } = useGetProjectsQuery({
+    page: currentPage,
+  });
+
+  console.log(currentPage);
 
   const [deleteProject] = useDeleteProjectMutation();
   const navigate = useNavigate();
@@ -93,7 +98,7 @@ export default function Projects() {
             <TableHead>Price Pdf</TableHead>
             <TableHead>Location</TableHead>
             <TableHead>Commission</TableHead>
-            <TableHead>Price</TableHead>
+            <TableHead>Relivant Link</TableHead>
             <TableHead>Completion Year</TableHead>
             <TableHead>Project</TableHead>
             <TableHead>Add Floor</TableHead>
@@ -104,7 +109,9 @@ export default function Projects() {
         <TableBody>
           {data?.data?.map((invoice: ApartmentData, index: number) => (
             <TableRow key={invoice._id}>
-              <TableCell className="font-medium pl-4">{index + 1}</TableCell>
+              <TableCell className="font-medium pl-4">
+                {(currentPage - 1) * (data.pagination.limit || 10) + index + 1}
+              </TableCell>
               <TableCell>{invoice.apartmentName}</TableCell>
               <TableCell>
                 <a
@@ -202,6 +209,14 @@ export default function Projects() {
           ))}
         </TableBody>
       </Table>
+
+      {/* Pagination Controls */}
+      <div className="flex justify-center items-center mt-4">
+        <Pagination
+          pagination={data?.pagination}
+          onPageChange={setCurrentPage}
+        />
+      </div>
 
       {userDetails && (
         <UserModal

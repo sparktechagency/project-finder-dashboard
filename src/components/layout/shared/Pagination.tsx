@@ -1,32 +1,53 @@
 import React from "react";
 
+interface BackendPagination {
+  total: number;
+  limit: number;
+  page: number;
+}
+
 interface PaginationProps {
-  currentPage: number;
-  totalPages: number;
+  pagination: BackendPagination | undefined;
   onPageChange: (page: number) => void;
 }
 
 const Pagination: React.FC<PaginationProps> = ({
-  currentPage,
-  totalPages,
+  pagination,
   onPageChange,
 }) => {
+  if (!pagination) return null; // No pagination data
+
+  const { total, limit, page } = pagination;
+  const totalPages = Math.max(1, Math.ceil(total / limit)); // Always at least 1 page
+
+  const goToPrevious = () => {
+    if (page > 1) {
+      onPageChange(page - 1);
+    }
+  };
+
+  const goToNext = () => {
+    if (page < totalPages) {
+      onPageChange(page + 1);
+    }
+  };
+
   return (
     <div className="flex justify-center items-center gap-4 mt-4">
       <button
-        onClick={() => onPageChange(currentPage - 1)}
-        disabled={currentPage === 1}
-        className="px-3 py-1 bg-gray-200 rounded  "
+        onClick={goToPrevious}
+        disabled={page <= 1}
+        className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50 cursor-pointer"
       >
         Previous
       </button>
       <span>
-        Page {currentPage} of {totalPages}
+        Page {page} of {totalPages}
       </span>
       <button
-        onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
-        className="px-3 py-1 bg-gray-200 rounded "
+        onClick={goToNext}
+        disabled={page >= totalPages}
+        className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50 cursor-pointer"
       >
         Next
       </button>

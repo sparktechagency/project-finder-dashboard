@@ -54,8 +54,8 @@ export default function AddPhaseModal({ apartment }: { apartment: string }) {
       } catch {
         toast.error("Error creating phase ");
       } finally {
-        setSelectedDate(undefined); // Reset date after submit
-        setIsOpen(false); // Close the dialog after submission
+        setSelectedDate(undefined);
+        setIsOpen(false);
       }
     }
   };
@@ -80,45 +80,11 @@ export default function AddPhaseModal({ apartment }: { apartment: string }) {
             <DialogTitle>Add Phase</DialogTitle>
           </DialogHeader>
           <div className="grid gap-4 mt-5">
-            <div className="grid gap-3">
-              <Label htmlFor="phase">Phase</Label>
-              <Input
-                id="phase"
-                name="phase"
-                placeholder="Enter phase"
-                required
-              />
-            </div>
-            <div className="grid gap-3">
-              <Label>Date</Label>
-              <input
-                type="date"
-                name="date"
-                onChange={(e) => {
-                  const date = e.target.value;
-                  if (date) {
-                    setSelectedDate(date);
-                  } else {
-                    setSelectedDate(undefined);
-                  }
-                }}
-                value={selectedDate ? selectedDate : ""}
-                style={{
-                  height: 45,
-                  border: "1px solid #ccc",
-                  borderRadius: "4px",
-                  padding: "8px",
-                  width: "100%",
-                }}
-                required
-              />
-            </div>
-
             <div className="my-4">
-              <Label htmlFor="quater" className="mb-2 text-black">
+              <Label htmlFor="phase" className="mb-2 text-black">
                 Quater
               </Label>
-              <Select name="quater" value={select} onValueChange={handleSelect}>
+              <Select name="phase" value={select} onValueChange={handleSelect}>
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="select quater" />
                 </SelectTrigger>
@@ -132,6 +98,20 @@ export default function AddPhaseModal({ apartment }: { apartment: string }) {
                   </SelectGroup>
                 </SelectContent>
               </Select>
+            </div>
+            <div className="grid gap-3">
+              <Label>Date</Label>
+              <Input
+                id="date"
+                name="date"
+                type="number"
+                min="1900"
+                max="2099"
+                step="1"
+                placeholder="YYYY"
+                value={selectedDate}
+                onChange={(e) => setSelectedDate(e.target.value)}
+              />
             </div>
           </div>
           <DialogFooter>

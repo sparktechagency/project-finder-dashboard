@@ -3,8 +3,8 @@ import { api } from "@/redux/api/baseApi";
 const projects = api.injectEndpoints({
   endpoints: (builder) => ({
     getProjects: builder.query({
-      query: () => ({
-        url: "/apartment",
+      query: ({ page }) => ({
+        url: `/apartment?page=${page}`,
         method: "GET",
       }),
       providesTags: ["package"],

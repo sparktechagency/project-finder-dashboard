@@ -77,6 +77,7 @@ export default function AddCreateProject({
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
+    toast.loading("Processing...", { id: "success" });
     e.stopPropagation();
     e.preventDefault();
 
@@ -159,7 +160,7 @@ export default function AddCreateProject({
       const res = await createProject(formData).unwrap();
 
       if (res.message) {
-        toast.success("Project created successfully");
+        toast.success("Project created successfully", { id: "success" });
         form.reset();
         // reset features
         setQualitySpecs({ category: "" });
@@ -178,11 +179,13 @@ export default function AddCreateProject({
         // map marker position
         setMarkerPosition({ lat: 0, lng: 0 });
       } else {
-        toast.error(res?.message || "Failed to create project");
+        toast.error(res?.message || "Failed to create project", {
+          id: "success",
+        });
       }
-    } catch (error) {
-      const errorMessage = (error as Error)?.message || "An error occurred";
-      toast.error(errorMessage);
+    } catch (error: any) {
+      const errorMessage = error?.data?.message || "An error occurred";
+      toast.error(errorMessage, { id: "success" });
     }
   };
 
