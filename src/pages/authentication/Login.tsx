@@ -7,15 +7,14 @@ import { Link } from "react-router-dom";
 import { Checkbox } from "@radix-ui/react-checkbox";
 import { useLoginMutation } from "@/redux/apiSlice/auth/auth";
 import toast from "react-hot-toast";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import Cookies from "js-cookie";
-import Loading from "@/components/layout/shared/Loading";
 
 type FormData = { email: string; password: string };
 
 export default function Login() {
-  const [login, { isLoading }] = useLoginMutation();
+  const [login] = useLoginMutation();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const { register, handleSubmit } = useForm<FormData>();
 
@@ -27,7 +26,6 @@ export default function Login() {
   //   }
   // }, [isLoading]);
 
-
   const onSubmit = async (form: FormData) => {
     toast.loading("Processing....", { id: "login" });
     try {
@@ -35,9 +33,9 @@ export default function Login() {
       if (result.success) {
         toast.success("Login successfully", { id: "login" });
         Cookies.set("accessToken", result.data.accessToken);
-       setTimeout(()=>{
-        window.location.href = "/";
-       },500)
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 500);
       } else {
         toast.error(result.message, { id: "login" });
       }
