@@ -1,12 +1,19 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
 import AddCreateProject from "./AddCreateProject";
-
+import { v4 as uuidv4 } from "uuid";
 export default function ProjectForm() {
   const [imageSections, setImageSections] = useState<File[]>([]);
 
   const [qualitySpecs, setQualitySpecs] = useState<{ [key: string]: string }>({
     category: "",
   });
+
+  const [relivantLinks, setRelivantLinks] = useState<{ [key: string]: string }>(
+    {
+      links: "",
+    }
+  );
 
   type FileData = {
     url: string;
@@ -37,6 +44,7 @@ export default function ProjectForm() {
     setImageSections((prev) => [...prev, ...selectedFiles]);
   };
 
+  // project features
   const handleQualityChange = (key: string, value: string) => {
     setQualitySpecs((prev) => {
       return {
@@ -47,15 +55,36 @@ export default function ProjectForm() {
   };
 
   const handleInputAdd = () => {
-    const newKey = `feature_${Date.now()}`;
+    const newKey = `feature_${uuidv4()}`;
     setQualitySpecs((prev) => ({ ...prev, [newKey]: "" }));
   };
 
   const handleRemove = (key: string) => {
     setQualitySpecs((prev) => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { [key]: _, ...rest } = prev;
       return rest;
+    });
+  };
+
+  // relivant links
+  const handleAddLinks = () => {
+    const newLinks = `links_${uuidv4()}`;
+    setRelivantLinks((prev) => ({ ...prev, [newLinks]: "" }));
+  };
+
+  const handleRemoveLinks = (key: string) => {
+    setRelivantLinks((prev) => {
+      const { [key]: _, ...rest } = prev;
+      return rest;
+    });
+  };
+
+  const onChangeRelivantLinks = (key: string, value: string) => {
+    setRelivantLinks((prev) => {
+      return {
+        ...prev,
+        [key]: value,
+      };
     });
   };
 
@@ -72,6 +101,10 @@ export default function ProjectForm() {
       handleRemove={handleRemove}
       files={files}
       setFiles={setFiles}
+      relivantLinks={relivantLinks}
+      handleAddLinks={handleAddLinks}
+      handleRemoveLinks={handleRemoveLinks}
+      onChangeRelivantLinks={onChangeRelivantLinks}
     />
   );
 }

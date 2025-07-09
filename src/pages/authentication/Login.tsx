@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import Cookies from "js-cookie";
+import Loading from "@/components/layout/shared/Loading";
 
 type FormData = { email: string; password: string };
 
@@ -18,13 +19,14 @@ export default function Login() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const { register, handleSubmit } = useForm<FormData>();
 
-  useEffect(() => {
-    if (isLoading) {
-      toast.loading("Loading...", { id: "login" });
-    } else {
-      toast.dismiss("login");
-    }
-  }, [isLoading]);
+  // useEffect(() => {
+  //   if (isLoading) {
+  //     toast.loading("Loading...", { id: "login" });
+  //   } else {
+  //     toast.dismiss("login");
+  //   }
+  // }, [isLoading]);
+
 
   const onSubmit = async (form: FormData) => {
     toast.loading("Processing....", { id: "login" });
@@ -33,7 +35,9 @@ export default function Login() {
       if (result.success) {
         toast.success("Login successfully", { id: "login" });
         Cookies.set("accessToken", result.data.accessToken);
+       setTimeout(()=>{
         window.location.href = "/";
+       },500)
       } else {
         toast.error(result.message, { id: "login" });
       }
