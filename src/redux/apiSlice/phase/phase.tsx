@@ -7,7 +7,7 @@ const phase = api.injectEndpoints({
         url: `/phase`,
         method: "GET",
       }),
-      providesTags: ["package"],
+      providesTags: ["phase"],
     }),
 
     createPhaseDetails: builder.mutation({
@@ -16,7 +16,7 @@ const phase = api.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["package"],
+      invalidatesTags: ["phase"],
     }),
     updatePhaseDetails: builder.mutation({
       query: ({ id, data }) => ({
@@ -24,7 +24,15 @@ const phase = api.injectEndpoints({
         method: "PATCH",
         body: data,
       }),
-      invalidatesTags: ["package"],
+      invalidatesTags: ["phase"],
+    }),
+
+    deletePhase: builder.mutation({
+      query: (id) => ({
+        url: `/phase/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["phase"],
     }),
   }),
 });
@@ -33,4 +41,5 @@ export const {
   useGetPhaseDetailsQuery,
   useCreatePhaseDetailsMutation,
   useUpdatePhaseDetailsMutation,
+  useDeletePhaseMutation,
 } = phase;

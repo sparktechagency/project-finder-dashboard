@@ -18,7 +18,6 @@ import toast from "react-hot-toast";
 import { LuPlus } from "react-icons/lu";
 
 interface FAQModalProps {
-  refetch: () => void;
   editFaq: any;
   setEditFaq: (faq: any) => void;
   open: boolean;
@@ -26,7 +25,6 @@ interface FAQModalProps {
 }
 
 export default function FAQModal({
-  refetch,
   editFaq,
   setEditFaq,
   open,
@@ -52,7 +50,7 @@ export default function FAQModal({
           toast.success("FAQ created successfully");
         }
         form.reset();
-        refetch();
+
         setOpen(false); // Close modal
       } catch {
         toast.error("failed faq");

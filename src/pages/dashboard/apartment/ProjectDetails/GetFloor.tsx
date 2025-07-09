@@ -12,7 +12,12 @@ import ErrorPage from "@/error/ErrorPage";
 import { imageUrl } from "@/redux/api/baseApi";
 
 import EditFloorModal from "@/AllEditModal/EditFloorModal";
-import { useGetFloorQuery } from "@/redux/apiSlice/floor/floor";
+import {
+  useDeleteFloorMutation,
+  useGetFloorQuery,
+} from "@/redux/apiSlice/floor/floor";
+import { Trash } from "lucide-react";
+import toast from "react-hot-toast";
 
 interface ApartmentData {
   _id: string;
@@ -26,6 +31,7 @@ interface ApartmentData {
 
 export default function GetFloor() {
   const { data, isFetching, isError, isLoading } = useGetFloorQuery(undefined);
+  const [deleteFloor] = useDeleteFloorMutation(undefined);
   const searchParams = new URLSearchParams(window.location.search);
   const apartmentId = searchParams.get("id");
 
@@ -34,8 +40,23 @@ export default function GetFloor() {
       (apt: ApartmentData) => apt._id === apartmentId
     )?.floorPlans || [];
 
+  console.log(data, details);
+
   if (isLoading || isFetching) return <Loading />;
   if (isError) return <ErrorPage />;
+
+  const handleDeleteFloor = async (id: string) => {
+    const res = await deleteFloor(id).unwrap();
+    try {
+      if (res?.success) {
+        toast.success(res?.message || "delete successfully");
+      } else {
+        toast.error(res?.message || "delete failed ");
+      }
+    } catch (error: any) {
+      toast.error(error?.data?.message);
+    }
+  };
 
   return (
     <>
@@ -77,8 +98,12 @@ export default function GetFloor() {
               </TableCell>
 
               <TableCell>€{invoice.price}</TableCell>
-              <TableCell className="pl-3">
+              <TableCell className="pl-3 flex items-center gap-3">
                 <EditFloorModal invoice={invoice} />
+                <Trash
+                  className="cursor-pointer"
+                  onClick={() => handleDeleteFloor(invoice?._id)}
+                />
               </TableCell>
             </TableRow>
           ))}

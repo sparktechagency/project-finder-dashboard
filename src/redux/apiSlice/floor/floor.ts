@@ -7,7 +7,7 @@ const floor = api.injectEndpoints({
         url: "/floor",
         method: "GET",
       }),
-      providesTags: ["package"],
+      providesTags: ["floor"],
     }),
 
     createFloor: builder.mutation({
@@ -18,7 +18,7 @@ const floor = api.injectEndpoints({
           body: data,
         };
       },
-      invalidatesTags: ["package"],
+      invalidatesTags: ["floor"],
     }),
     updateFloor: builder.mutation({
       query: ({ id, data }) => {
@@ -28,7 +28,15 @@ const floor = api.injectEndpoints({
           body: data,
         };
       },
-      invalidatesTags: ["package"],
+      invalidatesTags: ["floor"],
+    }),
+
+    deleteFloor: builder.mutation({
+      query: (id) => ({
+        url: `/floor/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["floor"],
     }),
   }),
 });
@@ -37,4 +45,5 @@ export const {
   useGetFloorQuery,
   useCreateFloorMutation,
   useUpdateFloorMutation,
+  useDeleteFloorMutation,
 } = floor;

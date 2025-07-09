@@ -46,7 +46,7 @@ export default function Projects() {
     page: currentPage,
   });
 
-  console.log(currentPage);
+  console.log(data?.data);
 
   const [deleteProject] = useDeleteProjectMutation();
   const navigate = useNavigate();

@@ -12,7 +12,7 @@ export interface FaqItem {
 }
 
 const Faq = () => {
-  const { data, isError, isLoading, refetch } = useGetFaqQuery(undefined);
+  const { data, isError, isLoading } = useGetFaqQuery(undefined);
   const [deleteFaq] = useDeleteFaqMutation();
   const [editFaq, setEditFaq] = useState<FaqItem | null>(null);
   const [open, setOpen] = useState(false);
@@ -21,7 +21,6 @@ const Faq = () => {
     try {
       await deleteFaq(id);
       toast.success("delete successfully");
-      refetch();
     } catch {
       toast.error("delete failed");
     }
@@ -40,7 +39,6 @@ const Faq = () => {
       <div className=" bg-transparent duration-500 ">
         <div className="flex justify-end ">
           <FAQModal
-            refetch={refetch}
             editFaq={editFaq}
             setEditFaq={setEditFaq}
             open={open}

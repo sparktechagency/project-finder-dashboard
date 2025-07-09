@@ -9,8 +9,13 @@ import {
 
 import Loading from "@/components/layout/shared/Loading";
 import ErrorPage from "@/error/ErrorPage";
-import { useGetPhaseDetailsQuery } from "@/redux/apiSlice/phase/phase";
+import {
+  useDeletePhaseMutation,
+  useGetPhaseDetailsQuery,
+} from "@/redux/apiSlice/phase/phase";
 import PhaseEditModal from "@/AllEditModal/PhaseEditModal";
+import { Trash } from "lucide-react";
+import toast from "react-hot-toast";
 
 interface ApartmentData {
   _id: string;
@@ -23,6 +28,7 @@ interface ApartmentData {
 export default function AddPhase() {
   const { data, isFetching, isError, isLoading } =
     useGetPhaseDetailsQuery(undefined);
+  const [deletePhase] = useDeletePhaseMutation(undefined);
   const searchParams = new URLSearchParams(window.location.search);
   const apartmentId = searchParams.get("id");
 
@@ -38,6 +44,20 @@ export default function AddPhase() {
   if (isError) {
     return <ErrorPage />;
   }
+
+  const handleDeletePhase = async (id: string) => {
+    const res = await deletePhase(id).unwrap();
+    try {
+      if (res?.success) {
+        toast.success(res?.message || "delete successfully");
+      } else {
+        toast.error(res?.message || "delete failed ");
+      }
+    } catch (error: any) {
+      toast.error(error?.data?.message);
+    }
+  };
+
   return (
     <>
       <h1 className="mb-2 text-2xl">Phase</h1>
@@ -62,8 +82,12 @@ export default function AddPhase() {
                 {new Date(invoice.date).getFullYear()}
               </TableCell>
 
-              <TableCell className="pl-3">
+              <TableCell className="pl-3 flex items-center gap-3">
                 <PhaseEditModal invoice={invoice} />
+                <Trash
+                  className="cursor-pointer"
+                  onClick={() => handleDeletePhase(invoice?._id)}
+                />
               </TableCell>
             </TableRow>
           ))}

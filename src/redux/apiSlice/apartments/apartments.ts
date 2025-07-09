@@ -7,7 +7,7 @@ const projects = api.injectEndpoints({
         url: `/apartment?page=${page}`,
         method: "GET",
       }),
-      providesTags: ["package"],
+      providesTags: ["apartment"],
     }),
 
     createProject: builder.mutation({
@@ -16,7 +16,7 @@ const projects = api.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["package"],
+      invalidatesTags: ["apartment"],
     }),
 
     deleteProject: builder.mutation({
@@ -24,7 +24,7 @@ const projects = api.injectEndpoints({
         url: `/apartment/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["package"],
+      invalidatesTags: ["apartment"],
     }),
     updateProject: builder.mutation({
       query: ({ id, data }) => {
@@ -34,7 +34,7 @@ const projects = api.injectEndpoints({
           body: data,
         };
       },
-      invalidatesTags: ["package"],
+      invalidatesTags: ["apartment"],
     }),
   }),
 });

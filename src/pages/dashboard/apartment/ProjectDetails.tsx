@@ -1,5 +1,5 @@
-import AddFloor from "./ProjectDetails/GetFloor";
-import AddPhase from "./ProjectDetails/AddPhase";
+import GetFloor from "./ProjectDetails/GetFloor";
+import AddPhase from "./ProjectDetails/GetPhase";
 
 export default function ProjectDetails() {
   return (
@@ -18,7 +18,7 @@ export default function ProjectDetails() {
 
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mt-6">
         <div className="col-span-3">
-          <AddFloor />
+          <GetFloor />
         </div>
         <div className="col-span-2">
           <AddPhase />
