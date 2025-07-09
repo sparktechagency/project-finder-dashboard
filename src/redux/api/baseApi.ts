@@ -19,7 +19,7 @@ export const api = createApi({
       return headers;
     },
   }),
-  tagTypes: ["apartment", "floor", "phase", "faq"],
+  tagTypes: ["apartment", "floor", "phase", "faq", "subcription"],
   endpoints: () => ({}),
 });
 // export const imageUrl = "http://10.10.7.46:6005";
