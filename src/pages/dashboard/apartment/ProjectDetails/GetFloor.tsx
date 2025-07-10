@@ -43,8 +43,6 @@ export default function GetFloor() {
   const { data: singleFloorData } = useGetSingleFloorQuery(apartmentId);
   const floorData = singleFloorData?.data?.floorPlans;
 
-  console.log("", singleFloorData?.data?.floorPlanPagination);
-
   if (isLoading || isFetching) return <Loading />;
   if (isError) return <ErrorPage />;
 

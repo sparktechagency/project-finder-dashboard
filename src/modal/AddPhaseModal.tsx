@@ -18,6 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useGetSingleFloorQuery } from "@/redux/apiSlice/floor/floor";
 import { useCreatePhaseDetailsMutation } from "@/redux/apiSlice/phase/phase";
 
 import React, { useState } from "react";
@@ -28,14 +29,13 @@ export default function AddPhaseModal({ apartment }: { apartment: string }) {
   const [selectedDate, setSelectedDate] = useState<string | undefined>();
   const [isOpen, setIsOpen] = useState(false);
   const [select, setSelect] = useState("");
+  const { refetch } = useGetSingleFloorQuery(apartment);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     const data = new FormData(form);
     const phase = data.get("phase");
-    const quater = data.get("quater");
-    console.log(quater);
 
     if (phase && selectedDate) {
       const data = {
@@ -43,10 +43,12 @@ export default function AddPhaseModal({ apartment }: { apartment: string }) {
         phase,
         date: selectedDate,
       };
+
       try {
         const res = await createPhaseDetails(data).unwrap();
         if (res.success) {
           toast.success("Phase created successfully");
+          refetch();
           form.reset();
         } else {
           toast.error("Failed to create phase ");

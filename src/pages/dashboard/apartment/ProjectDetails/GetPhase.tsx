@@ -9,15 +9,10 @@ import {
 
 import Loading from "@/components/layout/shared/Loading";
 import ErrorPage from "@/error/ErrorPage";
-import {
-  useDeletePhaseMutation,
-  useGetPhaseDetailsQuery,
-} from "@/redux/apiSlice/phase/phase";
+import { useDeletePhaseMutation } from "@/redux/apiSlice/phase/phase";
 import PhaseEditModal from "@/AllEditModal/PhaseEditModal";
 import { Trash } from "lucide-react";
 import toast from "react-hot-toast";
-import { useState } from "react";
-import Pagination from "@/components/layout/shared/Pagination";
 import { useGetSingleFloorQuery } from "@/redux/apiSlice/floor/floor";
 
 interface ApartmentData {
@@ -29,15 +24,16 @@ interface ApartmentData {
 }
 
 export default function AddPhase() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const { data, isFetching, isError, isLoading } = useGetPhaseDetailsQuery({
-    page: currentPage,
-  });
   const [deletePhase] = useDeletePhaseMutation(undefined);
   const searchParams = new URLSearchParams(window.location.search);
   const apartmentId = searchParams.get("id");
-  const { data: singlePhaseData, refetch } =
-    useGetSingleFloorQuery(apartmentId);
+  const {
+    data: singlePhaseData,
+    refetch,
+    isFetching,
+    isError,
+    isLoading,
+  } = useGetSingleFloorQuery(apartmentId);
   const phaseData = singlePhaseData?.data?.phases;
 
   if (isLoading || isFetching) {
@@ -53,6 +49,7 @@ export default function AddPhase() {
     try {
       if (res?.success) {
         toast.success(res?.message || "delete successfully");
+        refetch();
       } else {
         toast.error(res?.message || "delete failed ");
       }
@@ -97,12 +94,12 @@ export default function AddPhase() {
         </TableBody>
       </Table>
 
-      <div className="flex justify-center items-center mt-4">
+      {/* <div className="flex justify-center items-center mt-4">
         <Pagination
           pagination={data?.pagination}
           onPageChange={setCurrentPage}
         />
-      </div>
+      </div> */}
     </>
   );
 }

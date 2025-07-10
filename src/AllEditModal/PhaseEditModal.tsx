@@ -62,8 +62,6 @@ export default function PhaseEditModal({
       date: date ? `${date}-01-01` : undefined,
     };
 
-    console.log("edit phase", updatePhase);
-
     try {
       const res = await updatePhaseDetails({
         id: invoice?._id,
