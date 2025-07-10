@@ -18,6 +18,8 @@ import {
 } from "@/redux/apiSlice/floor/floor";
 import { Trash } from "lucide-react";
 import toast from "react-hot-toast";
+import { useState } from "react";
+import Pagination from "@/components/layout/shared/Pagination";
 
 interface ApartmentData {
   _id: string;
@@ -30,7 +32,10 @@ interface ApartmentData {
 }
 
 export default function GetFloor() {
-  const { data, isFetching, isError, isLoading } = useGetFloorQuery(undefined);
+  const [currentPage, setCurrentPage] = useState(1);
+  const { data, isFetching, isError, isLoading } = useGetFloorQuery({
+    page: currentPage,
+  });
   const [deleteFloor] = useDeleteFloorMutation(undefined);
   const searchParams = new URLSearchParams(window.location.search);
   const apartmentId = searchParams.get("id");
@@ -40,7 +45,7 @@ export default function GetFloor() {
       (apt: ApartmentData) => apt._id === apartmentId
     )?.floorPlans || [];
 
-  console.log(data, details);
+  console.log(details);
 
   if (isLoading || isFetching) return <Loading />;
   if (isError) return <ErrorPage />;
@@ -101,7 +106,7 @@ export default function GetFloor() {
               <TableCell className="pl-3 flex items-center gap-3">
                 <EditFloorModal invoice={invoice} />
                 <Trash
-                  className="cursor-pointer"
+                  className="cursor-pointer text-red-400"
                   onClick={() => handleDeleteFloor(invoice?._id)}
                 />
               </TableCell>
@@ -109,6 +114,16 @@ export default function GetFloor() {
           ))}
         </TableBody>
       </Table>
+
+      {/* Pagination Controls */}
+      {details && details.length > 0 && (
+        <div className="flex justify-center items-center mt-4">
+          <Pagination
+            pagination={data?.pagination}
+            onPageChange={setCurrentPage}
+          />
+        </div>
+      )}
     </>
   );
 }

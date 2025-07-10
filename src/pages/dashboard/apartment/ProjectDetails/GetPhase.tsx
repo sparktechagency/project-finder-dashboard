@@ -16,6 +16,8 @@ import {
 import PhaseEditModal from "@/AllEditModal/PhaseEditModal";
 import { Trash } from "lucide-react";
 import toast from "react-hot-toast";
+import { useState } from "react";
+import Pagination from "@/components/layout/shared/Pagination";
 
 interface ApartmentData {
   _id: string;
@@ -26,8 +28,10 @@ interface ApartmentData {
 }
 
 export default function AddPhase() {
-  const { data, isFetching, isError, isLoading } =
-    useGetPhaseDetailsQuery(undefined);
+  const [currentPage, setCurrentPage] = useState(1);
+  const { data, isFetching, isError, isLoading } = useGetPhaseDetailsQuery({
+    page: currentPage,
+  });
   const [deletePhase] = useDeletePhaseMutation(undefined);
   const searchParams = new URLSearchParams(window.location.search);
   const apartmentId = searchParams.get("id");
@@ -36,6 +40,8 @@ export default function AddPhase() {
     data?.data?.filter((item: ApartmentData) => {
       return item.apartment === apartmentId;
     }) || [];
+
+  console.log(data);
 
   if (isLoading || isFetching) {
     return <Loading />;
@@ -85,7 +91,7 @@ export default function AddPhase() {
               <TableCell className="pl-3 flex items-center gap-3">
                 <PhaseEditModal invoice={invoice} />
                 <Trash
-                  className="cursor-pointer"
+                  className="cursor-pointer  text-red-400"
                   onClick={() => handleDeletePhase(invoice?._id)}
                 />
               </TableCell>
@@ -93,6 +99,13 @@ export default function AddPhase() {
           ))}
         </TableBody>
       </Table>
+
+      <div className="flex justify-center items-center mt-4">
+        <Pagination
+          pagination={data?.pagination}
+          onPageChange={setCurrentPage}
+        />
+      </div>
     </>
   );
 }

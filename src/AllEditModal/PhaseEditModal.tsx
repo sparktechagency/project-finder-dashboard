@@ -26,7 +26,6 @@ import { quater } from "@/components/layout/shared/AllName";
 import { useEffect, useState } from "react";
 
 export default function PhaseEditModal({ invoice }: { invoice: any }) {
-  console.log(invoice);
   const [updatePhaseDetails] = useUpdatePhaseDetailsMutation();
   const [select, setSelect] = useState("");
   const [selectDate, setSelectedDate] = useState<string>("");

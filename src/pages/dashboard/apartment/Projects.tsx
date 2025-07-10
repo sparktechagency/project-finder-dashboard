@@ -11,7 +11,7 @@ import { useState } from "react";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Swal from "sweetalert2";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   useDeleteProjectMutation,
   useGetProjectsQuery,
@@ -46,7 +46,7 @@ export default function Projects() {
     page: currentPage,
   });
 
-  console.log(data?.data);
+  console.log(data);
 
   const [deleteProject] = useDeleteProjectMutation();
   const navigate = useNavigate();
@@ -100,7 +100,6 @@ export default function Projects() {
             <TableHead>Commission</TableHead>
             <TableHead>Relivant Link</TableHead>
             <TableHead>Completion Year</TableHead>
-            <TableHead>Project</TableHead>
             <TableHead>Add Floor</TableHead>
             <TableHead>Add Phase</TableHead>
             <TableHead>Action</TableHead>
@@ -163,13 +162,7 @@ export default function Projects() {
                   ? new Date(invoice.CompletionDate).toISOString().split("T")[0]
                   : null}
               </TableCell>
-              <TableCell>
-                <Link to="/projectForm">
-                  <button className="border border-gray-200 py-2 px-3 rounded-2xl cursor-pointer">
-                    Add Project
-                  </button>
-                </Link>
-              </TableCell>
+
               <TableCell>
                 <button
                   className="border border-gray-300 px-4 py-2 rounded-2xl cursor-pointer"
