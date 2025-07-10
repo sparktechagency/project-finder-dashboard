@@ -10,6 +10,13 @@ const projects = api.injectEndpoints({
       providesTags: ["apartment"],
     }),
 
+    getSingleApartment: builder.query({
+      query: (id) => ({
+        url: `/apartment/${id}`,
+        method: "GET",
+      }),
+    }),
+
     createProject: builder.mutation({
       query: (data) => ({
         url: "/apartment/create",
@@ -41,6 +48,7 @@ const projects = api.injectEndpoints({
 
 export const {
   useGetProjectsQuery,
+  useGetSingleApartmentQuery,
   useCreateProjectMutation,
   useDeleteProjectMutation,
   useUpdateProjectMutation,

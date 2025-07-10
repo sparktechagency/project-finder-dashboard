@@ -25,7 +25,13 @@ import { BiSolidEditAlt } from "react-icons/bi";
 import { quater } from "@/components/layout/shared/AllName";
 import { useEffect, useState } from "react";
 
-export default function PhaseEditModal({ invoice }: { invoice: any }) {
+export default function PhaseEditModal({
+  invoice,
+  refetch,
+}: {
+  invoice: any;
+  refetch: any;
+}) {
   const [updatePhaseDetails] = useUpdatePhaseDetailsMutation();
   const [select, setSelect] = useState("");
   const [selectDate, setSelectedDate] = useState<string>("");
@@ -56,15 +62,18 @@ export default function PhaseEditModal({ invoice }: { invoice: any }) {
       date: date ? `${date}-01-01` : undefined,
     };
 
+    console.log("edit phase", updatePhase);
+
     try {
       const res = await updatePhaseDetails({
-        id: invoice._id,
+        id: invoice?._id,
         data: updatePhase,
       }).unwrap();
       if (res.success) {
         toast.success("Phase updated successfully");
+        refetch();
       } else {
-        toast.error("Failed to update phase");
+        toast.error(res?.message || "Failed to update phase");
       }
     } catch (error: any) {
       toast.error(error?.data?.message || "Something went wrong");

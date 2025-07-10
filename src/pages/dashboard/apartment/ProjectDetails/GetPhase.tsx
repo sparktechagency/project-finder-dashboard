@@ -18,6 +18,7 @@ import { Trash } from "lucide-react";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import Pagination from "@/components/layout/shared/Pagination";
+import { useGetSingleFloorQuery } from "@/redux/apiSlice/floor/floor";
 
 interface ApartmentData {
   _id: string;
@@ -35,13 +36,9 @@ export default function AddPhase() {
   const [deletePhase] = useDeletePhaseMutation(undefined);
   const searchParams = new URLSearchParams(window.location.search);
   const apartmentId = searchParams.get("id");
-
-  const phaseDetails =
-    data?.data?.filter((item: ApartmentData) => {
-      return item.apartment === apartmentId;
-    }) || [];
-
-  console.log(data);
+  const { data: singlePhaseData, refetch } =
+    useGetSingleFloorQuery(apartmentId);
+  const phaseData = singlePhaseData?.data?.phases;
 
   if (isLoading || isFetching) {
     return <Loading />;
@@ -77,7 +74,7 @@ export default function AddPhase() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {phaseDetails?.map((invoice: ApartmentData, index: number) => (
+          {phaseData?.map((invoice: ApartmentData, index: number) => (
             <TableRow key={invoice._id} className="">
               <TableCell className="font-medium p-3">{index + 1}</TableCell>
               <TableCell className="flex items-center gap-2 pl-5">
@@ -89,7 +86,7 @@ export default function AddPhase() {
               </TableCell>
 
               <TableCell className="pl-3 flex items-center gap-3">
-                <PhaseEditModal invoice={invoice} />
+                <PhaseEditModal invoice={invoice} refetch={refetch} />
                 <Trash
                   className="cursor-pointer  text-red-400"
                   onClick={() => handleDeletePhase(invoice?._id)}

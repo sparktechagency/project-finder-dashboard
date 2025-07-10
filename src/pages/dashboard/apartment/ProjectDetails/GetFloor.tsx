@@ -15,6 +15,7 @@ import EditFloorModal from "@/AllEditModal/EditFloorModal";
 import {
   useDeleteFloorMutation,
   useGetFloorQuery,
+  useGetSingleFloorQuery,
 } from "@/redux/apiSlice/floor/floor";
 import { Trash } from "lucide-react";
 import toast from "react-hot-toast";
@@ -33,19 +34,16 @@ interface ApartmentData {
 
 export default function GetFloor() {
   const [currentPage, setCurrentPage] = useState(1);
-  const { data, isFetching, isError, isLoading } = useGetFloorQuery({
+  const { isFetching, isError, isLoading } = useGetFloorQuery({
     page: currentPage,
   });
   const [deleteFloor] = useDeleteFloorMutation(undefined);
   const searchParams = new URLSearchParams(window.location.search);
   const apartmentId = searchParams.get("id");
+  const { data: singleFloorData } = useGetSingleFloorQuery(apartmentId);
+  const floorData = singleFloorData?.data?.floorPlans;
 
-  const details =
-    data?.data?.apartments?.find(
-      (apt: ApartmentData) => apt._id === apartmentId
-    )?.floorPlans || [];
-
-  console.log(details);
+  console.log("", singleFloorData?.data?.floorPlanPagination);
 
   if (isLoading || isFetching) return <Loading />;
   if (isError) return <ErrorPage />;
@@ -77,7 +75,7 @@ export default function GetFloor() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {details.map((invoice: ApartmentData, index: number) => (
+          {floorData?.map((invoice: ApartmentData, index: number) => (
             <TableRow key={invoice._id}>
               <TableCell className="font-medium p-3">{index + 1}</TableCell>
               <TableCell className="flex items-center gap-2 pl-12">
@@ -116,14 +114,13 @@ export default function GetFloor() {
       </Table>
 
       {/* Pagination Controls */}
-      {details && details.length > 0 && (
-        <div className="flex justify-center items-center mt-4">
-          <Pagination
-            pagination={data?.pagination}
-            onPageChange={setCurrentPage}
-          />
-        </div>
-      )}
+
+      <div className="flex justify-center items-center mt-4">
+        <Pagination
+          pagination={singleFloorData?.data?.floorPlanPagination}
+          onPageChange={setCurrentPage}
+        />
+      </div>
     </>
   );
 }

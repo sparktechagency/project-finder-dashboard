@@ -9,6 +9,13 @@ const floor = api.injectEndpoints({
       }),
       providesTags: ["floor"],
     }),
+    getSingleFloor: builder.query({
+      query: (id) => ({
+        url: `/floor/apartment/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["floor"],
+    }),
 
     createFloor: builder.mutation({
       query: (data) => {
@@ -43,6 +50,7 @@ const floor = api.injectEndpoints({
 
 export const {
   useGetFloorQuery,
+  useGetSingleFloorQuery,
   useCreateFloorMutation,
   useUpdateFloorMutation,
   useDeleteFloorMutation,

@@ -46,8 +46,6 @@ export default function Projects() {
     page: currentPage,
   });
 
-  console.log(data);
-
   const [deleteProject] = useDeleteProjectMutation();
   const navigate = useNavigate();
   const [userDetails, setUserDetails] = useState<ApartmentData | null>(null);
