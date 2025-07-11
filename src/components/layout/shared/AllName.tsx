@@ -1,13 +1,8 @@
 export const location = [
   "Malaga",
-  "Mijas",
-  "Manilva",
-  "Marbella",
-  "Fuengirola",
-  "Estepona",
-  "Casares",
-  "Sotogrande",
-  "Benalmadena",
+  "La Alcaidesa",
+  "Rincon de la Victoria",
+  "Toree del Mar",
 ];
 export const company = [
   "Magnum",
