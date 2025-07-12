@@ -3,6 +3,14 @@ export const location = [
   "La Alcaidesa",
   "Rincon de la Victoria",
   "Toree del Mar",
+  "Mijas",
+  "Manilva",
+  "Marbella",
+  "Fuengirola",
+  "Estepona",
+  "Casares",
+  "Sotogrande",
+  "Benalmadena",
 ];
 export const company = [
   "Magnum",
@@ -20,6 +28,11 @@ export const company = [
   "TuscanyGroup",
   "RHPriveEstates",
   "DreamExclusive",
+  // new item add
+  "Insur",
+  "BySales",
+  "Invest Home",
+  "Real De La Quinta",
 ];
 
 export const completionYear = ["2025", "2026", "2027", "2028"];
