@@ -12,11 +12,14 @@ import { Label } from "@/components/ui/label";
 import EditMap from "@/pages/dashboard/map/EditMap";
 import { imageUrl } from "@/redux/api/baseApi";
 import { useUpdateProjectMutation } from "@/redux/apiSlice/apartments/apartments";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { BiSolidEditAlt } from "react-icons/bi";
 import ProjectsImagesEditModal from "./ProjectImagesEditModal";
 import { ContactProjectEdit } from "./ContactProjectEdit";
+import { contactFields } from "@/demoData/ProjectEditData";
+
+import EditSelectItems from "./EditSelectItem";
 
 export default function ProjectEditModal({ invoice }: { invoice: any }) {
   const [updateProject] = useUpdateProjectMutation();
@@ -25,6 +28,16 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
   const [priceFile, setPriceFile] = useState<File | null>(null);
   const [selectedDate, setSelectedDate] = useState<string | undefined>();
   const [address, setAddress] = useState(invoice.location || "");
+  const [selected, setSelected] = useState(invoice?.propertyType || "");
+  const [selectedYear, setSelectedYear] = useState("");
+
+  useEffect(() => {
+    if (invoice?.CompletionDate) {
+      const year = new Date(invoice.CompletionDate).getFullYear().toString();
+      setSelectedYear(year);
+    }
+  }, [invoice?.CompletionDate]);
+
   const [contactAddress, setContactAddress] = useState({
     name: invoice?.contact || "",
   });
@@ -169,6 +182,15 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
       toast.error(`Failed to update floor plan: ${errorMessage}`);
     }
   };
+
+  // select change
+  const handleSelectChange = (key: string, value: string) => {
+    setSelected((prev: any) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -199,10 +221,6 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
                 name="apartmentName"
                 defaultValue={invoice.apartmentName}
               />
-            </div>
-            <div className="grid gap-3">
-              <Label htmlFor="price">Price</Label>
-              <Input id="price" name="price" defaultValue={invoice.price} />
             </div>
 
             <div className="grid gap-3">
@@ -359,29 +377,37 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
             </div>
 
             <div>
-              <ContactProjectEdit
-                type="number"
-                id="phone"
-                label="Contact Number"
-                placeholder="Enter Contact Number"
-                contactAddress={contactAddress?.name?.phone}
-                onChange={handleChange}
+              {contactFields.map((field) => (
+                <ContactProjectEdit
+                  type={field.type}
+                  key={field.id}
+                  name={field.id}
+                  id={field.id}
+                  label={field.label}
+                  placeholder={field.placeholder}
+                  contactAddress={contactAddress?.name?.[field.id]}
+                  onChange={handleChange}
+                />
+              ))}
+            </div>
+
+            {/* locaton and completion year --- property type */}
+            <div>
+              <EditSelectItems
+                options={["Apartment", "Villa", "Townhouse"]}
+                title="Property Type"
+                placeholder="Select Property Type"
+                value={selected}
+                onSelect={(value) => handleSelectChange("Property", value)}
               />
-              <ContactProjectEdit
-                type="text"
-                id="email"
-                label="Email"
-                placeholder="Enter Your Email"
-                contactAddress={contactAddress?.name?.email}
-                onChange={handleChange}
-              />
-              <ContactProjectEdit
-                type="text"
-                id="companyName"
-                label="Sales Company Names"
-                placeholder="Enter Developer name"
-                contactAddress={contactAddress.name?.companyName}
-                onChange={handleChange}
+            </div>
+            <div>
+              <EditSelectItems
+                options={["2025", "2026", "2027", "2028"]}
+                title="Completion Year"
+                placeholder="Select Completion Year"
+                value={selectedYear}
+                onSelect={(value) => handleSelectChange("year", value)}
               />
             </div>
           </div>
