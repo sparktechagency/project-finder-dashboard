@@ -23,9 +23,8 @@ export default function EditSelectItems({
   value,
   onSelect,
 }: SelectItemsProps) {
-  console.log(value);
   return (
-    <div className="my-4">
+    <div className="">
       <Label htmlFor={title} className="mb-2 text-black">
         {title}
       </Label>

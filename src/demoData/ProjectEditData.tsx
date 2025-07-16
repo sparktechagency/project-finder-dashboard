@@ -11,10 +11,11 @@ export const contactFields = [
     label: "Email",
     placeholder: "Enter Your Email",
   },
+
   {
     type: "text",
     id: "companyName",
-    label: "Sales Company Names",
+    label: "Developer Name",
     placeholder: "Enter Developer name",
   },
 ];

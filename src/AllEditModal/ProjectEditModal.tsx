@@ -12,24 +12,26 @@ import { Label } from "@/components/ui/label";
 import EditMap from "@/pages/dashboard/map/EditMap";
 import { imageUrl } from "@/redux/api/baseApi";
 import { useUpdateProjectMutation } from "@/redux/apiSlice/apartments/apartments";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { BiSolidEditAlt } from "react-icons/bi";
 import ProjectsImagesEditModal from "./ProjectImagesEditModal";
 import { ContactProjectEdit } from "./ContactProjectEdit";
 import { contactFields } from "@/demoData/ProjectEditData";
-
-import EditSelectItems from "./EditSelectItem";
+import EditSelectItems from "./EditSelectitem";
+import { EditFeatures } from "./EditFeatures";
+import PdfUploader from "@/pdfUploader/PdfUploader";
+import { company } from "@/components/layout/shared/AllName";
 
 export default function ProjectEditModal({ invoice }: { invoice: any }) {
   const [updateProject] = useUpdateProjectMutation();
   const [qualityFile, setQualityFile] = useState<File | null>(null);
   const [paymentFile, setPaymentFile] = useState<File | null>(null);
   const [priceFile, setPriceFile] = useState<File | null>(null);
-  const [selectedDate, setSelectedDate] = useState<string | undefined>();
   const [address, setAddress] = useState(invoice.location || "");
-  const [selected, setSelected] = useState(invoice?.propertyType || "");
-  const [selectedYear, setSelectedYear] = useState("");
+  const [selected, setSelected] = useState<Record<string, string>>({});
+  const [selectedYear, setSelectedYear] = useState<string | null>();
+  const [features, setFeatures] = useState<string[]>(invoice?.features || []);
 
   useEffect(() => {
     if (invoice?.CompletionDate) {
@@ -69,7 +71,6 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
         url: image,
       }));
       setImageSections(imageFiles);
-      setSelectedDate(invoice?.CompletionDate?.slice(0, 10));
     }
   }, [invoice]);
 
@@ -117,6 +118,27 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
     }
   };
 
+  // select change
+  const handleSelectChange = (key: string, value: string) => {
+    setSelected((prev: any) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
+
+  const handleYearChange = (_key: string, value: string) => {
+    setSelectedYear(value);
+  };
+
+  // features change
+  const handleChangeFeature = (key: number, value: string) => {
+    setFeatures((prev: string[]) => {
+      const newFeatures = [...prev];
+      newFeatures[key] = value;
+      return newFeatures;
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -124,24 +146,23 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
     const formData = new FormData(form);
     const values = Object.fromEntries(formData.entries());
 
-    if (qualityFile) {
-      formData.append("qualitySpecificationPDF", qualityFile);
-    }
-    if (paymentFile) {
-      formData.append("paymentPlanPDF", paymentFile);
-    }
-    if (priceFile) {
-      formData.append("pricePdf", priceFile);
-    }
+    const fileFields = [
+      { key: "qualitySpecificationPDF", file: qualityFile },
+      { key: "paymentPlanPDF", file: paymentFile },
+      { key: "pricePdf", file: priceFile },
+    ];
 
-    if (selectedDate) {
-      formData.append("CompletionDate", selectedDate);
-    }
+    fileFields.forEach(({ key, file }) => {
+      if (file) formData.append(key, file);
+    });
 
-    // map
-    if (address) {
-      formData.append("location", address);
-    }
+    if (selectedYear)
+      formData.append("CompletionDate", `${selectedYear}-01-01`);
+    if (address) formData.append("location", address);
+    if (selected?.propertyType)
+      formData.append("propertyType", selected.propertyType);
+    if (selected?.salesCompany)
+      formData.append("salesCompany", selected.salesCompany);
 
     // append image files
     if (imageFiles?.length > 0) {
@@ -164,6 +185,13 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
       formData.append("existImage", JSON.stringify(imageLinks));
     }
 
+    // append features
+    features.forEach((feature) => {
+      if (feature.trim() !== "") {
+        formData.append("features", feature);
+      }
+    });
+
     try {
       const res = await updateProject({
         id: invoice?._id,
@@ -181,14 +209,6 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
           : "An unknown error occurred";
       toast.error(`Failed to update floor plan: ${errorMessage}`);
     }
-  };
-
-  // select change
-  const handleSelectChange = (key: string, value: string) => {
-    setSelected((prev: any) => ({
-      ...prev,
-      [key]: value,
-    }));
   };
 
   return (
@@ -231,141 +251,33 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
                 defaultValue={invoice.commission}
               />
             </div>
-            <div className="grid gap-3">
-              <Label htmlFor="CompletionDate">Update Date</Label>
 
-              <div className="grid gap-3">
-                <input
-                  type="date"
-                  name="date"
-                  onChange={(e) => {
-                    const date = e.target.value;
-                    setSelectedDate(date || undefined);
-                  }}
-                  value={selectedDate || ""}
-                  style={{
-                    height: 45,
-                    border: "1px solid #ccc",
-                    borderRadius: "4px",
-                    padding: "8px",
-                    width: "100%",
-                  }}
-                />
-              </div>
-            </div>
+            <PdfUploader
+              id="qualitySpecificationPDF"
+              label="QualitySpecification PDF"
+              file={qualityFile}
+              invoiceFile={invoice?.qualitySpecificationPDF}
+              onChange={handleFileChangeQuality}
+              imageUrl={imageUrl}
+            />
 
-            {/* upload image qualitySpecificationPDF*/}
-            <div>
-              <Label htmlFor="qualitySpecificationPDF" className="text-black">
-                QualitySpecification PDF
-              </Label>
-              <input
-                id="qualitySpecificationPDF"
-                type="file"
-                accept="application/pdf"
-                onChange={handleFileChangeQuality}
-                className="hidden"
-              />
-              <div
-                className="flex justify-center items-center border border-gray-300 mt-2 rounded cursor-pointer px-3 py-2"
-                onClick={() =>
-                  document.getElementById("qualitySpecificationPDF")?.click()
-                }
-              >
-                {qualityFile ? (
-                  <span className="text-red-600">{qualityFile.name}</span>
-                ) : invoice?.qualitySpecificationPDF?.[0] ? (
-                  <a
-                    href={
-                      invoice.qualitySpecificationPDF?.[0]?.startsWith("http")
-                        ? invoice.qualitySpecificationPDF?.[0]
-                        : `${imageUrl}${invoice.qualitySpecificationPDF?.[0]}`
-                    }
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-700 hover:underline"
-                  >
-                    Edit PDF
-                  </a>
-                ) : (
-                  <span className="text-4xl">+</span>
-                )}
-              </div>
-            </div>
-            {/* upload image payment plan */}
-            <div>
-              <Label htmlFor="paymentPlanPDF" className="text-black mt-2">
-                PaymentPlan PDF
-              </Label>
-              <input
-                id="paymentPlanPDF"
-                type="file"
-                accept="application/pdf"
-                onChange={handleFileChangePayment}
-                className="hidden"
-              />
-              <div
-                className="flex justify-center items-center border border-gray-300 mt-2 rounded cursor-pointer px-3 py-2"
-                onClick={() =>
-                  document.getElementById("paymentPlanPDF")?.click()
-                }
-              >
-                {paymentFile ? (
-                  <span className="text-red-600">{paymentFile.name}</span>
-                ) : invoice?.paymentPlanPDF ? (
-                  <a
-                    href={
-                      invoice.paymentPlanPDF?.startsWith("http")
-                        ? invoice.paymentPlanPDF
-                        : `${imageUrl}${invoice.paymentPlanPDF}`
-                    }
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-700 hover:underline"
-                  >
-                    Edit PDF
-                  </a>
-                ) : (
-                  <span className="text-4xl">+</span>
-                )}
-              </div>
-            </div>
-            {/* upload image payment plan */}
-            <div>
-              <Label htmlFor="pricePdf" className="text-black mt-2">
-                pricePdf PDF
-              </Label>
-              <input
-                id="pricePdf"
-                type="file"
-                accept="application/pdf"
-                onChange={handleFileChangePrice}
-                className="hidden"
-              />
-              <div
-                className="flex justify-center items-center border border-gray-300 mt-2 rounded cursor-pointer px-3 py-2"
-                onClick={() => document.getElementById("pricePdf")?.click()}
-              >
-                {priceFile ? (
-                  <span className="text-red-600">{priceFile.name}</span>
-                ) : invoice?.paymentPlanPDF ? (
-                  <a
-                    href={
-                      invoice.pricePdf?.startsWith("http")
-                        ? invoice.pricePdf
-                        : `${imageUrl}${invoice.pricePdf}`
-                    }
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-700 hover:underline"
-                  >
-                    Edit PDF
-                  </a>
-                ) : (
-                  <span className="text-4xl">+</span>
-                )}
-              </div>
-            </div>
+            <PdfUploader
+              id="paymentPlanPDF"
+              label="PaymentPlan PDF"
+              file={paymentFile}
+              invoiceFile={invoice?.paymentPlanPDF}
+              onChange={handleFileChangePayment}
+              imageUrl={imageUrl}
+            />
+
+            <PdfUploader
+              id="pricePdf"
+              label="Price PDF"
+              file={priceFile}
+              invoiceFile={invoice?.pricePdf}
+              onChange={handleFileChangePrice}
+              imageUrl={imageUrl}
+            />
 
             <div className="grid gap-3">
               <EditMap
@@ -397,8 +309,8 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
                 options={["Apartment", "Villa", "Townhouse"]}
                 title="Property Type"
                 placeholder="Select Property Type"
-                value={selected}
-                onSelect={(value) => handleSelectChange("Property", value)}
+                value={invoice?.propertyType || ""}
+                onSelect={(value) => handleSelectChange("propertyType", value)}
               />
             </div>
             <div>
@@ -406,10 +318,22 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
                 options={["2025", "2026", "2027", "2028"]}
                 title="Completion Year"
                 placeholder="Select Completion Year"
-                value={selectedYear}
-                onSelect={(value) => handleSelectChange("year", value)}
+                value={selectedYear || ""}
+                onSelect={(value) => handleYearChange("CompletionDate", value)}
               />
             </div>
+            <div>
+              <EditSelectItems
+                options={company}
+                title="Sales Company Name"
+                placeholder="Select Sales Company Name"
+                value={invoice?.salesCompany || ""}
+                onSelect={(value) => handleSelectChange("salesCompany", value)}
+              />
+            </div>
+
+            {/* feature section */}
+            <EditFeatures features={features} onChange={handleChangeFeature} />
           </div>
 
           <DialogFooter>

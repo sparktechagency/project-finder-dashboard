@@ -157,7 +157,7 @@ export default function Projects() {
               <TableCell>€{invoice.price}</TableCell>
               <TableCell className="">
                 {invoice.CompletionDate
-                  ? new Date(invoice.CompletionDate).toISOString().split("T")[0]
+                  ? new Date(invoice.CompletionDate).getFullYear()
                   : null}
               </TableCell>
 

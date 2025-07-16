@@ -22,8 +22,8 @@ export function ContactProjectEdit({
   onChange,
 }: FormFieldProps) {
   return (
-    <div className="my-4">
-      <Label htmlFor={id} className="mb-2 text-black">
+    <div className="">
+      <Label htmlFor={id} className="mb-2 mt-2 text-black">
         {label}
       </Label>
       <Input

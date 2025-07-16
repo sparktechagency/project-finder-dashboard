@@ -6,7 +6,7 @@ export const apartmentDetailsData = [
     placeholder: "Enter Project Name",
   },
   {
-    type: "text",
+    type: "number",
     id: "commission",
     label: "Commission Percentage",
     placeholder: "Enter Commission",
