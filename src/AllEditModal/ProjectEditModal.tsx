@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import EditMap from "@/pages/dashboard/map/EditMap";
 import { imageUrl } from "@/redux/api/baseApi";
 import { useUpdateProjectMutation } from "@/redux/apiSlice/apartments/apartments";
 import { useEffect, useState } from "react";
@@ -21,15 +20,16 @@ import { contactFields } from "@/demoData/ProjectEditData";
 import EditSelectItems from "./EditSelectitem";
 import { EditFeatures } from "./EditFeatures";
 import PdfUploader from "@/pdfUploader/PdfUploader";
-import { company } from "@/components/layout/shared/AllName";
+import { company, location } from "@/components/layout/shared/AllName";
+import EditLocation from "@/pages/dashboard/map/EditMap";
 
 export default function ProjectEditModal({ invoice }: { invoice: any }) {
   const [updateProject] = useUpdateProjectMutation();
   const [qualityFile, setQualityFile] = useState<File | null>(null);
   const [paymentFile, setPaymentFile] = useState<File | null>(null);
   const [priceFile, setPriceFile] = useState<File | null>(null);
-  const [address, setAddress] = useState(invoice.location || "");
   const [selected, setSelected] = useState<Record<string, string>>({});
+  console.log(invoice);
   const [selectedYear, setSelectedYear] = useState<string | null>();
   const [features, setFeatures] = useState<string[]>(invoice?.features || []);
 
@@ -158,11 +158,14 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
 
     if (selectedYear)
       formData.append("CompletionDate", `${selectedYear}-01-01`);
-    if (address) formData.append("location", address);
+    // if (address) formData.append("location", address);
     if (selected?.propertyType)
       formData.append("propertyType", selected.propertyType);
     if (selected?.salesCompany)
       formData.append("salesCompany", selected.salesCompany);
+    if (selected?.location) {
+      formData.append("location", selected.location);
+    }
 
     // append image files
     if (imageFiles?.length > 0) {
@@ -280,9 +283,7 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
             />
 
             <div className="grid gap-3">
-              <EditMap
-                address={address}
-                setAddress={setAddress}
+              <EditLocation
                 markerPosition={markerPosition}
                 setMarkerPosition={setMarkerPosition}
               />
@@ -329,6 +330,15 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
                 placeholder="Select Sales Company Name"
                 value={invoice?.salesCompany || ""}
                 onSelect={(value) => handleSelectChange("salesCompany", value)}
+              />
+            </div>
+            <div>
+              <EditSelectItems
+                options={location}
+                title="Location"
+                placeholder="Select location"
+                value={invoice?.location || ""}
+                onSelect={(value) => handleSelectChange("location", value)}
               />
             </div>
 

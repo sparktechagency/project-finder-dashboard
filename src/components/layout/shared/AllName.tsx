@@ -31,7 +31,7 @@ export const company = [
   // new item add
   "Insur",
   "BySales",
-  "Invest Home",
+  "InvestHome",
   "Real De La Quinta",
 ];
 
