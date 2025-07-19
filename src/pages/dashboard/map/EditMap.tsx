@@ -183,7 +183,6 @@ export default function EditLocation({
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
         className="mb-2"
-        required
       />
 
       <div style={{ height: "200px", width: "100%" }}>

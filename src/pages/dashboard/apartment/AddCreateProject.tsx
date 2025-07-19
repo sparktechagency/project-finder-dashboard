@@ -84,7 +84,7 @@ export default function AddCreateProject({
     const formData = new FormData();
 
     // Basic fields
-    ["apartmentName", "commission", "price", "companyName"].forEach((key) => {
+    ["apartmentName", "commission", "companyName"].forEach((key) => {
       const val = values[key];
       if (val) formData.append(key, val as string);
     });

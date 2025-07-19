@@ -96,7 +96,7 @@ export default function Projects() {
             <TableHead>Price Pdf</TableHead>
             <TableHead>Location</TableHead>
             <TableHead>Commission</TableHead>
-            <TableHead>Relivant Link</TableHead>
+
             <TableHead>Completion Year</TableHead>
             <TableHead>Add Floor</TableHead>
             <TableHead>Add Phase</TableHead>
@@ -154,7 +154,6 @@ export default function Projects() {
               </TableCell>
               <TableCell>{invoice.location.slice(0, 10)}...</TableCell>
               <TableCell className="pl-9">{invoice.commission}%</TableCell>
-              <TableCell>€{invoice.price}</TableCell>
               <TableCell className="">
                 {invoice.CompletionDate
                   ? new Date(invoice.CompletionDate).getFullYear()

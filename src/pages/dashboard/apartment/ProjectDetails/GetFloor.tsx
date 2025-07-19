@@ -19,6 +19,7 @@ import {
 } from "@/redux/apiSlice/floor/floor";
 import { Trash } from "lucide-react";
 import toast from "react-hot-toast";
+import { useState } from "react";
 
 interface ApartmentData {
   _id: string;
@@ -31,12 +32,15 @@ interface ApartmentData {
 }
 
 export default function GetFloor() {
+  const [currentPage, setCurrentPage] = useState(1);
   const { isFetching, isError, isLoading } = useGetFloorQuery(undefined);
+
   const [deleteFloor] = useDeleteFloorMutation(undefined);
   const searchParams = new URLSearchParams(window.location.search);
   const apartmentId = searchParams.get("id");
   const { data: singleFloorData } = useGetSingleFloorQuery(apartmentId);
   const floorData = singleFloorData?.data?.floorPlans;
+  console.log(singleFloorData?.data?.floorPlanPagination);
 
   if (isLoading || isFetching) return <Loading />;
   if (isError) return <ErrorPage />;
@@ -105,6 +109,14 @@ export default function GetFloor() {
           ))}
         </TableBody>
       </Table>
+
+      {/* Pagination Controls */}
+      {/* <div className="flex justify-center items-center mt-4">
+        <Pagination
+          pagination={singleFloorData?.data?.floorPlanPagination}
+          onPageChange={setCurrentPage}
+        />
+      </div> */}
     </>
   );
 }

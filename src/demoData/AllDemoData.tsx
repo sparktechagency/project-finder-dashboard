@@ -29,10 +29,4 @@ export const apartmentDetailsData = [
     label: "Developer Name",
     placeholder: "Enter Developer Name",
   },
-  {
-    type: "number",
-    id: "price",
-    label: "Price",
-    placeholder: "Enter Price",
-  },
 ];
