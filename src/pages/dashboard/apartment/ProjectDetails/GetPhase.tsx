@@ -9,11 +9,15 @@ import {
 
 import Loading from "@/components/layout/shared/Loading";
 import ErrorPage from "@/error/ErrorPage";
-import { useDeletePhaseMutation } from "@/redux/apiSlice/phase/phase";
+import {
+  useDeletePhaseMutation,
+  useGetSinglePhaseQuery,
+} from "@/redux/apiSlice/phase/phase";
 import PhaseEditModal from "@/AllEditModal/PhaseEditModal";
 import { Trash } from "lucide-react";
 import toast from "react-hot-toast";
-import { useGetSingleFloorQuery } from "@/redux/apiSlice/floor/floor";
+import { useState } from "react";
+import Pagination from "@/components/layout/shared/Pagination";
 
 interface ApartmentData {
   _id: string;
@@ -24,6 +28,7 @@ interface ApartmentData {
 }
 
 export default function AddPhase() {
+  const [currentPage, setCurrentPage] = useState(1);
   const [deletePhase] = useDeletePhaseMutation(undefined);
   const searchParams = new URLSearchParams(window.location.search);
   const apartmentId = searchParams.get("id");
@@ -33,8 +38,8 @@ export default function AddPhase() {
     isFetching,
     isError,
     isLoading,
-  } = useGetSingleFloorQuery(apartmentId);
-  const phaseData = singlePhaseData?.data?.phases;
+  } = useGetSinglePhaseQuery({ id: apartmentId, page: currentPage });
+  const phaseData = singlePhaseData?.data;
 
   if (isLoading || isFetching) {
     return <Loading />;
@@ -73,7 +78,11 @@ export default function AddPhase() {
         <TableBody>
           {phaseData?.map((invoice: ApartmentData, index: number) => (
             <TableRow key={invoice._id} className="">
-              <TableCell className="font-medium p-3">{index + 1}</TableCell>
+              <TableCell className="font-medium p-3">
+                {(currentPage - 1) * singlePhaseData.pagination.limit +
+                  index +
+                  1}
+              </TableCell>
               <TableCell className="flex items-center gap-2 pl-5">
                 {invoice.phase}
               </TableCell>
@@ -94,12 +103,12 @@ export default function AddPhase() {
         </TableBody>
       </Table>
 
-      {/* <div className="flex justify-center items-center mt-4">
+      <div className="flex justify-center items-center mt-4">
         <Pagination
-          pagination={data?.pagination}
+          pagination={singlePhaseData?.pagination}
           onPageChange={setCurrentPage}
         />
-      </div> */}
+      </div>
     </>
   );
 }

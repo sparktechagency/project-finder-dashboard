@@ -10,6 +10,14 @@ const phase = api.injectEndpoints({
       providesTags: ["phase"],
     }),
 
+    getSinglePhase: builder.query({
+      query: ({ id, page }) => ({
+        url: `/floor/phases/${id}?page=${page}`,
+        method: "GET",
+      }),
+      providesTags: ["phase"],
+    }),
+
     createPhaseDetails: builder.mutation({
       query: (data) => ({
         url: `/phase/create`,
@@ -39,6 +47,7 @@ const phase = api.injectEndpoints({
 
 export const {
   useGetPhaseDetailsQuery,
+  useGetSinglePhaseQuery,
   useCreatePhaseDetailsMutation,
   useUpdatePhaseDetailsMutation,
   useDeletePhaseMutation,
