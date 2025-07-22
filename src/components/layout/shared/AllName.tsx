@@ -36,6 +36,6 @@ export const company = [
   "Real De La Quinta",
 ];
 
-export const completionYear = ["2025", "2026", "2027", "2028"];
+export const completionYear = ["2024", "2025", "2026", "2027", "2028"];
 
 export const quater = ["Q1", "Q2", "Q3", "Q4"];
