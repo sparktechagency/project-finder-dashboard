@@ -29,7 +29,6 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
   const [paymentFile, setPaymentFile] = useState<File | null>(null);
   const [priceFile, setPriceFile] = useState<File | null>(null);
   const [selected, setSelected] = useState<Record<string, string>>({});
-  console.log(invoice);
   const [selectedYear, setSelectedYear] = useState<string | null>();
   const [features, setFeatures] = useState<string[]>(invoice?.features || []);
 
@@ -173,6 +172,10 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
         formData.append("apartmentImage", item);
       });
     }
+
+    // map implent
+    formData.append("latitude", markerPosition?.lat?.toString() ?? "");
+    formData.append("longitude", markerPosition?.lng?.toString() ?? "");
 
     // Append nested contact
     const contactData = {
