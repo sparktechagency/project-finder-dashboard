@@ -60,7 +60,7 @@ export default function Header() {
             }
             alt="pic"
           />
-          <div>{data?.data?.name}</div>
+          <div>{data?.data?.role}</div>
         </div>
       </div>
     </header>
