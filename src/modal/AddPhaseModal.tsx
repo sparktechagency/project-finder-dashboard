@@ -36,29 +36,36 @@ export default function AddPhaseModal({ apartment }: { apartment: string }) {
     const form = e.currentTarget;
     const data = new FormData(form);
     const phase = data.get("phase");
+    const isSold = data.get("isSold");
 
-    if (phase && selectedDate) {
-      const data = {
-        apartment,
-        phase,
-        date: selectedDate,
-      };
+    const formData = {
+      apartment,
+      phase,
+      isSold,
+      date: selectedDate,
+    };
 
-      try {
-        const res = await createPhaseDetails(data).unwrap();
-        if (res.success) {
-          toast.success("Phase created successfully");
-          refetch();
-          form.reset();
-        } else {
-          toast.error("Failed to create phase ");
-        }
-      } catch {
-        toast.error("Error creating phase ");
-      } finally {
-        setSelectedDate(undefined);
-        setIsOpen(false);
+    //  if (phase && selectedDate) {
+    //   const result = {
+    //     apartment,
+    //     phase,
+    //     date: selectedDate,
+    //    };
+
+    try {
+      const res = await createPhaseDetails(formData).unwrap();
+      if (res.success) {
+        toast.success("Phase created successfully");
+        refetch();
+        form.reset();
+      } else {
+        toast.error("Failed to create phase ");
       }
+    } catch {
+      toast.error("Error creating phase ");
+    } finally {
+      setSelectedDate(undefined);
+      setIsOpen(false);
     }
   };
 
@@ -81,7 +88,23 @@ export default function AddPhaseModal({ apartment }: { apartment: string }) {
           <DialogHeader>
             <DialogTitle>Add Phase</DialogTitle>
           </DialogHeader>
-          <div className="grid gap-4 mt-5">
+          <div className="grid gap-4 my-4">
+            <div>
+              <Label className="mb-2" htmlFor="isSold">
+                Sold
+              </Label>
+              <Select name="isSold">
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select a sold" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="true">Sold</SelectItem>
+                    <SelectItem value="false">Not Sold</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
             <div className="my-4">
               <Label htmlFor="phase" className="mb-2 text-black">
                 Quater

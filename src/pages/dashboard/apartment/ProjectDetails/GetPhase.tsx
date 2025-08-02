@@ -21,6 +21,7 @@ import Pagination from "@/components/layout/shared/Pagination";
 
 interface ApartmentData {
   _id: string;
+  isSold: boolean;
   phase: string;
   date: string;
   apartmentId: string;
@@ -70,6 +71,7 @@ export default function AddPhase() {
         <TableHeader>
           <TableRow className="bg-[#F6F6F6] h-12">
             <TableHead className=" rounded-tl-lg">Serial ID</TableHead>
+            <TableHead className="">Sold</TableHead>
             <TableHead className="">Quater</TableHead>
             <TableHead className="">Year</TableHead>
             <TableHead className="">Action</TableHead>
@@ -82,6 +84,9 @@ export default function AddPhase() {
                 {(currentPage - 1) * singlePhaseData.pagination.limit +
                   index +
                   1}
+              </TableCell>
+              <TableCell>
+                {invoice.isSold === true ? "Sold" : "Not Sold"}
               </TableCell>
               <TableCell className="flex items-center gap-2 pl-5">
                 {invoice.phase}

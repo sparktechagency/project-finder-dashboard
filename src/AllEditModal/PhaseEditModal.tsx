@@ -33,19 +33,29 @@ export default function PhaseEditModal({
   refetch: any;
 }) {
   const [updatePhaseDetails] = useUpdatePhaseDetailsMutation();
-  const [select, setSelect] = useState("");
+  const [select, setSelect] = useState<{
+    phase: string;
+    isSold: boolean;
+  }>({ phase: "", isSold: false });
+
   const [selectDate, setSelectedDate] = useState<string>("");
 
   useEffect(() => {
-    if (invoice?.date || invoice.phase) {
-      setSelect(invoice.phase);
+    if (invoice?.date || invoice.phase || invoice.isSold) {
+      setSelect({
+        phase: invoice.phase || "",
+        isSold: invoice.isSold ?? false,
+      });
       const year = new Date(invoice.date).getFullYear().toString();
       setSelectedDate(year);
     }
   }, [invoice]);
 
-  const handleSelect = (value: string) => {
-    setSelect(value);
+  const handleSelect = (field: "phase" | "isSold", value: string) => {
+    setSelect((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -53,11 +63,13 @@ export default function PhaseEditModal({
 
     const form = e.currentTarget;
     const data = new FormData(form);
+    const isSold = data.get("isSold");
     const phase = data.get("phase");
     const date = data.get("date");
 
     // If your backend expects full date format, convert year to ISO date
     const updatePhase = {
+      isSold,
       phase,
       date: date ? `${date}-01-01` : undefined,
     };
@@ -91,11 +103,35 @@ export default function PhaseEditModal({
           </DialogHeader>
 
           <div className="grid gap-4 mt-6">
+            <div>
+              <Label className="mb-2" htmlFor="isSold">
+                Sold
+              </Label>
+              <Select
+                name="isSold"
+                value={String(select.isSold)}
+                onValueChange={(value) => handleSelect("isSold", value)}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select a sold" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="true">Sold</SelectItem>
+                    <SelectItem value="false">Not Sold</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
             <div className="my-4">
               <Label htmlFor="phase" className="mb-2 ">
                 Quater
               </Label>
-              <Select name="phase" value={select} onValueChange={handleSelect}>
+              <Select
+                name="phase"
+                value={select.phase}
+                onValueChange={(value) => handleSelect("phase", value)}
+              >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select quater" />
                 </SelectTrigger>
