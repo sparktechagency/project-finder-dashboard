@@ -31,10 +31,22 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
   const [selected, setSelected] = useState<Record<string, string>>({});
   const [selectedYear, setSelectedYear] = useState<string | null>();
   const [features, setFeatures] = useState<string[]>(invoice?.features || []);
+  // update
+  const [date, setDate] = useState<string>("");
+
+  useEffect(() => {
+    if (invoice?.updatedDate) {
+      const formattedDate = new Date(invoice.updatedDate)
+        .toISOString()
+        .split("T")[0];
+      setDate(formattedDate);
+    }
+  }, [invoice?.updatedDate]);
 
   useEffect(() => {
     if (invoice?.CompletionDate) {
       const year = new Date(invoice.CompletionDate).getFullYear().toString();
+
       setSelectedYear(year);
     }
   }, [invoice?.CompletionDate]);
@@ -198,6 +210,11 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
       }
     });
 
+    // update date
+    if (date) {
+      formData.append("updatedDate", date);
+    }
+
     try {
       const res = await updateProject({
         id: invoice?._id,
@@ -347,6 +364,13 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
 
             {/* feature section */}
             <EditFeatures features={features} onChange={handleChangeFeature} />
+
+            <input
+              type="date"
+              className="px-4 py-2 rounded-md border border-gray-300 text-gray-700 text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+            />
           </div>
 
           <DialogFooter>

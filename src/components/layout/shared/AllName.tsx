@@ -16,6 +16,8 @@ export const location = [
 export const company = [
   "Magnum",
   "Azul",
+  "TM",
+  "AssetFolio",
   "OneEden",
   "Aedas",
   "BromleyEstates",
