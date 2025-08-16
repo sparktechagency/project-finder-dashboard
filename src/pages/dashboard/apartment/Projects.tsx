@@ -7,11 +7,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import UserModal from "@/modal/ApartmentModal";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import {
   useDeleteProjectMutation,
   useGetProjectsQuery,
@@ -23,7 +23,8 @@ import ApartmentCreateModal from "@/modal/AddFloorModal";
 import { imageUrl } from "@/redux/api/baseApi";
 import ProjectEditModal from "@/AllEditModal/ProjectEditModal";
 import Pagination from "@/components/layout/shared/Pagination";
-
+import { Input } from "@/components/ui/input";
+import { useDebouncedCallback } from "use-debounce";
 interface ApartmentData {
   _id: string;
   apartmentImage: string;
@@ -41,10 +42,36 @@ interface ApartmentData {
 }
 
 export default function Projects() {
+  const inputRef = useRef<HTMLInputElement>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchValue, setSearchValue] = useState(
+    searchParams.get("apartmentName") || ""
+  );
+
+  const apartmentName = searchParams.get("apartmentName") || "";
+
   const { data, isFetching, isError, isLoading } = useGetProjectsQuery({
     page: currentPage,
+    apartmentName: apartmentName,
   });
+
+  const handleInputChange = useDebouncedCallback((value) => {
+    const newParams = new URLSearchParams(searchParams);
+    if (value) {
+      newParams.set("apartmentName", value);
+    } else {
+      newParams.delete("apartmentName");
+    }
+    setSearchParams(newParams);
+  }, 1000);
+
+  useEffect(() => {
+    handleInputChange(searchValue);
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [data, searchValue]);
 
   const [deleteProject] = useDeleteProjectMutation();
   const navigate = useNavigate();
@@ -72,12 +99,33 @@ export default function Projects() {
     });
   };
 
+  // const handleInputChange1 = useDebouncedCallback((e) => {
+  //   const newParams = new URLSearchParams(searchParams);
+  //   const value = e.target.value;
+  //   if (value) {
+  //     newParams.set("apartmentName", value);
+  //   } else {
+  //     newParams.delete("apartmentName");
+  //   }
+  //   setSearchParams(newParams);
+  // }, 1000);
+
   if (isLoading || isFetching) return <Loading />;
   if (isError) return <ErrorPage />;
 
   return (
     <>
-      <div className="flex justify-end mb-3">
+      <div className="flex justify-between mb-3">
+        <div>
+          <Input
+            ref={inputRef}
+            type="text"
+            name="project"
+            placeholder="projects name"
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+          />
+        </div>
         <button
           className="bg-[#fcebd9] rounded-[10px] px-5 py-2 flex items-center text-sm font-medium text-[#1f1f1f] cursor-pointer"
           onClick={() => navigate("/projectForm")}
