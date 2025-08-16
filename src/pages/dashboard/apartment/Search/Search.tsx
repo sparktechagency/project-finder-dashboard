@@ -9,6 +9,7 @@ export default function Search({
   searchValue,
   setSearchValue,
   data,
+  setCurrentPage,
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -16,6 +17,7 @@ export default function Search({
     const newParams = new URLSearchParams(searchParams);
     if (value) {
       newParams.set("apartmentName", value);
+      setCurrentPage(1); // Reset to the first page on new search
     } else {
       newParams.delete("apartmentName");
     }

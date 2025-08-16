@@ -92,6 +92,7 @@ export default function Projects() {
             searchValue={searchValue}
             setSearchValue={setSearchValue}
             data={data}
+            setCurrentPage={setCurrentPage}
           />
         </div>
         <div className="col-span-6 flex justify-end items-center">
