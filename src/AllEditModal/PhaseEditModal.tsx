@@ -66,7 +66,6 @@ export default function PhaseEditModal({
     const isSold = data.get("isSold");
     const phase = data.get("phase");
     const date = data.get("date");
-    // console.log(date, "check date");
 
     // If your backend expects full date format, convert year to ISO date
     const updatePhase = {
@@ -74,8 +73,6 @@ export default function PhaseEditModal({
       phase,
       date: date ? `${date}` : undefined,
     };
-
-    console.log(updatePhase);
 
     try {
       const res = await updatePhaseDetails({
