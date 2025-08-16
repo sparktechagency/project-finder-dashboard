@@ -17,7 +17,7 @@ export default function Search({
     const newParams = new URLSearchParams(searchParams);
     if (value) {
       newParams.set("apartmentName", value);
-      setCurrentPage(1); // Reset to the first page on new search
+      setCurrentPage(1);
     } else {
       newParams.delete("apartmentName");
     }
@@ -36,7 +36,7 @@ export default function Search({
         ref={inputRef}
         type="text"
         name="project"
-        placeholder="search projects name"
+        placeholder="Search project name"
         value={searchValue}
         onChange={(e) => setSearchValue(e.target.value)}
         className="w-full pl-10 py-2 pr-4 border rounded-md"
