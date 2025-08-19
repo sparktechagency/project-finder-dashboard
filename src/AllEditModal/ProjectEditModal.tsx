@@ -28,6 +28,7 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
   const [qualityFile, setQualityFile] = useState<File | null>(null);
   const [paymentFile, setPaymentFile] = useState<File | null>(null);
   const [priceFile, setPriceFile] = useState<File | null>(null);
+  const [apartmentFile, setApartmentFile] = useState<File | null>(null);
   const [selected, setSelected] = useState<Record<string, string>>({});
   const [selectedYear, setSelectedYear] = useState<string | null>();
   const [features, setFeatures] = useState<string[]>(invoice?.features || []);
@@ -128,6 +129,16 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
       toast.error("Only PDF files are allowed");
     }
   };
+  const handleFileChangeApartment = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = e.target.files?.[0];
+    if (file?.type === "application/pdf") {
+      setApartmentFile(file);
+    } else {
+      toast.error("Only PDF files are allowed");
+    }
+  };
 
   // select change
   const handleSelectChange = (key: string, value: string) => {
@@ -161,6 +172,7 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
       { key: "qualitySpecificationPDF", file: qualityFile },
       { key: "paymentPlanPDF", file: paymentFile },
       { key: "pricePdf", file: priceFile },
+      { key: "apartmentImagesPdf", file: apartmentFile },
     ];
 
     fileFields.forEach(({ key, file }) => {
@@ -299,6 +311,14 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
               file={priceFile}
               invoiceFile={invoice?.pricePdf}
               onChange={handleFileChangePrice}
+              imageUrl={imageUrl}
+            />
+            <PdfUploader
+              id="apartmentImagesPdf"
+              label="apartmentImagesPdf"
+              file={apartmentFile}
+              invoiceFile={invoice?.apartmentImagesPdf}
+              onChange={handleFileChangeApartment}
               imageUrl={imageUrl}
             />
 

@@ -31,7 +31,7 @@ interface ApartmentFormProps {
   >;
 
   handleFileChange: (
-    key: "payment" | "quality" | "floor" | "pricePdf"
+    key: "payment" | "quality" | "floor" | "pricePdf" | "apartmentImagesPdf"
   ) => (e: React.ChangeEvent<HTMLInputElement>) => void;
 
   handleImageChange: (
@@ -93,6 +93,7 @@ export default function AddCreateProject({
     const filesToAppend: [string, any][] = [
       ["pricePdf", data.get("pricePdf")],
       ["paymentPlanPDF", data.get("paymentPlanPDF")],
+      ["apartmentImagesPdf", data.get("apartmentImages")],
       ["qualitySpecificationPDF", data.get("quality")],
     ];
 
@@ -103,6 +104,7 @@ export default function AddCreateProject({
     // Images
     if (!imageSections?.length) {
       toast.error("Please upload at least one apartment image.");
+      console.error("No apartment images provided.");
       return;
     }
     imageSections.forEach(
@@ -127,6 +129,7 @@ export default function AddCreateProject({
     // Location
     if (!markerPosition) {
       toast.error("Please select a location on the map.");
+      console.error("No marker position selected.");
       return;
     }
     formData.append("latitude", markerPosition.lat.toString());
@@ -155,6 +158,7 @@ export default function AddCreateProject({
           payment: { url: "", type: "" },
           quality: { url: "", type: "" },
           pricePdf: { url: "", type: "" },
+          apartmentImagesPdf: { url: "", type: "" },
         }));
         setImageSections([null]);
         setMarkerPosition({ lat: 0, lng: 0 });
@@ -162,11 +166,13 @@ export default function AddCreateProject({
         toast.error(res?.message || "Failed to create project", {
           id: "apartment",
         });
+        console.error("API error response:", res);
       }
     } catch (error: any) {
       toast.error(error?.data?.message || "An error occurred", {
         id: "apartment",
       });
+      console.error("Mutation error:", error);
     }
   };
 
@@ -222,6 +228,14 @@ export default function AddCreateProject({
             fileType={files.quality?.type}
             onChange={handleFileChange("quality")}
             label="Quality Specification"
+            accept="application/pdf"
+          />
+          <ImageUpload
+            id="apartmentImages"
+            fileUrl={files.apartmentImagesPdf?.url || ""}
+            fileType={files.apartmentImagesPdf?.type}
+            onChange={handleFileChange("apartmentImagesPdf")}
+            label="ApartmentImages"
             accept="application/pdf"
           />
         </div>
