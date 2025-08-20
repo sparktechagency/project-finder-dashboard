@@ -216,7 +216,7 @@ export default function Projects() {
                     <ProjectEditModal invoice={invoice} />
                   </button>
                   <button
-                    className="mr"
+                    className=""
                     onClick={() =>
                       navigate(`/projects-details?id=${invoice?._id}`)
                     }

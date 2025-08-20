@@ -10,10 +10,13 @@ const floor = api.injectEndpoints({
       providesTags: ["floor"],
     }),
     getSingleFloor: builder.query({
-      query: ({ id, page }) => ({
-        url: `/floor/plans/${id}?page=${page}`,
-        method: "GET",
-      }),
+      query: ({ id, page }) => {
+        console.log(id, page, "id page -----");
+        return {
+          url: `/floor/plans/${id}?page=${page}`,
+          method: "GET",
+        };
+      },
       providesTags: ["floor"],
     }),
 

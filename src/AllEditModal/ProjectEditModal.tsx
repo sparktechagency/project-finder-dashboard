@@ -164,6 +164,11 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (!markerPosition) {
+      toast.error("Please select a location on the map before submitting.");
+      return;
+    }
+
     const form = e.currentTarget;
     const formData = new FormData(form);
     const values = Object.fromEntries(formData.entries());
@@ -197,7 +202,7 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
       });
     }
 
-    // map implent
+    // map implement
     formData.append("latitude", markerPosition?.lat?.toString() ?? "");
     formData.append("longitude", markerPosition?.lng?.toString() ?? "");
 
@@ -232,6 +237,7 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
         id: invoice?._id,
         data: formData,
       }).unwrap();
+
       if (res?.success) {
         toast.success("succesfully project update ");
       } else {
