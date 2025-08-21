@@ -21,9 +21,10 @@ import ErrorPage from "@/error/ErrorPage";
 import AddPhaseModal from "@/modal/AddPhaseModal";
 import ApartmentCreateModal from "@/modal/AddFloorModal";
 import { imageUrl } from "@/redux/api/baseApi";
-import ProjectEditModal from "@/AllEditModal/ProjectEditModal";
+// import ProjectEditModal from "@/AllEditModal/ProjectEditModal";
 import Pagination from "@/components/layout/shared/Pagination";
 import Search from "./Search/Search";
+import ProjectEditModal from "@/AllEditModal/newProjectEdit/ProjectEditModal";
 interface ApartmentData {
   _id: string;
   apartmentImage: string;
@@ -213,6 +214,7 @@ export default function Projects() {
               <TableCell>
                 <div className="flex gap-2">
                   <button>
+                    {/* <ProjectEditModal invoice={invoice} /> */}
                     <ProjectEditModal invoice={invoice} />
                   </button>
                   <button
