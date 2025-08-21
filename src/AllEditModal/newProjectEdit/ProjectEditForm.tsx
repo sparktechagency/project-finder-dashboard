@@ -12,12 +12,12 @@ import { contactFields } from "@/demoData/ProjectEditData";
 import ProjectEditFiles from "./ProjectEditFiles";
 import ProjectEditLocation from "./ProjectEditLocation";
 import ProjectEditContactFields from "./ProjectEditContactFields";
-import ProjectEditSelectFields from "./ProjectEditSelectFields";
 import { EditFeatures } from "./EditFeatures";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import ProjectsImagesEditModal from "./ProjectImagesEditModal";
 import SelectYear from "./SelectYear";
+import ProjectEditSelectFields from "./ProjectEditSelectFields";
 
 export default function ProjectEditForm({ invoice }: { invoice: any }) {
   const [updateProject] = useUpdateProjectMutation();

@@ -28,7 +28,7 @@ export default function EditSelectItems({
       <Label htmlFor={title} className="mb-2 text-black">
         {title}
       </Label>
-      <Select value={String(value)} onValueChange={onSelect}>
+      <Select defaultValue={value} onValueChange={onSelect}>
         <SelectTrigger className="w-full">
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>

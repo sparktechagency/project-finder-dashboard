@@ -5,7 +5,6 @@ import EditSelectItems from "./EditSelectitem";
 
 interface Props {
   invoice: any;
-
   setSelected: React.Dispatch<React.SetStateAction<Record<string, string>>>;
   selectedYear: string | null;
   setSelectedYear: React.Dispatch<React.SetStateAction<string | null>>;
@@ -16,6 +15,7 @@ export default function ProjectEditSelectFields({
   setSelected,
 }: Props) {
   const handleSelectChange = (key: string, value: string) => {
+    console.log(value);
     setSelected((prev) => ({
       ...prev,
       [key]: value,
