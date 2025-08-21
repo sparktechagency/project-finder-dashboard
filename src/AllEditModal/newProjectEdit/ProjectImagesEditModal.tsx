@@ -3,7 +3,7 @@ import { imageUrl } from "@/redux/api/baseApi";
 import { IoMdClose } from "react-icons/io";
 
 interface ApartmentImagesProps {
-  imageSections: any; // This allows for both files and image URLs
+  imageSections: any;
   handleAddImage: any;
   handleRemoveImage: (idx: number) => void;
 }

@@ -16,7 +16,8 @@ import ProjectEditSelectFields from "./ProjectEditSelectFields";
 import { EditFeatures } from "./EditFeatures";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import ProjectsImagesEditModal from "../ProjectImagesEditModal";
+import ProjectsImagesEditModal from "./ProjectImagesEditModal";
+import SelectYear from "./SelectYear";
 
 export default function ProjectEditForm({ invoice }: { invoice: any }) {
   const [updateProject] = useUpdateProjectMutation();
@@ -33,6 +34,7 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
     lat: number;
     lng: number;
   } | null>(null);
+
   const [contactAddress, setContactAddress] = useState({
     name: invoice?.contact || "",
   });
@@ -78,7 +80,7 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
   const imageFiles = imageSections?.filter((item: any) => item instanceof File);
 
   useEffect(() => {
-    if (invoice?.apartmentImage || invoice.CompletionDate) {
+    if (invoice?.apartmentImage) {
       const imageFiles = invoice.apartmentImage.map((image: string) => ({
         url: image,
       }));
@@ -134,8 +136,7 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
       if (file) formData.append(key, file);
     });
 
-    if (selectedYear)
-      formData.append("CompletionDate", `${selectedYear}-01-01`);
+    if (selectedYear) formData.append("CompletionDate", `${selectedYear}`);
     if (selected.propertyType)
       formData.append("propertyType", selected.propertyType);
     if (selected.salesCompany)
@@ -168,6 +169,10 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
     } catch (error) {
       toast.error("Error updating project");
     }
+  };
+
+  const handleYearChange = (value: string) => {
+    setSelectedYear(value);
   };
 
   return (
@@ -227,11 +232,16 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
         />
         <ProjectEditSelectFields
           invoice={invoice}
-          selected={selected}
           setSelected={setSelected}
           selectedYear={selectedYear}
           setSelectedYear={setSelectedYear}
         />
+
+        <SelectYear
+          selectedYear={selectedYear}
+          handleYearChange={handleYearChange}
+        />
+
         <EditFeatures
           features={features}
           onChange={(i, v) => {

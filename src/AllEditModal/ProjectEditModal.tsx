@@ -14,7 +14,7 @@ import { useUpdateProjectMutation } from "@/redux/apiSlice/apartments/apartments
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { BiSolidEditAlt } from "react-icons/bi";
-import ProjectsImagesEditModal from "./ProjectImagesEditModal";
+import ProjectsImagesEditModal from "./newProjectEdit/ProjectImagesEditModal";
 import { ContactProjectEdit } from "./newProjectEdit/ContactProjectEdit";
 import { contactFields } from "@/demoData/ProjectEditData";
 import EditSelectItems from "./newProjectEdit/EditSelectitem";
@@ -202,8 +202,7 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
       if (file) formData.append(key, file);
     });
 
-    if (selectedYear)
-      formData.append("CompletionDate", `${selectedYear}-01-01`);
+    if (selectedYear) formData.append("CompletionDate", `${selectedYear}`);
     // if (address) formData.append("location", address);
     if (selected?.propertyType)
       formData.append("propertyType", selected.propertyType);
