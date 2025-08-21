@@ -9,14 +9,14 @@ import {
 import { useUpdateProjectMutation } from "@/redux/apiSlice/apartments/apartments";
 import { getAddressFromLatLng } from "@/helper/mapAddress";
 import { contactFields } from "@/demoData/ProjectEditData";
-import ProjectEditImages from "./ProjectEditImages";
 import ProjectEditFiles from "./ProjectEditFiles";
 import ProjectEditLocation from "./ProjectEditLocation";
 import ProjectEditContactFields from "./ProjectEditContactFields";
 import ProjectEditSelectFields from "./ProjectEditSelectFields";
-import { EditFeatures } from "../EditFeatures";
+import { EditFeatures } from "./EditFeatures";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import ProjectsImagesEditModal from "../ProjectImagesEditModal";
 
 export default function ProjectEditForm({ invoice }: { invoice: any }) {
   const [updateProject] = useUpdateProjectMutation();
@@ -67,6 +67,39 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
     }
   }, [invoice?.CompletionDate]);
 
+  // images state
+  const [imageSections, setImageSections] = useState<File[]>([]);
+  const imageLinks = imageSections
+    ?.filter((item: any) => {
+      if (item?.url?.startsWith("/")) return item?.url;
+    })
+    .map((item: any) => item.url);
+
+  const imageFiles = imageSections?.filter((item: any) => item instanceof File);
+
+  useEffect(() => {
+    if (invoice?.apartmentImage || invoice.CompletionDate) {
+      const imageFiles = invoice.apartmentImage.map((image: string) => ({
+        url: image,
+      }));
+      setImageSections(imageFiles);
+    }
+  }, [invoice]);
+
+  const handleRemoveImage = (index: number) => {
+    setImageSections((prev: File[]) =>
+      prev.filter((_, i: number) => i !== index)
+    );
+  };
+
+  const handleAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+
+    const selectedFiles = Array.from(files);
+    setImageSections((prev) => [...prev, ...selectedFiles]);
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -77,6 +110,18 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
 
     const formData = new FormData(e.currentTarget);
     const values = Object.fromEntries(formData.entries());
+
+    // append image files
+    if (imageFiles?.length > 0) {
+      imageFiles.forEach((item) => {
+        formData.append("apartmentImage", item);
+      });
+    }
+
+    // append image links
+    if (imageLinks?.length > 0) {
+      formData.append("existImage", JSON.stringify(imageLinks));
+    }
 
     const fileFields = [
       { key: "qualitySpecificationPDF", file: qualityFile },
@@ -132,7 +177,11 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
       </DialogHeader>
 
       <div className="grid gap-4 lg:mt-6">
-        <ProjectEditImages invoice={invoice} />
+        <ProjectsImagesEditModal
+          imageSections={imageSections}
+          handleRemoveImage={handleRemoveImage}
+          handleAddImage={handleAddImage}
+        />
 
         <div className="grid gap-3">
           <Label htmlFor="apartmentName">Project Name</Label>

@@ -1,7 +1,7 @@
 import React from "react";
 
 import { company, location } from "@/components/layout/shared/AllName";
-import EditSelectItems from "../EditSelectitem";
+import EditSelectItems from "./EditSelectitem";
 
 interface Props {
   invoice: any;

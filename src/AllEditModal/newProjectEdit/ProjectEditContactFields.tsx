@@ -1,5 +1,5 @@
 import React from "react";
-import { ContactProjectEdit } from "../ContactProjectEdit";
+import { ContactProjectEdit } from "./ContactProjectEdit";
 // import { ContactProjectEdit } from "./ContactProjectEdit";
 
 interface Props {
