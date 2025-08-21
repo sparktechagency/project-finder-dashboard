@@ -22,6 +22,7 @@ import { EditFeatures } from "./EditFeatures";
 import PdfUploader from "@/pdfUploader/PdfUploader";
 import { company, location } from "@/components/layout/shared/AllName";
 import EditLocation from "@/pages/dashboard/map/EditMap";
+import { getAddressFromLatLng } from "@/helper/mapAddress";
 
 export default function ProjectEditModal({ invoice }: { invoice: any }) {
   const [updateProject] = useUpdateProjectMutation();
@@ -160,6 +161,23 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
       return newFeatures;
     });
   };
+
+  const [address, setAddress] = useState("");
+
+  useEffect(() => {
+    if (invoice?.latitude && invoice?.longitude) {
+      const { latitude, longitude } = invoice;
+      setMarkerPosition({ lat: latitude, lng: longitude });
+
+      getAddressFromLatLng(
+        latitude,
+        longitude,
+        import.meta.env.VITE_GOOGLE_API_KEY
+      ).then((data) => {
+        if (data) setAddress(data);
+      });
+    }
+  }, [invoice?.latitude, invoice?.longitude]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -330,6 +348,8 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
 
             <div className="grid gap-3">
               <EditLocation
+                address={address}
+                setAddress={setAddress}
                 markerPosition={markerPosition}
                 setMarkerPosition={setMarkerPosition}
               />

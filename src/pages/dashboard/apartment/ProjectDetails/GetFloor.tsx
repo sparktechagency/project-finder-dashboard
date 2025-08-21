@@ -38,7 +38,7 @@ export default function GetFloor() {
   const [deleteFloor] = useDeleteFloorMutation(undefined);
   const searchParams = new URLSearchParams(window.location.search);
   const apartmentId = searchParams.get("id");
-  console.log(apartmentId, currentPage, "check floor");
+
   const {
     data: singleFloorData,
     isFetching,

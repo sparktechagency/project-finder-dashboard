@@ -11,7 +11,6 @@ const floor = api.injectEndpoints({
     }),
     getSingleFloor: builder.query({
       query: ({ id, page }) => {
-        console.log(id, page, "id page -----");
         return {
           url: `/floor/plans/${id}?page=${page}`,
           method: "GET",
