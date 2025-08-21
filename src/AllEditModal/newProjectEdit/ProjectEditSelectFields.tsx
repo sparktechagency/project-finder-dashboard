@@ -15,7 +15,6 @@ export default function ProjectEditSelectFields({
   setSelected,
 }: Props) {
   const handleSelectChange = (key: string, value: string) => {
-    console.log(value);
     setSelected((prev) => ({
       ...prev,
       [key]: value,

@@ -137,8 +137,9 @@ export default function AddCreateProject({
 
     // Selects
     Object.entries(selectValues).forEach(([key, val]) => {
+      console.log(val);
       if (key === "completionYear") {
-        formData.append("CompletionDate", new Date(val).toISOString());
+        formData.append("CompletionDate", val);
       } else {
         formData.append(key, val);
       }
@@ -146,6 +147,7 @@ export default function AddCreateProject({
 
     try {
       const res = await createProject(formData).unwrap();
+      console.log(res, "res");
 
       if (res.message) {
         toast.success("Project created successfully", { id: "apartment" });
