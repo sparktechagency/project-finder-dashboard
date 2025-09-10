@@ -163,7 +163,6 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
   };
 
   const [address, setAddress] = useState("");
-  console.log(address, "address");
 
   useEffect(() => {
     if (invoice?.latitude && invoice?.longitude) {
