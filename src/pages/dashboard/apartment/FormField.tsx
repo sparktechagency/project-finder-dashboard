@@ -3,11 +3,13 @@ import { Label } from "@/components/ui/label";
 
 interface FormFieldProps {
   id: string;
-  type: React.HTMLInputTypeAttribute;
+  // type: React.HTMLInputTypeAttribute;
+  type: any;
   name?: string;
   label: string;
   placeholder: string;
   value?: string;
+  step: any;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -18,6 +20,8 @@ export function FormField({
   label,
   placeholder,
   value,
+  step,
+
   onChange,
 }: FormFieldProps) {
   return (
@@ -27,6 +31,7 @@ export function FormField({
       </Label>
       <Input
         type={type}
+        step={step ?? "any"}
         id={id}
         name={name || id}
         placeholder={placeholder}

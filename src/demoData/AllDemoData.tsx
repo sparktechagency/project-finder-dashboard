@@ -7,6 +7,7 @@ export const apartmentDetailsData = [
   },
   {
     type: "number",
+    step: "any",
     id: "commission",
     label: "Commission Percentage",
     placeholder: "Enter Commission",

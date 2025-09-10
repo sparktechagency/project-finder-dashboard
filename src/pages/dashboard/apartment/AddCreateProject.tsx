@@ -199,6 +199,7 @@ export default function AddCreateProject({
             <FormField
               key={field.id}
               type={field.type}
+              step={field?.step}
               id={field.id}
               label={field.label}
               placeholder={field.placeholder}
