@@ -14,6 +14,8 @@ export const location = [
   "Higueron",
 ];
 export const company = [
+  "Capre Homes",
+  "UrbinCasa",
   "Magnum",
   "Azul",
   "TM",
