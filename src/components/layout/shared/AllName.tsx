@@ -17,25 +17,25 @@ export const company = [
   "Magnum",
   "Azul",
   "TM",
-  "AssetFolio",
-  "OneEden",
+  "Asset Folio",
+  "One Eden",
   "Aedas",
-  "BromleyEstates",
+  "Bromley Estate", // updated spacing and singular "Estate"
   "MXM",
-  "PrimeInvest",
+  "Prime Invest", // updated spacing
   "ON3",
   "GILMAR",
-  "RossoInmobilaria",
+  "Rosso Inmobiliaria", // corrected spelling & spacing
   "Nvoga",
-  "TaylorWimpey",
-  "TuscanyGroup",
-  "RHPriveEstates",
-  "DreamExclusive",
-  // new item add
+  "Taylor Wimpey", // updated spacing
+  "Tuscany Group", // updated spacing
+  "RH Prive Estates", // updated spacing
+  "Dream Exclusives", // corrected plural form
   "Insur",
   "BySales",
-  "InvestHome",
+  "Invest Home",
   "Real De La Quinta",
+  "Others",
 ];
 
 export const completionYear = ["2024", "2025", "2026", "2027", "2028"];
