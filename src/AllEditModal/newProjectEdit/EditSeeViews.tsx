@@ -2,7 +2,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Minus, Plus } from "lucide-react";
 
-export function EditFeatures({
+export function EditSeeViews({
   features = {},
   onChange,
   onAdd,
@@ -13,7 +13,7 @@ export function EditFeatures({
     <div className="my-4">
       <div className="flex items-center justify-between mr-2 mb-1 text-black">
         <Label htmlFor="qualitySpecification" className="mb-2">
-          Features
+          See Views
         </Label>
         <div onClick={onAdd} className="cursor-pointer">
           <Plus />

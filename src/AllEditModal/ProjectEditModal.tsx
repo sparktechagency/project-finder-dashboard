@@ -33,6 +33,7 @@ export default function ProjectEditModal({ invoice }: { invoice: any }) {
   const [selected, setSelected] = useState<Record<string, string>>({});
   const [selectedYear, setSelectedYear] = useState<string | null>();
   const [features, setFeatures] = useState<string[]>(invoice?.features || []);
+
   // update
   const [date, setDate] = useState<string>("");
 

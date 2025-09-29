@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input";
 import ProjectsImagesEditModal from "./ProjectImagesEditModal";
 import SelectYear from "./SelectYear";
 import ProjectEditSelectFields from "./ProjectEditSelectFields";
+import { EditSeeViews } from "./EditSeeViews";
 
 export default function ProjectEditForm({ invoice }: { invoice: any }) {
   const [updateProject] = useUpdateProjectMutation();
@@ -87,6 +88,17 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
       setImageSections(imageFiles);
     }
   }, [invoice]);
+
+  // handle add more features
+  const handleAddFeature = () => {
+    setFeatures((prev) => [...prev, ""]);
+  };
+
+  // handle remove feature
+  const handleRemoveFeature = (index: number) => {
+    console.log(index);
+    setFeatures((prev) => prev.filter((_, i) => i !== index));
+  };
 
   const handleRemoveImage = (index: number) => {
     setImageSections((prev: File[]) =>
@@ -249,6 +261,19 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
             newFeatures[i] = v;
             setFeatures(newFeatures);
           }}
+          onAdd={handleAddFeature}
+          onRemove={handleRemoveFeature}
+        />
+
+        <EditSeeViews
+          features={features}
+          onChange={(i, v) => {
+            const newFeatures = [...features];
+            newFeatures[i] = v;
+            setFeatures(newFeatures);
+          }}
+          onAdd={handleAddFeature}
+          onRemove={handleRemoveFeature}
         />
 
         <input
