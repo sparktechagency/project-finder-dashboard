@@ -14,6 +14,7 @@ import {
   location,
 } from "@/components/layout/shared/AllName";
 import { apartmentDetailsData } from "@/demoData/AllDemoData";
+import SeaView from "./seaView";
 
 interface ApartmentFormProps {
   files: {
@@ -65,6 +66,35 @@ export default function AddCreateProject({
     salesCompany: "",
     completionYear: "",
   });
+
+  // ✅ Sea View state
+  const [seaViewSpecs, setSeaViewSpecs] = useState<{ [key: string]: string }>({
+    seaView1: "",
+  });
+
+  // ✅ Sea View handlers
+  const handleSeaViewChange = (key: string, value: string) => {
+    setSeaViewSpecs((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
+
+  const handleSeaViewAdd = () => {
+    const newKey = `seaView${Object.keys(seaViewSpecs).length + 1}`;
+    setSeaViewSpecs((prev) => ({
+      ...prev,
+      [newKey]: "",
+    }));
+  };
+
+  const handleSeaViewRemove = (key: string) => {
+    setSeaViewSpecs((prev) => {
+      const updated = { ...prev };
+      delete updated[key];
+      return updated;
+    });
+  };
 
   const [markerPosition, setMarkerPosition] = useState<{
     lat: number;
@@ -125,6 +155,10 @@ export default function AddCreateProject({
     Object.values(qualitySpecs)
       .filter((v) => v.trim() !== "")
       .forEach((feature) => formData.append("features", feature));
+    // sea view
+    Object.values(seaViewSpecs)
+      .filter((v) => v.trim() !== "")
+      .forEach((feature) => formData.append("seaView", feature));
 
     // Location
     if (!markerPosition) {
@@ -194,7 +228,7 @@ export default function AddCreateProject({
       <div className="grid grid-cols-2 gap-6">
         {/* Left Column */}
         <div>
-          {/* conatact info */}
+          {/* Contact info */}
           {apartmentDetailsData.map((field) => (
             <FormField
               key={field.id}
@@ -288,6 +322,14 @@ export default function AddCreateProject({
             onChange={handleQualityChange}
             onAdd={() => handleInputAdd("")}
             onRemove={handleRemove}
+          />
+          {/* Sea View */}
+          <SeaView
+            specs={seaViewSpecs}
+            onChange={handleSeaViewChange}
+            onAdd={handleSeaViewAdd}
+            onRemove={handleSeaViewRemove}
+            title="Sea View"
           />
         </div>
       </div>
