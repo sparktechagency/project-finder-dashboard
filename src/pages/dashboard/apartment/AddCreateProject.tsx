@@ -329,7 +329,7 @@ export default function AddCreateProject({
             onChange={handleSeaViewChange}
             onAdd={handleSeaViewAdd}
             onRemove={handleSeaViewRemove}
-            title="Sea View units"
+            title="Sea View Units"
           />
         </div>
       </div>
