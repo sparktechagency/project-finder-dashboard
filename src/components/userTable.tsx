@@ -7,7 +7,6 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table";
-import { Avatar } from "./ui/avatar";
 
 const UserTable = () => {
   const { data: users = [], isLoading } = useGetAllUserQuery(undefined);
@@ -21,7 +20,6 @@ const UserTable = () => {
   }
 
   const usersData = users.data || [];
-  console.log("Users Data:=====>>>>", usersData);
 
   return (
     <Table>
