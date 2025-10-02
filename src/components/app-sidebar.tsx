@@ -48,6 +48,11 @@ const data = {
       title: "Projects",
       url: "/projects",
     },
+    {
+      icon: IoIosPeople,
+      title: "Users",
+      url: "/users",
+    },
 
     {
       title: "Subscriptions",
