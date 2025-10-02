@@ -38,6 +38,7 @@ export const company = [
   "BySales",
   "Invest Home",
   "Real De La Quinta",
+  "Turnkey",
   "Others",
 ];
 
