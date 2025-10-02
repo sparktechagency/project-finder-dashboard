@@ -7,6 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table";
+import { GetProfileImageUrl } from "./layout/shared/GetProfileImageUrl";
 
 const UserTable = () => {
   const { data: users = [], isLoading } = useGetAllUserQuery(undefined);
@@ -40,7 +41,7 @@ const UserTable = () => {
             <TableCell>
               <img
                 className="w-10 h-10 rounded-full object-cover"
-                src={users.profile || "N/A"}
+                src={GetProfileImageUrl(users.profile || "N/A")}
                 alt="Profile Picture"
               />
             </TableCell>
