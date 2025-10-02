@@ -12,6 +12,7 @@ export const location = [
   "Sotogrande",
   "Benalmadena",
   "Higueron",
+  "Benahavis",
 ];
 export const company = [
   "Capre Homes",

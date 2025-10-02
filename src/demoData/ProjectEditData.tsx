@@ -15,7 +15,7 @@ export const contactFields = [
   {
     type: "text",
     id: "companyName",
-    label: "Developer Name",
-    placeholder: "Enter Developer name",
+    label: "Sales Company",
+    placeholder: "Enter Sales Company Name",
   },
 ];

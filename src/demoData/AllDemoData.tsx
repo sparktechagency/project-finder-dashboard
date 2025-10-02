@@ -27,7 +27,7 @@ export const apartmentDetailsData = [
   {
     type: "text",
     id: "companyName",
-    label: "Developer Name",
-    placeholder: "Enter Developer Name",
+    label: "Sales Company",
+    placeholder: "Enter Sales Company Name",
   },
 ];
