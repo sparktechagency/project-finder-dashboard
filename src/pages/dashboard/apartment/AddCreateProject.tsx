@@ -317,7 +317,7 @@ export default function AddCreateProject({
           />
 
           <QualitySpecsInput
-            title="feature"
+            title="Features"
             specs={qualitySpecs}
             onChange={handleQualityChange}
             onAdd={() => handleInputAdd("")}
@@ -329,7 +329,7 @@ export default function AddCreateProject({
             onChange={handleSeaViewChange}
             onAdd={handleSeaViewAdd}
             onRemove={handleSeaViewRemove}
-            title="Sea View"
+            title="Sea View units"
           />
         </div>
       </div>
