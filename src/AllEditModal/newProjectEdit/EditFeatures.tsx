@@ -8,7 +8,6 @@ export function EditFeatures({
   onAdd,
   onRemove,
 }: any) {
-  console.log(features);
   return (
     <div className="my-4">
       <div className="flex items-center justify-between mr-2 mb-1 text-black">

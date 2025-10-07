@@ -3,12 +3,11 @@ import { Label } from "@/components/ui/label";
 import { Minus, Plus } from "lucide-react";
 
 export function EditSeeViews({
-  features = {},
+  seaViews = {},
   onChange,
   onAdd,
   onRemove,
 }: any) {
-  console.log(features);
   return (
     <div className="my-4">
       <div className="flex items-center justify-between mr-2 mb-1 text-black">
@@ -20,7 +19,7 @@ export function EditSeeViews({
         </div>
       </div>
 
-      {features.map((feature: string[], index: number) => {
+      {seaViews.map((feature: string[], index: number) => {
         return (
           <div key={index} className="flex items-center gap-2 mb-2">
             <Input

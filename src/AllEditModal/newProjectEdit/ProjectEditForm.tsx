@@ -29,6 +29,8 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
   const [selected, setSelected] = useState<Record<string, string>>({});
   const [selectedYear, setSelectedYear] = useState<string | null>(null);
   const [features, setFeatures] = useState<string[]>(invoice?.features || []);
+  const [seaViews, setSeaViews] = useState<string[]>(invoice?.seaView || []);
+  console.log(seaViews, "seaView");
   const [date, setDate] = useState<string>("");
   const [address, setAddress] = useState("");
   const [markerPosition, setMarkerPosition] = useState<{
@@ -96,7 +98,6 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
 
   // handle remove feature
   const handleRemoveFeature = (index: number) => {
-    console.log(index);
     setFeatures((prev) => prev.filter((_, i) => i !== index));
   };
 
@@ -169,6 +170,11 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
       if (feature.trim()) formData.append("features", feature);
     });
 
+    // seaviews
+    seaViews.forEach((item) => {
+      if (item.trim()) formData.append("seaView", item);
+    });
+
     if (date) formData.append("updatedDate", date);
 
     try {
@@ -176,11 +182,21 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
         id: invoice._id,
         data: formData,
       }).unwrap();
+      console.log(res);
       if (res?.success) toast.success("Successfully updated project");
       else toast.error("Failed to update project");
     } catch (error) {
       toast.error("Error updating project");
     }
+  };
+
+  // handle seaview
+  const handleAddSeeView = () => {
+    setSeaViews((prev) => [...prev, ""]);
+  };
+
+  const handleRemoveSeeView = (index: number) => {
+    setSeaViews((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleYearChange = (value: string) => {
@@ -266,14 +282,14 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
         />
 
         <EditSeeViews
-          features={features}
+          seaViews={seaViews}
           onChange={(i, v) => {
-            const newFeatures = [...features];
-            newFeatures[i] = v;
-            setFeatures(newFeatures);
+            const newSeaView = [...seaViews];
+            newSeaView[i] = v;
+            setSeaViews(newSeaView);
           }}
-          onAdd={handleAddFeature}
-          onRemove={handleRemoveFeature}
+          onAdd={handleAddSeeView}
+          onRemove={handleRemoveSeeView}
         />
 
         <input
