@@ -30,7 +30,6 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
   const [selectedYear, setSelectedYear] = useState<string | null>(null);
   const [features, setFeatures] = useState<string[]>(invoice?.features || []);
   const [seaViews, setSeaViews] = useState<string[]>(invoice?.seaView || []);
-  console.log(seaViews, "seaView");
   const [date, setDate] = useState<string>("");
   const [address, setAddress] = useState("");
   const [markerPosition, setMarkerPosition] = useState<{
@@ -182,7 +181,7 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
         id: invoice._id,
         data: formData,
       }).unwrap();
-      console.log(res);
+
       if (res?.success) toast.success("Successfully updated project");
       else toast.error("Failed to update project");
     } catch (error) {
@@ -202,7 +201,7 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
   const handleYearChange = (value: string) => {
     setSelectedYear(value);
   };
-  console.log(invoice, "invoice");
+
   return (
     <form onSubmit={handleSubmit}>
       <DialogHeader>
