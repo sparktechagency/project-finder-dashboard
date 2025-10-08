@@ -202,7 +202,7 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
   const handleYearChange = (value: string) => {
     setSelectedYear(value);
   };
-
+  console.log(invoice, "invoice");
   return (
     <form onSubmit={handleSubmit}>
       <DialogHeader>
@@ -222,6 +222,15 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
             id="apartmentName"
             name="apartmentName"
             defaultValue={invoice.apartmentName}
+          />
+        </div>
+
+        <div className="grid gap-3">
+          <Label htmlFor="relevantLink">RelevantLink</Label>
+          <Input
+            id="relevantLink"
+            name="relevantLink"
+            defaultValue={invoice.relevantLink}
           />
         </div>
 

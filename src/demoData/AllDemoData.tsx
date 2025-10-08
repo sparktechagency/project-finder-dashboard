@@ -6,6 +6,12 @@ export const apartmentDetailsData = [
     placeholder: "Enter Project Name",
   },
   {
+    type: "text",
+    id: "relevantLink",
+    label: "RelevantLink",
+    placeholder: "Enter relevantLink",
+  },
+  {
     type: "number",
     step: "any",
     id: "commission",

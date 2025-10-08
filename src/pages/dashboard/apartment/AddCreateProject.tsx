@@ -114,10 +114,13 @@ export default function AddCreateProject({
     const formData = new FormData();
 
     // Basic fields
-    ["apartmentName", "commission", "companyName"].forEach((key) => {
-      const val = values[key];
-      if (val) formData.append(key, val as string);
-    });
+    ["apartmentName", "commission", "companyName", "relevantLink"].forEach(
+      (key) => {
+        const val = values[key];
+
+        if (val) formData.append(key, val as string);
+      }
+    );
 
     // Files
     const filesToAppend: [string, any][] = [
@@ -239,6 +242,15 @@ export default function AddCreateProject({
               placeholder={field.placeholder}
             />
           ))}
+
+          {/* <div className="grid gap-3">
+            <Label htmlFor="relevantLink">RelevantLink</Label>
+            <Input
+              id="relevantLink"
+              name="relevantLink"
+              defaultValue={invoice.relevantLink}
+            />
+          </div> */}
 
           <ImageUpload
             id="pricePdf"
