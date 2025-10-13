@@ -1,6 +1,6 @@
 import { Label } from "@/components/ui/label";
 
-const options = ["2025", "2026", "2027", "2028"];
+const options = ["2024", "2025", "2026", "2027", "2028"];
 
 interface Props {
   selectedYear: string | null;
