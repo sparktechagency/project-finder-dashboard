@@ -16,13 +16,11 @@ export const location = [
 ];
 
 export const company = [
-  { title: "Capre Homes", value: "CapreHomes" },
-  { title: "UrbinCasa", value: "UrbinCasa" },
   { title: "Magnum", value: "Magnum" },
   { title: "Azul", value: "Azul" },
   { title: "TM", value: "TM" },
-  { title: "Asset Folio", value: "AssetFolio" },
-  { title: "One Eden", value: "OneEden" },
+  { title: "AssetFolio", value: "AssetFolio" },
+  { title: "OneEden", value: "OneEden" },
   { title: "Aedas", value: "Aedas" },
   { title: "Bromley Estate", value: "BromleyEstate" },
   { title: "MXM", value: "MXM" },
@@ -33,12 +31,15 @@ export const company = [
   { title: "Nvoga", value: "Nvoga" },
   { title: "Taylor Wimpey", value: "TaylorWimpey" },
   { title: "Tuscany Group", value: "TuscanyGroup" },
-  { title: "RH Prive Estates", value: "RHPriveEstates" },
+  { title: "RHPrive Estates", value: "RHPriveEstates" },
   { title: "Dream Exclusives", value: "DreamExclusives" },
+  { title: "Higueron RealEstate", value: "HigueronRealEstate" },
   { title: "Insur", value: "Insur" },
   { title: "BySales", value: "BySales" },
   { title: "Invest Home", value: "InvestHome" },
-  { title: "Real De La Quinta", value: "RealDeLaQuinta" },
+  { title: "RealDeLaQuinta", value: "RealDeLaQuinta" },
+  { title: "Capre Homes", value: "CapreHomes" },
+  { title: "Urbin Casa", value: "UrbinCasa" },
   { title: "Turnkey", value: "Turnkey" },
   { title: "Others", value: "Others" },
 ];
