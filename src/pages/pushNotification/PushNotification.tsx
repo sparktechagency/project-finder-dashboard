@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 export default function PushNotification() {
   const [pushNotification] = useCreatePushNotificationMutation();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [file, setFile] = useState<File | null>(null);
+  const [, setFile] = useState<File | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
