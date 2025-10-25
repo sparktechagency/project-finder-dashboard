@@ -12,6 +12,7 @@ import {
   company,
   completionYear,
   location,
+  propertyType,
 } from "@/components/layout/shared/AllName";
 import { apartmentDetailsData } from "@/demoData/AllDemoData";
 import SeaView from "./seaView";
@@ -298,7 +299,7 @@ export default function AddCreateProject({
 
           {/* property type */}
           <SelectItems
-            options={["Apartment", "Villa", "Townhouse"]}
+            options={propertyType}
             title="Property Type"
             placeholder="Select Property Type"
             value={selectValues.propertyType}
@@ -318,7 +319,7 @@ export default function AddCreateProject({
             title="Location Costa Blanca (Optional and Beta)"
             placeholder="Select location"
             value={selectValues.locationTwo}
-            onSelect={(value) => handleSelectChange("location", value)}
+            onSelect={(value) => handleSelectChange("locationTwo", value)}
           />
           {/* sales company */}
           <SelectItems

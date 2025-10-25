@@ -11,7 +11,7 @@ import {
 type SelectItemsProps = {
   title: string;
   placeholder: string;
-  options: string[];
+  options: any;
   value: string;
   onSelect: (value: string) => void;
 };
@@ -35,8 +35,8 @@ export default function EditSelectItems({
         <SelectContent>
           <SelectGroup>
             {options.map((opt) => (
-              <SelectItem key={opt} value={opt}>
-                {opt}
+              <SelectItem key={opt} value={opt?.value}>
+                {opt.title}
               </SelectItem>
             ))}
           </SelectGroup>

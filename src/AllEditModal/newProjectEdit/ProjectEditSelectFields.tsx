@@ -1,6 +1,10 @@
 import React from "react";
 
-import { company, location } from "@/components/layout/shared/AllName";
+import {
+  company,
+  location,
+  propertyType,
+} from "@/components/layout/shared/AllName";
 import EditSelectItems from "./EditSelectitem";
 
 interface Props {
@@ -24,7 +28,7 @@ export default function ProjectEditSelectFields({
   return (
     <>
       <EditSelectItems
-        options={["Apartment", "Villa", "Townhouse"]}
+        options={propertyType}
         title="Property Type"
         placeholder="Select Property Type"
         value={invoice?.propertyType || ""}
@@ -40,10 +44,17 @@ export default function ProjectEditSelectFields({
       />
       <EditSelectItems
         options={location}
-        title="Location"
+        title="Location Costa Del Sol"
         placeholder="Select location"
         value={invoice?.location || ""}
         onSelect={(value) => handleSelectChange("location", value)}
+      />
+      <EditSelectItems
+        options={location}
+        title="Location Costa Blanca (Optional and Beta)"
+        placeholder="Select location"
+        value={invoice?.locationTwo || ""}
+        onSelect={(value) => handleSelectChange("locationTwo", value)}
       />
     </>
   );

@@ -19,7 +19,6 @@ import ProjectsImagesEditModal from "./ProjectImagesEditModal";
 import SelectYear from "./SelectYear";
 import ProjectEditSelectFields from "./ProjectEditSelectFields";
 import { EditSeeViews } from "./EditSeeViews";
-import { se } from "date-fns/locale";
 
 export default function ProjectEditForm({ invoice }: { invoice: any }) {
   const [updateProject] = useUpdateProjectMutation();
@@ -155,11 +154,6 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    // if (!markerPosition) {
-    //   toast.error("Please select a location on the map before submitting.");
-    //   return;
-    // }
 
     const formData = new FormData(e.currentTarget);
     const values = Object.fromEntries(formData.entries());
