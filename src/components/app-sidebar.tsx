@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/sidebar";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { BellDot } from "lucide-react";
 // This is sample data.
 const data = {
   navMain: [
@@ -64,6 +65,11 @@ const data = {
       title: "FAQ",
       url: "/faq",
       icon: AiOutlineQuestionCircle,
+    },
+    {
+      title: "Push Notification",
+      url: "/push-notification",
+      icon: BellDot,
     },
 
     {

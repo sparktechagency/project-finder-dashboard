@@ -23,6 +23,7 @@ import Subscriber from "@/pages/dashboard/dashboard/Subscriber";
 // import ApartmentCreate from "@/pages/dashboard/apartment/ApartmentCreate";
 import ApartmentDetails from "@/pages/dashboard/apartment/ProjectDetails";
 import UserTable from "@/components/userTable";
+import PushNotification from "@/pages/pushNotification/PushNotification";
 
 const router = createBrowserRouter([
   {
@@ -41,6 +42,7 @@ const router = createBrowserRouter([
       { path: "projects-details", element: <ApartmentDetails /> },
       { path: "subscriptions", element: <Subscriptions /> },
       { path: "faq", element: <Faq /> },
+      { path: "push-notification", element: <PushNotification /> },
       { path: "users", element: <UserTable /> },
       { path: "about", element: <AboutUS /> },
       { path: "privacy-policy", element: <PrivacyPolicy /> },

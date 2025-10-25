@@ -63,6 +63,7 @@ export default function AddCreateProject({
   const [selectValues, setSelectValues] = useState({
     propertyType: "",
     location: "",
+    locationTwo: "",
     salesCompany: "",
     completionYear: "",
   });
@@ -306,9 +307,17 @@ export default function AddCreateProject({
           {/* location */}
           <SelectItems
             options={location}
-            title="Location"
+            title="Location Costa Del Sol"
             placeholder="Select location"
             value={selectValues.location}
+            onSelect={(value) => handleSelectChange("location", value)}
+          />
+          {/* location */}
+          <SelectItems
+            options={location}
+            title="Location Costa Blanca (Optional and Beta)"
+            placeholder="Select location"
+            value={selectValues.locationTwo}
             onSelect={(value) => handleSelectChange("location", value)}
           />
           {/* sales company */}

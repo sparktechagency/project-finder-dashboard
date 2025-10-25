@@ -19,6 +19,7 @@ import ProjectsImagesEditModal from "./ProjectImagesEditModal";
 import SelectYear from "./SelectYear";
 import ProjectEditSelectFields from "./ProjectEditSelectFields";
 import { EditSeeViews } from "./EditSeeViews";
+import { se } from "date-fns/locale";
 
 export default function ProjectEditForm({ invoice }: { invoice: any }) {
   const [updateProject] = useUpdateProjectMutation();
@@ -29,9 +30,19 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
   const [selected, setSelected] = useState<Record<string, string>>({});
   const [selectedYear, setSelectedYear] = useState<string | null>(null);
   const [features, setFeatures] = useState<string[]>(invoice?.features || []);
-  const [seaViews, setSeaViews] = useState<string[]>(invoice?.seaView || []);
+  const [seaViews, setSeaViews] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (invoice?.seaView) {
+      setSeaViews(invoice.seaView || []);
+    }
+  }, []);
+
+  console.log("get sea views", seaViews);
+
   const [date, setDate] = useState<string>("");
   const [address, setAddress] = useState("");
+
   const [markerPosition, setMarkerPosition] = useState<{
     lat: number;
     lng: number;
@@ -114,6 +125,34 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
     setImageSections((prev) => [...prev, ...selectedFiles]);
   };
 
+  // handle seaview
+  const handleAddSeeView = () => {
+    setSeaViews((prev) => [...prev, ""]);
+  };
+
+  // const handleRemoveSeeView = (index: number) => {
+  //   setSeaViews((prev) => prev.filter((_, i) => i !== index));
+  //   console.log("index", seaViews);
+  // };
+
+  const handleRemoveSeeView = (index: number) => {
+    const updated = seaViews.filter((_, i) => i !== index);
+    setSeaViews(updated);
+    console.log("updated seaViews", updated);
+  };
+
+  const handleChangeSeaViews = (index: number, value: string) => {
+    setSeaViews((prev) => {
+      const copy = [...prev];
+      copy[index] = value;
+      return copy;
+    });
+  };
+
+  const handleYearChange = (value: string) => {
+    setSelectedYear(value);
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -169,6 +208,10 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
       if (feature.trim()) formData.append("features", feature);
     });
 
+    if (seaViews.length === 0) {
+      formData.append("seaView", "[]");
+    }
+
     // seaviews
     seaViews.forEach((item) => {
       if (item.trim()) formData.append("seaView", item);
@@ -182,24 +225,13 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
         data: formData,
       }).unwrap();
 
+      console.log("upadate ", res);
+
       if (res?.success) toast.success("Successfully updated project");
       else toast.error("Failed to update project");
     } catch (error) {
       toast.error("Error updating project");
     }
-  };
-
-  // handle seaview
-  const handleAddSeeView = () => {
-    setSeaViews((prev) => [...prev, ""]);
-  };
-
-  const handleRemoveSeeView = (index: number) => {
-    setSeaViews((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  const handleYearChange = (value: string) => {
-    setSelectedYear(value);
   };
 
   return (
@@ -291,11 +323,7 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
 
         <EditSeeViews
           seaViews={seaViews}
-          onChange={(i, v) => {
-            const newSeaView = [...seaViews];
-            newSeaView[i] = v;
-            setSeaViews(newSeaView);
-          }}
+          onChange={(i, v) => handleChangeSeaViews(i, v)}
           onAdd={handleAddSeeView}
           onRemove={handleRemoveSeeView}
         />
