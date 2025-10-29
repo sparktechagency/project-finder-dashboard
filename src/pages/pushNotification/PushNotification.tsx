@@ -4,33 +4,32 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useCreatePushNotificationMutation } from "@/redux/apiSlice/pushNofification/pushNotification";
-import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 
 export default function PushNotification() {
   const [pushNotification] = useCreatePushNotificationMutation();
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [, setFile] = useState<File | null>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  // const [imagePreview, setImagePreview] = useState<string | null>(null);
+  // const [, setFile] = useState<File | null>(null);
+  // const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    const validTypes = ["image/jpeg", "image/png", "image/jpg"];
+  // const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   const validTypes = ["image/jpeg", "image/png", "image/jpg"];
 
-    if (!validTypes.includes(file?.type as string)) {
-      alert("Invalid file type. Please upload a JPEG, PNG, or JPG file.");
-    }
-    if (file) {
-      setImagePreview(URL.createObjectURL(file));
-      setFile(file);
-    }
-  };
+  //   if (!validTypes.includes(file?.type as string)) {
+  //     alert("Invalid file type. Please upload a JPEG, PNG, or JPG file.");
+  //   }
+  //   if (file) {
+  //     setImagePreview(URL.createObjectURL(file));
+  //     setFile(file);
+  //   }
+  // };
 
-  const handleClick = () => {
-    if (inputRef.current) {
-      inputRef.current.click();
-    }
-  };
+  // const handleClick = () => {
+  //   if (inputRef.current) {
+  //     inputRef.current.click();
+  //   }
+  // };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -99,7 +98,7 @@ export default function PushNotification() {
             />
           </div>
           {/* image upload */}
-          <div>
+          {/* <div>
             <Label
               htmlFor="image"
               className="block mb-2 text-sm font-medium text-gray-700"
@@ -120,7 +119,7 @@ export default function PushNotification() {
               className="w-full px-4 h-11  border border-gray-400  placeholder-gray-400 hidden"
               ref={inputRef}
             />
-          </div>
+          </div> */}
 
           <Button
             className="w-full py-3 text-black cursor-pointer"
