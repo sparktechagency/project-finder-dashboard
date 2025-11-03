@@ -77,6 +77,7 @@ export default function AddCreateProject({
   const [seaViewSpecs, setSeaViewSpecs] = useState<{ [key: string]: string }>({
     seaView1: "",
   });
+  console.log("check");
 
   // ✅ Sea View handlers
   const handleSeaViewChange = (key: string, value: string) => {
