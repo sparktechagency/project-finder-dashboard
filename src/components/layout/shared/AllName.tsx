@@ -33,7 +33,7 @@ export const company = [
   { title: "Tuscany Group", value: "TuscanyGroup" },
   { title: "RHPrive Estates", value: "RHPriveEstates" },
   { title: "Dream Exclusives", value: "DreamExclusives" },
-  { title: "Higueron RealEstate", value: "HigueronRealEstate" },
+  { title: "Higueron Real Estate", value: "HigueronRealEstate" },
   { title: "Insur", value: "Insur" },
   { title: "BySales", value: "BySales" },
   { title: "Invest Home", value: "InvestHome" },
@@ -59,3 +59,14 @@ export const propertyType = [
 ];
 
 export const quater = ["Q1", "Q2", "Q3", "Q4"];
+
+export const seaViews = [
+  {
+    title: "Yes",
+    value: "Yes",
+  },
+  {
+    title: "No",
+    value: "No",
+  },
+];

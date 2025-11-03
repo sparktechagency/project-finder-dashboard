@@ -19,6 +19,7 @@ import ProjectsImagesEditModal from "./ProjectImagesEditModal";
 import SelectYear from "./SelectYear";
 import ProjectEditSelectFields from "./ProjectEditSelectFields";
 import { EditSeeViews } from "./EditSeeViews";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function ProjectEditForm({ invoice }: { invoice: any }) {
   const [updateProject] = useUpdateProjectMutation();
@@ -30,14 +31,15 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
   const [selectedYear, setSelectedYear] = useState<string | null>(null);
   const [features, setFeatures] = useState<string[]>(invoice?.features || []);
   const [seaViews, setSeaViews] = useState<string[]>([]);
+  const [seaViewBoolean, setSeaViewBoolean] = useState<boolean>(
+    invoice.seaViewBoolean
+  );
 
   useEffect(() => {
     if (invoice?.seaView) {
       setSeaViews(invoice.seaView || []);
     }
   }, []);
-
-  console.log("get sea views", seaViews);
 
   const [date, setDate] = useState<string>("");
   const [address, setAddress] = useState("");
@@ -129,15 +131,9 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
     setSeaViews((prev) => [...prev, ""]);
   };
 
-  // const handleRemoveSeeView = (index: number) => {
-  //   setSeaViews((prev) => prev.filter((_, i) => i !== index));
-  //   console.log("index", seaViews);
-  // };
-
   const handleRemoveSeeView = (index: number) => {
     const updated = seaViews.filter((_, i) => i !== index);
     setSeaViews(updated);
-    console.log("updated seaViews", updated);
   };
 
   const handleChangeSeaViews = (index: number, value: string) => {
@@ -157,6 +153,9 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
 
     const formData = new FormData(e.currentTarget);
     const values = Object.fromEntries(formData.entries());
+
+    // sea views boolean
+    formData.append("seaViewBoolean", seaViewBoolean.toString());
 
     // append image files
     if (imageFiles?.length > 0) {
@@ -203,7 +202,7 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
     });
 
     if (seaViews.length === 0) {
-      formData.append("seaView", "[]");
+      formData.append("seaView", "");
     }
 
     // seaviews
@@ -216,10 +215,9 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
     try {
       const res = await updateProject({
         id: invoice._id,
+
         data: formData,
       }).unwrap();
-
-      console.log("upadate ", res);
 
       if (res?.success) toast.success("Successfully updated project");
       else toast.error("Failed to update project");
@@ -252,9 +250,10 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
 
         <div className="grid gap-3">
           <Label htmlFor="relevantLink">RelevantLink</Label>
-          <Input
+          <Textarea
             id="relevantLink"
             name="relevantLink"
+            className=""
             defaultValue={invoice.relevantLink}
           />
         </div>
@@ -299,6 +298,26 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
           setSelectedYear={setSelectedYear}
         />
 
+        {/* seaviews update boolean */}
+        <div>
+          <Label className="text-gray-900">Sea Views</Label>
+          <div
+            onClick={() => setSeaViewBoolean(!seaViewBoolean)}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors mt-2 ${
+              seaViewBoolean ? "bg-[#0288A6]" : "bg-gray-600"
+            }`}
+          >
+            <span
+              className={`inline-block h-5 w-5 transform rounded-full ${
+                seaViewBoolean
+                  ? "bg-linear-65 from-[#074E5E] to-[#0288A6]"
+                  : "bg-[#8CBBC6]"
+              } transition-transform ${
+                seaViewBoolean ? "translate-x-5" : "translate-x-1"
+              }`}
+            />
+          </div>
+        </div>
         <SelectYear
           selectedYear={selectedYear}
           handleYearChange={handleYearChange}

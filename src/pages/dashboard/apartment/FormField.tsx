@@ -1,5 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 interface FormFieldProps {
   id: string;
@@ -21,7 +22,6 @@ export function FormField({
   placeholder,
   value,
   step,
-
   onChange,
 }: FormFieldProps) {
   return (
@@ -29,16 +29,26 @@ export function FormField({
       <Label htmlFor={id} className="mb-2 text-black">
         {label}
       </Label>
-      <Input
-        type={type}
-        step={step ?? "any"}
-        id={id}
-        name={name || id}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-        required
-      />
+      {id === "relevantLink" ? (
+        <Textarea
+          id={id}
+          name={name || id}
+          placeholder={placeholder}
+          value={value}
+          required
+        />
+      ) : (
+        <Input
+          type={type}
+          step={step ?? "any"}
+          id={id}
+          name={name || id}
+          placeholder={placeholder}
+          value={value}
+          onChange={onChange}
+          required
+        />
+      )}
     </div>
   );
 }

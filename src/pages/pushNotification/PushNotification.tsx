@@ -44,8 +44,6 @@ export default function PushNotification() {
       description,
     };
 
-    console.log(payload);
-
     try {
       const res = await pushNotification(payload).unwrap();
       if (res.success) {

@@ -17,6 +17,8 @@ import {
 import { apartmentDetailsData } from "@/demoData/AllDemoData";
 import SeaView from "./seaView";
 
+import { Label } from "@/components/ui/label";
+
 interface ApartmentFormProps {
   files: {
     [key: string]: {
@@ -68,6 +70,8 @@ export default function AddCreateProject({
     salesCompany: "",
     completionYear: "",
   });
+
+  const [seaViewBoolean, setSeaViewBoolean] = useState(false);
 
   // ✅ Sea View state
   const [seaViewSpecs, setSeaViewSpecs] = useState<{ [key: string]: string }>({
@@ -183,6 +187,9 @@ export default function AddCreateProject({
       }
     });
 
+    // sea views boolen
+    formData.append("seaViewBoolean", JSON.stringify(seaViewBoolean));
+
     try {
       const res = await createProject(formData).unwrap();
 
@@ -244,15 +251,6 @@ export default function AddCreateProject({
               placeholder={field.placeholder}
             />
           ))}
-
-          {/* <div className="grid gap-3">
-            <Label htmlFor="relevantLink">RelevantLink</Label>
-            <Input
-              id="relevantLink"
-              name="relevantLink"
-              defaultValue={invoice.relevantLink}
-            />
-          </div> */}
 
           <ImageUpload
             id="pricePdf"
@@ -333,10 +331,28 @@ export default function AddCreateProject({
           <SelectItems
             options={completionYear}
             title="Completion Year"
-            placeholder="Select year"
+            placeholder="Select completionYear"
             value={selectValues.completionYear}
             onSelect={(value) => handleSelectChange("completionYear", value)}
           />
+
+          <Label className="text-gray-900">Sea Views</Label>
+          <div
+            onClick={() => setSeaViewBoolean(!seaViewBoolean)}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors mt-2 ${
+              seaViewBoolean ? "bg-[#0288A6]" : "bg-gray-600"
+            }`}
+          >
+            <span
+              className={`inline-block h-5 w-5 transform rounded-full ${
+                seaViewBoolean
+                  ? "bg-linear-65 from-[#074E5E] to-[#0288A6]"
+                  : "bg-[#8CBBC6]"
+              } transition-transform ${
+                seaViewBoolean ? "translate-x-5" : "translate-x-1"
+              }`}
+            />
+          </div>
 
           <QualitySpecsInput
             title="Features"
