@@ -303,12 +303,12 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
           <Label className="text-gray-900">Sea Views</Label>
           <div
             onClick={() => setSeaViewBoolean(!seaViewBoolean)}
-            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors mt-2 ${
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors cursor-pointer mt-2 ${
               seaViewBoolean ? "bg-[#0288A6]" : "bg-gray-600"
             }`}
           >
             <span
-              className={`inline-block h-5 w-5 transform rounded-full ${
+              className={`inline-block h-5 w-5 transform rounded-full  ${
                 seaViewBoolean
                   ? "bg-linear-65 from-[#074E5E] to-[#0288A6]"
                   : "bg-[#8CBBC6]"

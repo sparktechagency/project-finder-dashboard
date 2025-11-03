@@ -6,8 +6,6 @@ import {
   propertyType,
 } from "@/components/layout/shared/AllName";
 import EditSelectItems from "./EditSelectitem";
-import { Toggle } from "@/components/ui/toggle";
-import { BookmarkIcon } from "lucide-react";
 
 interface Props {
   invoice: any;
