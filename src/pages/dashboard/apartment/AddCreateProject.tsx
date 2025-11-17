@@ -17,6 +17,7 @@ import { apartmentDetailsData } from "@/demoData/AllDemoData";
 import SeaView from "./seaView";
 import { Label } from "@/components/ui/label";
 import YearMultiSelect from "./YearSelected";
+import { useNavigate } from "react-router-dom";
 
 interface ApartmentFormProps {
   files: {
@@ -62,6 +63,7 @@ export default function AddCreateProject({
   handleRemove,
 }: ApartmentFormProps) {
   const [createProject, { isLoading }] = useCreateProjectMutation();
+  const navigate = useNavigate();
   const [selectValues, setSelectValues] = useState({
     propertyType: "",
     location: "",
@@ -169,19 +171,13 @@ export default function AddCreateProject({
       .forEach((feature) => formData.append("seaView", feature));
 
     // Location;
-    // if (!markerPosition) {
-    //   toast.error("Please select a location on the map.");
-    //   console.error("No marker position selected.");
-    //   return;
-    // }
-    // formData.append("latitude", markerPosition.lat.toString());
-    // formData.append("longitude", markerPosition.lng.toString());
-    formData.append("latitude", (23.6849943).toString());
-    formData.append("longitude", (90.356331).toString());
-
-    // if (key === "completionYear") {
-    //   formData.append("CompletionDate", val);
-    // }
+    if (!markerPosition) {
+      toast.error("Please select a location on the map.");
+      console.error("No marker position selected.");
+      return;
+    }
+    formData.append("latitude", markerPosition.lat.toString());
+    formData.append("longitude", markerPosition.lng.toString());
 
     // Selects
     Object.entries(selectValues).forEach(([key, val]) =>
@@ -213,6 +209,8 @@ export default function AddCreateProject({
         }));
         setImageSections([null]);
         setMarkerPosition({ lat: 0, lng: 0 });
+        setSelectedYears([]);
+        navigate("/projects");
       } else {
         toast.error(res?.message || "Failed to create project", {
           id: "apartment",
