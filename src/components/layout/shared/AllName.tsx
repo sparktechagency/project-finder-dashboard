@@ -50,6 +50,8 @@ export const completionYear = [
   { title: "2026", value: "2026" },
   { title: "2027", value: "2027" },
   { title: "2028", value: "2028" },
+  { title: "2029", value: "2029" },
+  { title: "2030", value: "2030" },
 ];
 
 export const propertyType = [
