@@ -17,7 +17,6 @@ import { apartmentDetailsData } from "@/demoData/AllDemoData";
 import SeaView from "./seaView";
 import { Label } from "@/components/ui/label";
 import YearMultiSelect from "./YearSelected";
-import { se } from "date-fns/locale";
 
 interface ApartmentFormProps {
   files: {
@@ -169,7 +168,7 @@ export default function AddCreateProject({
       .filter((v) => v.trim() !== "")
       .forEach((feature) => formData.append("seaView", feature));
 
-    Location;
+    // Location;
     // if (!markerPosition) {
     //   toast.error("Please select a location on the map.");
     //   console.error("No marker position selected.");

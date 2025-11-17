@@ -9,12 +9,6 @@ export default function ProjectForm() {
     category: "",
   });
 
-  // const [relivantLinks, setRelivantLinks] = useState<{ [key: string]: string }>(
-  //   {
-  //     links: "",
-  //   }
-  // );
-
   type FileData = {
     url: string;
     type: string;
@@ -66,28 +60,6 @@ export default function ProjectForm() {
     });
   };
 
-  // relivant links
-  // const handleAddLinks = () => {
-  //   const newLinks = `links_${uuidv4()}`;
-  //   setRelivantLinks((prev) => ({ ...prev, [newLinks]: "" }));
-  // };
-
-  // const handleRemoveLinks = (key: string) => {
-  //   setRelivantLinks((prev) => {
-  //     const { [key]: _, ...rest } = prev;
-  //     return rest;
-  //   });
-  // };
-
-  // const onChangeRelivantLinks = (key: string, value: string) => {
-  //   setRelivantLinks((prev) => {
-  //     return {
-  //       ...prev,
-  //       [key]: value,
-  //     };
-  //   });
-  // };
-
   return (
     <AddCreateProject
       imageSections={imageSections}
@@ -101,10 +73,6 @@ export default function ProjectForm() {
       handleRemove={handleRemove}
       files={files}
       setFiles={setFiles}
-      // relivantLinks={relivantLinks}
-      // handleAddLinks={handleAddLinks}
-      // handleRemoveLinks={handleRemoveLinks}
-      // onChangeRelivantLinks={onChangeRelivantLinks}
     />
   );
 }
