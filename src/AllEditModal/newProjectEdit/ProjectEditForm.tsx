@@ -16,10 +16,10 @@ import { EditFeatures } from "./EditFeatures";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import ProjectsImagesEditModal from "./ProjectImagesEditModal";
-import SelectYear from "./SelectYear";
 import ProjectEditSelectFields from "./ProjectEditSelectFields";
 import { EditSeeViews } from "./EditSeeViews";
 import { Textarea } from "@/components/ui/textarea";
+import YearMultiSelect from "./SelectYear";
 
 export default function ProjectEditForm({ invoice }: { invoice: any }) {
   const [updateProject] = useUpdateProjectMutation();
@@ -28,7 +28,7 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
   const [priceFile, setPriceFile] = useState<File | null>(null);
   const [apartmentFile, setApartmentFile] = useState<File | null>(null);
   const [selected, setSelected] = useState<Record<string, string>>({});
-  const [selectedYear, setSelectedYear] = useState<string | null>(null);
+  const [selectedYears, setSelectedYears] = useState<string[]>([]);
   const [features, setFeatures] = useState<string[]>(invoice?.features || []);
   const [seaViews, setSeaViews] = useState<string[]>([]);
   const [seaViewBoolean, setSeaViewBoolean] = useState<boolean>(
@@ -78,8 +78,8 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
 
   useEffect(() => {
     if (invoice?.CompletionDate) {
-      const year = new Date(invoice.CompletionDate).getFullYear().toString();
-      setSelectedYear(year);
+      // const year = new Date(invoice.CompletionDate).getFullYear().toString();
+      setSelectedYears(invoice?.CompletionDate);
     }
   }, [invoice?.CompletionDate]);
 
@@ -144,10 +144,6 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
     });
   };
 
-  const handleYearChange = (value: string) => {
-    setSelectedYear(value);
-  };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -180,7 +176,12 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
       if (file) formData.append(key, file);
     });
 
-    if (selectedYear) formData.append("CompletionDate", `${selectedYear}`);
+    //  select years
+    if (selectedYears.length > 0) {
+      selectedYears?.forEach((year) => {
+        formData.append("CompletionDate", year);
+      });
+    }
     if (selected.propertyType)
       formData.append("propertyType", selected.propertyType);
     if (selected.salesCompany)
@@ -291,12 +292,9 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
           setContactAddress={setContactAddress}
           contactFields={contactFields}
         />
-        <ProjectEditSelectFields
-          invoice={invoice}
-          setSelected={setSelected}
-          selectedYear={selectedYear}
-          setSelectedYear={setSelectedYear}
-        />
+
+        {/* property sales company and lcoation1 and location2 */}
+        <ProjectEditSelectFields invoice={invoice} setSelected={setSelected} />
 
         {/* seaviews update boolean */}
         <div>
@@ -318,9 +316,14 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
             />
           </div>
         </div>
-        <SelectYear
+        {/* select year */}
+        {/* <SelectYear
           selectedYear={selectedYear}
           handleYearChange={handleYearChange}
+        /> */}
+        <YearMultiSelect
+          selectedYears={selectedYears}
+          setSelectedYears={setSelectedYears}
         />
 
         <EditFeatures

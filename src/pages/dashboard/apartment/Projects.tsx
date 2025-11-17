@@ -191,10 +191,15 @@ export default function Projects() {
               </TableCell>
               <TableCell>{invoice.location.slice(0, 10)}...</TableCell>
               <TableCell className="pl-9">{invoice.commission}%</TableCell>
-              <TableCell className="">
-                {invoice.CompletionDate
-                  ? new Date(invoice.CompletionDate).getFullYear()
-                  : null}
+              <TableCell className="w-2">
+                <div className="grid grid-cols-2 gap-2">
+                  {Array.isArray(invoice.CompletionDate) &&
+                    invoice.CompletionDate.map((date: string) => (
+                      <span key={date} className="">
+                        {date}
+                      </span>
+                    ))}
+                </div>
               </TableCell>
 
               <TableCell>

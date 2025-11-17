@@ -19,8 +19,8 @@ export const company = [
   { title: "Magnum", value: "Magnum" },
   { title: "Azul", value: "Azul" },
   { title: "TM", value: "TM" },
-  { title: "AssetFolio", value: "AssetFolio" },
-  { title: "OneEden", value: "OneEden" },
+  { title: "Asset Folio", value: "AssetFolio" },
+  { title: "One Eden", value: "OneEden" },
   { title: "Aedas", value: "Aedas" },
   { title: "Bromley Estate", value: "BromleyEstate" },
   { title: "MXM", value: "MXM" },
@@ -56,6 +56,7 @@ export const propertyType = [
   { title: "Apartment", value: "Apartment" },
   { title: "Villa", value: "Villa" },
   { title: "Townhouse", value: "Townhouse" },
+  { title: "Higueron Real Estate", value: "HigueronRealEstate" },
 ];
 
 export const quater = ["Q1", "Q2", "Q3", "Q4"];

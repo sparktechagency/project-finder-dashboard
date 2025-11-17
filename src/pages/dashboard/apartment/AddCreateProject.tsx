@@ -10,14 +10,14 @@ import toast from "react-hot-toast";
 import ProjectsImages from "./ProjectsImage";
 import {
   company,
-  completionYear,
   location,
   propertyType,
 } from "@/components/layout/shared/AllName";
 import { apartmentDetailsData } from "@/demoData/AllDemoData";
 import SeaView from "./seaView";
-
 import { Label } from "@/components/ui/label";
+import YearMultiSelect from "./YearSelected";
+import { se } from "date-fns/locale";
 
 interface ApartmentFormProps {
   files: {
@@ -68,8 +68,8 @@ export default function AddCreateProject({
     location: "",
     locationTwo: "",
     salesCompany: "",
-    completionYear: "",
   });
+  const [selectedYears, setSelectedYears] = useState<string[]>([]);
 
   const [seaViewBoolean, setSeaViewBoolean] = useState(false);
 
@@ -77,7 +77,6 @@ export default function AddCreateProject({
   const [seaViewSpecs, setSeaViewSpecs] = useState<{ [key: string]: string }>({
     seaView1: "",
   });
-  console.log("check");
 
   // ✅ Sea View handlers
   const handleSeaViewChange = (key: string, value: string) => {
@@ -170,23 +169,29 @@ export default function AddCreateProject({
       .filter((v) => v.trim() !== "")
       .forEach((feature) => formData.append("seaView", feature));
 
-    // Location
-    if (!markerPosition) {
-      toast.error("Please select a location on the map.");
-      console.error("No marker position selected.");
-      return;
-    }
-    formData.append("latitude", markerPosition.lat.toString());
-    formData.append("longitude", markerPosition.lng.toString());
+    Location;
+    // if (!markerPosition) {
+    //   toast.error("Please select a location on the map.");
+    //   console.error("No marker position selected.");
+    //   return;
+    // }
+    // formData.append("latitude", markerPosition.lat.toString());
+    // formData.append("longitude", markerPosition.lng.toString());
+    formData.append("latitude", (23.6849943).toString());
+    formData.append("longitude", (90.356331).toString());
+
+    // if (key === "completionYear") {
+    //   formData.append("CompletionDate", val);
+    // }
 
     // Selects
-    Object.entries(selectValues).forEach(([key, val]) => {
-      if (key === "completionYear") {
-        formData.append("CompletionDate", val);
-      } else {
-        formData.append(key, val);
-      }
-    });
+    Object.entries(selectValues).forEach(([key, val]) =>
+      formData.append(key, val)
+    );
+
+    if (selectedYears.length > 0) {
+      selectedYears.forEach((year) => formData.append("CompletionDate", year));
+    }
 
     // sea views boolen
     formData.append("seaViewBoolean", JSON.stringify(seaViewBoolean));
@@ -329,12 +334,19 @@ export default function AddCreateProject({
             onSelect={(value) => handleSelectChange("salesCompany", value)}
           />
           {/* completion year */}
-          <SelectItems
+          {/* <SelectItems
             options={completionYear}
             title="Completion Year"
             placeholder="Select completionYear"
             value={selectValues.completionYear}
             onSelect={(value) => handleSelectChange("completionYear", value)}
+          /> */}
+
+          {/* <Label className="text-black">Completion Year</Label> */}
+
+          <YearMultiSelect
+            selectedYears={selectedYears}
+            setSelectedYears={setSelectedYears}
           />
 
           <Label className="text-gray-900">Sea Views</Label>
