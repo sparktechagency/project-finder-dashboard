@@ -8,7 +8,7 @@ export const location = [
   { title: "Marbella", value: "Marbella" },
   { title: "Benalmadena", value: "Benalmadena" },
   { title: "Fuengirola", value: "Fuengirola" },
-  { title: "LaAlcaidesa", value: "LaAlcaidesa" },
+  { title: "La Alcaidesa", value: "La Alcaidesa" },
   { title: "RinconDe La Victoria", value: "RinconDeLaVictoria" },
   { title: "ToreeDelMar", value: "ToreeDelMar" },
   { title: "Higueron", value: "Higueron" },
