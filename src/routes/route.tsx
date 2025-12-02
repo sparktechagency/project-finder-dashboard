@@ -24,6 +24,7 @@ import Subscriber from "@/pages/dashboard/dashboard/Subscriber";
 import ApartmentDetails from "@/pages/dashboard/apartment/ProjectDetails";
 import UserTable from "@/components/userTable";
 import PushNotification from "@/pages/pushNotification/PushNotification";
+import Policy from "@/components/public-routes/Policy";
 
 const router = createBrowserRouter([
   {
@@ -57,6 +58,7 @@ const router = createBrowserRouter([
   { path: "/forget-password", element: <ForgetPassword /> },
   { path: "/verify-otp", element: <VerifyOtp /> },
   { path: "/new-password", element: <ResetPasswordForm /> },
+  { path: "/policy", element: <Policy /> },
 ]);
 
 export default router;

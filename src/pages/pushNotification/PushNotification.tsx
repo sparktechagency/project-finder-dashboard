@@ -8,28 +8,6 @@ import toast from "react-hot-toast";
 
 export default function PushNotification() {
   const [pushNotification] = useCreatePushNotificationMutation();
-  // const [imagePreview, setImagePreview] = useState<string | null>(null);
-  // const [, setFile] = useState<File | null>(null);
-  // const inputRef = useRef<HTMLInputElement>(null);
-
-  // const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const file = e.target.files?.[0];
-  //   const validTypes = ["image/jpeg", "image/png", "image/jpg"];
-
-  //   if (!validTypes.includes(file?.type as string)) {
-  //     alert("Invalid file type. Please upload a JPEG, PNG, or JPG file.");
-  //   }
-  //   if (file) {
-  //     setImagePreview(URL.createObjectURL(file));
-  //     setFile(file);
-  //   }
-  // };
-
-  // const handleClick = () => {
-  //   if (inputRef.current) {
-  //     inputRef.current.click();
-  //   }
-  // };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -46,6 +24,7 @@ export default function PushNotification() {
 
     try {
       const res = await pushNotification(payload).unwrap();
+      console.log("res", res);
       if (res.success) {
         toast.success(res.message || "Notification sent successfully", {
           id: "notification",
@@ -57,7 +36,9 @@ export default function PushNotification() {
         });
       }
     } catch (error) {
-      toast.error((error as any)?.message || "Failed to send notification");
+      toast.error((error as any)?.message || "Failed to send notification", {
+        id: "notification",
+      });
     }
   };
   return (
