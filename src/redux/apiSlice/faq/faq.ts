@@ -9,6 +9,15 @@ const faq = api.injectEndpoints({
       }),
       providesTags: ["faq"],
     }),
+
+    // get support
+    getSupport: builder.query({
+      query: () => ({
+        url: "/customer-support",
+        method: "GET",
+      }),
+    }),
+
     createFaq: builder.mutation({
       query: (data) => ({
         url: "/faq",
@@ -38,6 +47,7 @@ const faq = api.injectEndpoints({
 
 export const {
   useGetFaqQuery,
+  useGetSupportQuery,
   useCreateFaqMutation,
   useUpdateFaqMutation,
   useDeleteFaqMutation,
