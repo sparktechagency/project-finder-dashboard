@@ -26,6 +26,7 @@ import UserTable from "@/components/userTable";
 import PushNotification from "@/pages/pushNotification/PushNotification";
 import Policy from "@/components/public-routes/Policy";
 import Support from "@/components/public-routes/Support";
+import DeleteAccount from "@/components/public-routes/DeleteAccount";
 
 const router = createBrowserRouter([
   {
@@ -61,6 +62,7 @@ const router = createBrowserRouter([
   { path: "/new-password", element: <ResetPasswordForm /> },
   { path: "/policy", element: <Policy /> },
   { path: "/support", element: <Support /> },
+  { path: "/delete-account", element: <DeleteAccount /> },
 ]);
 
 export default router;

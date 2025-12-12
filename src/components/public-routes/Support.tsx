@@ -2,7 +2,6 @@ import { useGetSupportQuery } from "@/redux/apiSlice/faq/faq";
 
 export default function Support() {
   const { data, isLoading } = useGetSupportQuery(undefined);
-  console.log("data", data);
 
   if (isLoading) {
     return <h1 className="flex item-center justtify-center">Loading...</h1>;
