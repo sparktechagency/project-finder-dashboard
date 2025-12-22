@@ -18,6 +18,7 @@ import {
 import AddNewOffer from "@/pages/subscriptions/AddNewOffer";
 import FormInputFields from "@/pages/subscriptions/InputName";
 import toast from "react-hot-toast";
+import { Switch } from "@/components/ui/switch";
 
 interface PackageModalProps {
   isOpen: boolean;
@@ -29,6 +30,7 @@ interface PackageModalProps {
     description?: string[];
     paymentType?: string;
     duration?: string | number;
+    status: boolean;
   };
 }
 
@@ -47,8 +49,10 @@ export default function DublicateSubscribeEditModal({
     offers: string[];
     isOfferModalOpen: boolean;
     newOffer: string;
-    duration: string | number;
+    duration: string | undefined;
+    product_id: string | number;
     paymentType: string;
+    status: boolean;
   }>({
     title: "",
     price: undefined,
@@ -57,7 +61,9 @@ export default function DublicateSubscribeEditModal({
     isOfferModalOpen: false,
     newOffer: "",
     duration: "",
+    product_id: "",
     paymentType: "",
+    status: false,
   });
 
   useEffect(() => {
@@ -76,7 +82,8 @@ export default function DublicateSubscribeEditModal({
       description: desc,
       offers: desc,
       paymentType: edit.paymentType ?? "",
-      duration: edit.duration ?? "",
+      duration: String(edit.duration ?? ""),
+      status: edit.status,
     }));
   }, [edit]);
 
@@ -87,12 +94,16 @@ export default function DublicateSubscribeEditModal({
     }));
   };
 
-  type FormFieldKey = "price" | "duration" | "paymentType";
+  type FormFieldKey = "price" | "duration" | "product_id";
 
   const onSubmit = async () => {
+    const missingRequiredField = inputFields.some(
+      (field) => field.required && !formState[field.id as FormFieldKey]
+    );
+
     if (
       !formState.title ||
-      inputFields.some((field) => !formState[field.id as FormFieldKey]) ||
+      missingRequiredField ||
       !formState.description ||
       formState.description.filter(Boolean).length === 0
     ) {
@@ -101,19 +112,32 @@ export default function DublicateSubscribeEditModal({
       );
       return;
     }
-    const { title, price, duration, paymentType, description } = formState;
 
+    const {
+      title,
+      price,
+      duration,
+      product_id,
+      paymentType,
+      description,
+      status,
+    } = formState;
+
+    // ✅ Build data safely (optional fields allowed)
     const data = {
       title,
       description,
       price,
       duration,
       paymentType,
+      status,
+      ...(product_id && { product_id }), // optional
     };
+    console.log("data", data);
 
     try {
       if (edit?._id) {
-        updateSubscription({ _id: edit._id, data: data }).unwrap();
+        await updateSubscription({ _id: edit._id, data }).unwrap();
       } else {
         await createSubscription(data).unwrap();
       }
@@ -129,28 +153,23 @@ export default function DublicateSubscribeEditModal({
       label: "Price",
       type: "number",
       value: formState.price !== undefined ? String(formState.price) : "",
+      required: true,
     },
+
     {
-      id: "duration",
-      label: "Duration",
-      type: "text",
-      value: formState.duration !== undefined ? String(formState.duration) : "",
-    },
-    {
-      id: "paymentType",
-      label: "Payment Type",
+      id: "product_id",
+      label: "Product Id",
       type: "text",
       value:
-        formState.paymentType !== undefined
-          ? String(formState.paymentType)
-          : "",
+        formState.product_id !== undefined ? String(formState.product_id) : "",
+      required: false,
     },
   ];
 
   return (
     <>
       <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-        <DialogContent className="sm:max-w-lg rounded-lg bg-[#fefefe] text-[#1A1E25] p-6">
+        <DialogContent className="sm:max-w-lg rounded-lg bg-[#fefefe] text-[#1A1E25] p-6 overflow-y-auto h-[600px]">
           <DialogTitle className="text-2xl -mt-2">
             {edit ? "Edit Subscription" : "Add Subscription"}
           </DialogTitle>
@@ -168,13 +187,40 @@ export default function DublicateSubscribeEditModal({
               >
                 <SelectTrigger id="title" className="w-full mt-1">
                   <SelectValue
-                    placeholder="Select Package Name"
+                    placeholder="Select Payment Type"
                     defaultValue={formState?.title}
                   />
                 </SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="Basic Plan">Basic Plan</SelectItem>
                   <SelectItem value="Premium Plan">Premium Plan</SelectItem>
-                  <SelectItem value="Starter Plan">Standard Plan</SelectItem>
+                  <SelectItem value="Standard Plan">Standard Plan</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+
+          {/* monthly and yearly */}
+          {(edit || isOpen) && (
+            <div className="mb-4">
+              <Label className="mb-2" htmlFor="duration">
+                Duration
+              </Label>
+              <Select
+                value={formState.duration}
+                onValueChange={(value) =>
+                  setFormState((prev) => ({ ...prev, duration: value }))
+                }
+              >
+                <SelectTrigger id="duration" className="w-full mt-1">
+                  <SelectValue
+                    placeholder="Select Type"
+                    defaultValue={formState?.duration}
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1 month">1 Month</SelectItem>
+                  <SelectItem value="1 year">1 year</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -184,6 +230,32 @@ export default function DublicateSubscribeEditModal({
             inputFields={inputFields}
             setFormState={setFormState}
           />
+
+          {/* payment type */}
+          {(edit || isOpen) && (
+            <div className="mb-4">
+              <Label className="mb-2" htmlFor="paymentType">
+                Payment Type
+              </Label>
+              <Select
+                value={formState.paymentType}
+                onValueChange={(value) =>
+                  setFormState((prev) => ({ ...prev, paymentType: value }))
+                }
+              >
+                <SelectTrigger id="paymentType" className="w-full mt-1">
+                  <SelectValue
+                    placeholder="Select Package Name"
+                    defaultValue={formState?.paymentType}
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Monthly">Monthly</SelectItem>
+                  <SelectItem value="Yearly">Yearly</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
 
           <div className="mb-4">
             <div className="flex justify-between items-center mb-2 px-1">
@@ -219,6 +291,23 @@ export default function DublicateSubscribeEditModal({
               ) : (
                 <span className="text-black">New Item Add Here</span>
               )}
+            </div>
+
+            {/*switch */}
+            <div className="flex items-center space-x-2 mt-9">
+              <Switch
+                id="status"
+                checked={formState.status}
+                onCheckedChange={(checked) =>
+                  setFormState((prev) => ({
+                    ...prev,
+                    status: checked,
+                  }))
+                }
+              />
+              <Label htmlFor="status">
+                {formState.status ? "Active" : "Delete"}
+              </Label>
             </div>
           </div>
 

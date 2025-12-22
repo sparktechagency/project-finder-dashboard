@@ -15,6 +15,7 @@ interface cardData {
   description: string[];
   paymentType: string;
   duration?: string | number;
+  status: boolean;
 }
 export default function Premium() {
   const { data, isLoading, isError } = useGetSubscriptionsQuery(undefined);
@@ -25,6 +26,7 @@ export default function Premium() {
     description?: string[];
     paymentType?: string;
     duration?: string | number;
+    status: boolean;
   } | null>(null);
 
   if (isLoading) {
@@ -34,6 +36,8 @@ export default function Premium() {
   if (isError) {
     return <ErrorPage />;
   }
+
+  console.log("data", data);
 
   return (
     <>
@@ -72,6 +76,11 @@ export default function Premium() {
                   )
               )}
             </div>
+
+            {/* status get */}
+            <p className="text-sm font-medium mb-10">
+              Status: {item?.status ? "Active" : "Delete"}
+            </p>
           </div>
         ))}
       </div>

@@ -18,8 +18,10 @@ type FormInputFieldsProps = {
       offers: string[];
       isOfferModalOpen: boolean;
       newOffer: string;
-      duration: string | number;
+      duration: string | undefined;
+      product_id: string | number;
       paymentType: string;
+      status: boolean;
     }>
   >;
 };
@@ -30,7 +32,7 @@ export default function FormInputFields({
 }: FormInputFieldsProps) {
   return (
     <>
-      {inputFields.map(({ id, label, type, value }) => (
+      {inputFields?.map(({ id, label, type, value }) => (
         <div className="mb-4" key={id}>
           <Label className="mb-2" htmlFor={id}>
             {label}

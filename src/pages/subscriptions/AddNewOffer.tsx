@@ -11,8 +11,10 @@ type AddNewOfferProps = {
     offers: string[];
     isOfferModalOpen: boolean;
     newOffer: string;
-    duration: string | number;
+    duration: string | undefined;
+    product_id: string | number;
     paymentType: string;
+    status: boolean;
   };
   setFormState: React.Dispatch<
     React.SetStateAction<{
@@ -22,8 +24,10 @@ type AddNewOfferProps = {
       offers: string[];
       isOfferModalOpen: boolean;
       newOffer: string;
-      duration: string | number;
+      duration: string | undefined;
+      product_id: string | number;
       paymentType: string;
+      status: boolean;
     }>
   >;
 };
