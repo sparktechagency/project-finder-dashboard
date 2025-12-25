@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { FormField } from "./FormField";
 import { ImageUpload } from "./ImageUpload";
@@ -17,7 +17,10 @@ import { apartmentDetailsData } from "@/demoData/AllDemoData";
 import SeaView from "./seaView";
 import { Label } from "@/components/ui/label";
 import YearMultiSelect from "./YearSelected";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { Input } from "@/components/ui/input";
+import { getCoordinates } from "@/utils/getCoordinates";
+// import { getCoordinates } from "@/utils/getCoordinates";
 
 interface ApartmentFormProps {
   files: {
@@ -74,10 +77,28 @@ export default function AddCreateProject({
 
   const [seaViewBoolean, setSeaViewBoolean] = useState(false);
 
+  const [coordinates, setCoordinates] = useState<
+    { lat: number; lng: number }[] | null
+  >(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const address = searchParams.get("location");
+  console.log("address", address);
+
   // ✅ Sea View state
   const [seaViewSpecs, setSeaViewSpecs] = useState<{ [key: string]: string }>({
     seaView1: "",
   });
+
+  // map-----------------------------------------------------
+  const handleNames = (e) => {
+    const value = e.target.value;
+
+    setSearchParams((prev) => {
+      const params = new URLSearchParams(prev);
+      params.set("location", value);
+      return params;
+    });
+  };
 
   // ✅ Sea View handlers
   const handleSeaViewChange = (key: string, value: string) => {
@@ -103,10 +124,16 @@ export default function AddCreateProject({
     });
   };
 
-  const [markerPosition, setMarkerPosition] = useState<{
-    lat: number;
-    lng: number;
-  } | null>(null);
+  // map implement ---------------------------------------------------------------------------------
+
+  useEffect(() => {
+    (async () => {
+      if (address) {
+        const res = await getCoordinates(address);
+        setCoordinates(res?.data || []);
+      }
+    })();
+  }, [searchParams]);
 
   const handleSelectChange = (field: string, value: string) => {
     setSelectValues((prev) => ({ ...prev, [field]: value }));
@@ -170,14 +197,14 @@ export default function AddCreateProject({
       .filter((v) => v.trim() !== "")
       .forEach((feature) => formData.append("seaView", feature));
 
-    // Location;
-    if (!markerPosition) {
-      toast.error("Please select a location on the map.");
-      console.error("No marker position selected.");
-      return;
-    }
-    formData.append("latitude", markerPosition.lat.toString());
-    formData.append("longitude", markerPosition.lng.toString());
+    // // Location;
+    // if (!markerPosition) {
+    //   toast.error("Please select a location on the map.");
+    //   console.error("No marker position selected.");
+    //   return;
+    // }
+    // formData.append("latitude", markerPosition.lat.toString());
+    // formData.append("longitude", markerPosition.lng.toString());
 
     // Selects
     Object.entries(selectValues).forEach(([key, val]) =>
@@ -208,7 +235,7 @@ export default function AddCreateProject({
           apartmentImagesPdf: { url: "", type: "" },
         }));
         setImageSections([null]);
-        setMarkerPosition({ lat: 0, lng: 0 });
+        // setMarkerPosition({ lat: 0, lng: 0 });
         setSelectedYears([]);
         navigate("/projects");
       } else {
@@ -293,10 +320,9 @@ export default function AddCreateProject({
         {/* Right Column */}
         <div>
           {/* map */}
-          <LocationPicker
-            markerPosition={markerPosition}
-            setMarkerPosition={setMarkerPosition}
-          />
+
+          <LocationPicker locations={coordinates!} />
+          <Input onChange={handleNames} placeholder="Enter your location" />
 
           {/* property type */}
           <SelectItems
