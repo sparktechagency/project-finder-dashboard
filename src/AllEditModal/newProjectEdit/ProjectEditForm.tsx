@@ -44,7 +44,7 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
   }, []);
 
   const [date, setDate] = useState<string>("");
-  const [address, setAddress] = useState("");
+  const [, setAddress] = useState("");
 
   const [markerPosition, setMarkerPosition] = useState<{
     lat: number;
