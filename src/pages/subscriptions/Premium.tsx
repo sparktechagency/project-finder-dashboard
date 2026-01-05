@@ -37,8 +37,6 @@ export default function Premium() {
     return <ErrorPage />;
   }
 
-  console.log("data", data);
-
   return (
     <>
       <div className="grid grid-cols-4 space-x-6 space-y-5">

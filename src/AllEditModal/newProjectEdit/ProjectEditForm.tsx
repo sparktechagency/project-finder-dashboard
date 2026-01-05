@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Button } from "@/components/ui/button";
@@ -10,7 +11,7 @@ import { useUpdateProjectMutation } from "@/redux/apiSlice/apartments/apartments
 import { getAddressFromLatLng } from "@/helper/mapAddress";
 import { contactFields } from "@/demoData/ProjectEditData";
 import ProjectEditFiles from "./ProjectEditFiles";
-import ProjectEditLocation from "./ProjectEditLocation";
+// import ProjectEditLocation from "./ProjectEditLocation";
 import ProjectEditContactFields from "./ProjectEditContactFields";
 import { EditFeatures } from "./EditFeatures";
 import { Label } from "@/components/ui/label";
@@ -20,6 +21,7 @@ import ProjectEditSelectFields from "./ProjectEditSelectFields";
 import { EditSeeViews } from "./EditSeeViews";
 import { Textarea } from "@/components/ui/textarea";
 import YearMultiSelect from "./SelectYear";
+import LocationPicker from "@/pages/dashboard/map/Map";
 
 export default function ProjectEditForm({ invoice }: { invoice: any }) {
   const [updateProject] = useUpdateProjectMutation();
@@ -55,14 +57,17 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
 
   useEffect(() => {
     if (invoice?.latitude && invoice?.longitude) {
-      const { latitude, longitude } = invoice;
+      const latitude = Number(invoice.latitude);
+      const longitude = Number(invoice.longitude);
+
       setMarkerPosition({ lat: latitude, lng: longitude });
+
       getAddressFromLatLng(
         latitude,
         longitude,
         import.meta.env.VITE_GOOGLE_API_KEY
       ).then((data) => {
-        if (data) setAddress(data);
+        setAddress(data ?? "Address not available");
       });
     }
   }, [invoice?.latitude, invoice?.longitude]);
@@ -280,12 +285,15 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
           setApartmentFile={setApartmentFile}
         />
 
-        <ProjectEditLocation
+        {/* <ProjectEditLocation
           address={address}
           setAddress={setAddress}
           markerPosition={markerPosition}
           setMarkerPosition={setMarkerPosition}
-        />
+        /> */}
+
+        <LocationPicker locations={markerPosition ? [markerPosition] : []} />
+        <Input placeholder="Enter your location" />
 
         <ProjectEditContactFields
           contactAddress={contactAddress}

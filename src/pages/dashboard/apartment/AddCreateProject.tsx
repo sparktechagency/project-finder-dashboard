@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { FormField } from "./FormField";
 import { ImageUpload } from "./ImageUpload";
@@ -7,6 +7,7 @@ import SelectItems from "./SelectItem";
 import LocationPicker from "../map/Map";
 import { useCreateProjectMutation } from "@/redux/apiSlice/apartments/apartments";
 import toast from "react-hot-toast";
+import debounce from "debounce";
 import ProjectsImages from "./ProjectsImage";
 import {
   company,
@@ -82,23 +83,32 @@ export default function AddCreateProject({
   >(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const address = searchParams.get("location");
-  console.log("address", address);
 
   // ✅ Sea View state
   const [seaViewSpecs, setSeaViewSpecs] = useState<{ [key: string]: string }>({
     seaView1: "",
   });
 
-  // map-----------------------------------------------------
-  const handleNames = (e) => {
-    const value = e.target.value;
+  const [searchLocation, setSearchLocation] = useState("");
+  const handleNames = useCallback(
+    debounce((value) => {
+      setSearchParams((prev) => {
+        const params = new URLSearchParams(prev);
+        params.set("location", value);
+        return params;
+      });
+    }, 1000),
+    []
+  );
 
-    setSearchParams((prev) => {
-      const params = new URLSearchParams(prev);
-      params.set("location", value);
-      return params;
-    });
-  };
+  useEffect(() => {
+    handleNames(searchLocation);
+
+    // cleanup (important!)
+    // return () => {
+    //   handleNames.cancel();
+    // };
+  }, [searchLocation, handleNames]);
 
   // ✅ Sea View handlers
   const handleSeaViewChange = (key: string, value: string) => {
@@ -198,13 +208,13 @@ export default function AddCreateProject({
       .forEach((feature) => formData.append("seaView", feature));
 
     // // Location;
-    // if (!markerPosition) {
-    //   toast.error("Please select a location on the map.");
-    //   console.error("No marker position selected.");
-    //   return;
-    // }
-    // formData.append("latitude", markerPosition.lat.toString());
-    // formData.append("longitude", markerPosition.lng.toString());
+    if (!coordinates || coordinates.length === 0) {
+      toast.error("Please select a location on the map.");
+      console.error("No marker position selected.");
+      return;
+    }
+    formData.append("latitude", coordinates[0].lat.toString());
+    formData.append("longitude", coordinates[0].lng.toString());
 
     // Selects
     Object.entries(selectValues).forEach(([key, val]) =>
@@ -322,7 +332,10 @@ export default function AddCreateProject({
           {/* map */}
 
           <LocationPicker locations={coordinates!} />
-          <Input onChange={handleNames} placeholder="Enter your location" />
+          <Input
+            onChange={(e) => setSearchLocation(e.target.value)}
+            placeholder="Enter your location"
+          />
 
           {/* property type */}
           <SelectItems

@@ -9,12 +9,11 @@ export async function getAddressFromLatLng(
     const response = await fetch(url);
     const data = await response.json();
 
-    if (data.status === "OK" && data.results.length > 0) {
+    if (data.status === "OK" && data.results?.length > 0) {
       return data.results[0].formatted_address;
-    } else {
-      console.error("Geocoding error:", data.status);
-      return null;
     }
+
+    return null;
   } catch (error) {
     console.error("Request failed:", error);
     return null;

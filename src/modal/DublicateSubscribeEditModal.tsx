@@ -133,7 +133,6 @@ export default function DublicateSubscribeEditModal({
       status,
       ...(product_id && { product_id }), // optional
     };
-    console.log("data", data);
 
     try {
       if (edit?._id) {

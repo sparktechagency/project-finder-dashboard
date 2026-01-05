@@ -42,6 +42,7 @@ const router = createBrowserRouter([
       { path: "Subscriber", element: <Subscriber /> },
       { path: "projectForm", element: <AddCreateProject /> },
       { path: "projects", element: <Apartment /> },
+      // { path: "new-apartment", element: <NewApartment /> },
       { path: "projects-details", element: <ApartmentDetails /> },
       { path: "subscriptions", element: <Subscriptions /> },
       { path: "faq", element: <Faq /> },
