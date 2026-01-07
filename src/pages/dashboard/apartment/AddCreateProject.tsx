@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { FormField } from "./FormField";
 import { ImageUpload } from "./ImageUpload";
 import { QualitySpecsInput } from "./QualitySpecsInput";
 import SelectItems from "./SelectItem";
-import LocationPicker from "../map/Map";
+
 import { useCreateProjectMutation } from "@/redux/apiSlice/apartments/apartments";
 import toast from "react-hot-toast";
-import debounce from "debounce";
 import ProjectsImages from "./ProjectsImage";
 import {
   company,
@@ -19,9 +18,7 @@ import SeaView from "./seaView";
 import { Label } from "@/components/ui/label";
 import YearMultiSelect from "./YearSelected";
 import { useNavigate } from "react-router-dom";
-import { Input } from "@/components/ui/input";
-import { getCoordinates } from "@/utils/getCoordinates";
-// import { getCoordinates } from "@/utils/getCoordinates";
+import LocationPicker2 from "../map/NewMap";
 
 interface ApartmentFormProps {
   files: {
@@ -82,41 +79,6 @@ export default function AddCreateProject({
   const [seaViewSpecs, setSeaViewSpecs] = useState<{ [key: string]: string }>({
     seaView1: "",
   });
-  const [searchLocation, setSearchLocation] = useState("");
-  const [coordinates, setCoordinates] = useState<
-    { lat: number; lng: number }[] | null
-  >(null);
-
-  const handleSelectLocation = (
-    latLng: { lat: number; lng: number },
-    city?: string
-  ) => {
-    setCoordinates([latLng]);
-    if (city) setSearchLocation(city);
-  };
-  const handleNames = debounce(async () => {
-    if (searchLocation.trim() !== "") {
-      const res = await getCoordinates(searchLocation); // your API function
-
-      setCoordinates(res?.data || []);
-    }
-  }, 2000);
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (searchLocation) {
-      params.set("location", searchLocation);
-      window.history.replaceState(
-        {},
-        "",
-        `${window.location.pathname}?${params.toString()}`
-      );
-    } else {
-      params.delete("location");
-      window.history.replaceState({}, "", `${window.location.pathname}`);
-    }
-    handleNames();
-  }, [searchLocation]);
 
   // ✅ Sea View handlers
   const handleSeaViewChange = (key: string, value: string) => {
@@ -141,6 +103,11 @@ export default function AddCreateProject({
       return updated;
     });
   };
+
+  const [markerPosition, setMarkerPosition] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
 
   const handleSelectChange = (field: string, value: string) => {
     setSelectValues((prev) => ({ ...prev, [field]: value }));
@@ -204,14 +171,14 @@ export default function AddCreateProject({
       .filter((v) => v.trim() !== "")
       .forEach((feature) => formData.append("seaView", feature));
 
-    // // Location;
-    if (!coordinates || coordinates.length === 0) {
+    // Location;
+    if (!markerPosition) {
       toast.error("Please select a location on the map.");
       console.error("No marker position selected.");
       return;
     }
-    formData.append("latitude", coordinates[0].lat.toString());
-    formData.append("longitude", coordinates[0].lng.toString());
+    formData.append("latitude", markerPosition.lat.toString());
+    formData.append("longitude", markerPosition.lng.toString());
 
     // Selects
     Object.entries(selectValues).forEach(([key, val]) =>
@@ -242,7 +209,7 @@ export default function AddCreateProject({
           apartmentImagesPdf: { url: "", type: "" },
         }));
         setImageSections([null]);
-        // setMarkerPosition({ lat: 0, lng: 0 });
+        setMarkerPosition({ lat: 0, lng: 0 });
         setSelectedYears([]);
         navigate("/projects");
       } else {
@@ -327,19 +294,9 @@ export default function AddCreateProject({
         {/* Right Column */}
         <div>
           {/* map */}
-
-          <LocationPicker
-            locations={coordinates || []}
-            onSelectLocation={handleSelectLocation}
-          />
-
-          <Input
-            value={searchLocation}
-            onChange={async (e) => {
-              const value = e.target.value;
-              setSearchLocation(value);
-            }}
-            placeholder="Enter your location"
+          <LocationPicker2
+            markerPosition={markerPosition}
+            setMarkerPosition={setMarkerPosition}
           />
 
           {/* property type */}
@@ -382,11 +339,14 @@ export default function AddCreateProject({
             value={selectValues.completionYear}
             onSelect={(value) => handleSelectChange("completionYear", value)}
           /> */}
+
           {/* <Label className="text-black">Completion Year</Label> */}
+
           <YearMultiSelect
             selectedYears={selectedYears}
             setSelectedYears={setSelectedYears}
           />
+
           <Label className="text-gray-900">Sea Views</Label>
           <div
             onClick={() => setSeaViewBoolean(!seaViewBoolean)}
@@ -404,6 +364,7 @@ export default function AddCreateProject({
               }`}
             />
           </div>
+
           <QualitySpecsInput
             title="Features"
             specs={qualitySpecs}

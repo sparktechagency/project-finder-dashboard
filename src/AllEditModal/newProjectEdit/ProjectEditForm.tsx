@@ -20,9 +20,10 @@ import ProjectEditSelectFields from "./ProjectEditSelectFields";
 import { EditSeeViews } from "./EditSeeViews";
 import { Textarea } from "@/components/ui/textarea";
 import YearMultiSelect from "./SelectYear";
-import LocationPicker from "@/pages/dashboard/map/Map";
-import debounce from "debounce";
-import { getCoordinates } from "@/utils/getCoordinates";
+// import debounce from "debounce";
+// import { getCoordinates } from "@/utils/getCoordinates";
+import ProjectEditLocation from "./ProjectEditLocation";
+import { getAddressFromLatLng } from "@/helper/mapAddress";
 
 export default function ProjectEditForm({ invoice }: { invoice: any }) {
   const [updateProject] = useUpdateProjectMutation();
@@ -38,27 +39,23 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
     invoice.seaViewBoolean
   );
 
-  const [searchLocation, setSearchLocation] = useState("");
+  // const [searchLocation, setSearchLocation] = useState("");
 
-  const [coordinates, setCoordinates] = useState<
-    { lat: number; lng: number }[] | null
-  >([{ lat: invoice?.latitude ?? 0, lng: invoice?.longitude ?? 0 }]);
+  // const [coordinates, setCoordinates] = useState<
+  //   { lat: number; lng: number }[] | null
+  // >([{ lat: invoice?.latitude ?? 0, lng: invoice?.longitude ?? 0 }]);
 
-  const handleNames = debounce(async () => {
-    if (searchLocation.trim() !== "") {
-      const res = await getCoordinates(searchLocation); // your API function
+  // const handleNames = debounce(async () => {
+  //   if (searchLocation.trim() !== "") {
+  //     const res = await getCoordinates(searchLocation); // your API function
 
-      setCoordinates(res?.data || []);
-    }
-  }, 2000);
+  //     setCoordinates(res?.data || []);
+  //   }
+  // }, 2000);
 
-  useEffect(() => {
-    handleNames();
-  }, [searchLocation]);
-
-  const handleSelectLocation = (latLng: { lat: number; lng: number }) => {
-    setCoordinates([latLng]);
-  };
+  // useEffect(() => {
+  //   handleNames();
+  // }, [searchLocation]);
 
   // map end-------------
 
@@ -151,6 +148,29 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
     });
   };
 
+  const [address, setAddress] = useState("");
+
+  const [markerPosition, setMarkerPosition] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
+
+  console.log("markerPosition", markerPosition);
+
+  useEffect(() => {
+    if (invoice?.latitude && invoice?.longitude) {
+      const { latitude, longitude } = invoice;
+      setMarkerPosition({ lat: latitude, lng: longitude });
+      getAddressFromLatLng(
+        latitude,
+        longitude,
+        import.meta.env.VITE_GOOGLE_API_KEY
+      ).then((data) => {
+        if (data) setAddress(data);
+      });
+    }
+  }, [invoice?.latitude, invoice?.longitude]);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -195,8 +215,8 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
       formData.append("salesCompany", selected.salesCompany);
     if (selected.location) formData.append("location", selected.location);
 
-    formData.append("latitude", coordinates?.[0]?.lat?.toString() ?? "");
-    formData.append("longitude", coordinates?.[0]?.lng?.toString() ?? "");
+    formData.append("latitude", markerPosition?.lat?.toString() ?? "");
+    formData.append("longitude", markerPosition?.lng?.toString() ?? "");
 
     const contactData = {
       phone: values.phone,
@@ -287,19 +307,21 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
           setApartmentFile={setApartmentFile}
         />
 
-        <LocationPicker
-          locations={coordinates || []}
-          onSelectLocation={handleSelectLocation}
-          // onSelectLocation={handleSelectLocation}
+        <ProjectEditLocation
+          address={address}
+          setAddress={setAddress}
+          markerPosition={markerPosition}
+          setMarkerPosition={setMarkerPosition}
         />
-        <Input
+
+        {/* <Input
           value={invoice?.location}
           onChange={async (e) => {
             const value = e.target.value;
             setSearchLocation(value);
           }}
           placeholder="Enter your location"
-        />
+        /> */}
 
         <ProjectEditContactFields
           contactAddress={contactAddress}

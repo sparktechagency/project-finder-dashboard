@@ -61,14 +61,7 @@ export default function EditLocation({
       <Label htmlFor="location" className="mb-2 text-black">
         Map
       </Label>
-      <Input
-        id="location"
-        value={address}
-        onChange={(e) => setAddress(e.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder="Enter place name and press Enter"
-        className="mb-2"
-      />
+
       <div style={{ height: 200, width: "100%" }}>
         <GoogleMap
           mapContainerStyle={{ width: "100%", height: "100%" }}
@@ -79,6 +72,15 @@ export default function EditLocation({
           {markerPosition && <Marker position={markerPosition} />}
         </GoogleMap>
       </div>
+
+      <Input
+        id="location"
+        value={address}
+        onChange={(e) => setAddress(e.target.value)}
+        onKeyDown={handleKeyDown}
+        placeholder="Enter place name and press Enter"
+        className="mb-2 mt-4"
+      />
     </div>
   );
 }
