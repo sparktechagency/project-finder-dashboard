@@ -94,10 +94,6 @@ export default function LocationPicker({
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_API_KEY || "",
   });
-  console.log(
-    "import.meta.env.VITE_GOOGLE_API_KEY",
-    import.meta.env.VITE_GOOGLE_API_KEY
-  );
 
   // Reverse geocode to get city name
   const getCityFromLatLng = (lat: number, lng: number) => {
