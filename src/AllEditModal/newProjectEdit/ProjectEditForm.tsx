@@ -10,7 +10,6 @@ import {
 import { useUpdateProjectMutation } from "@/redux/apiSlice/apartments/apartments";
 import { contactFields } from "@/demoData/ProjectEditData";
 import ProjectEditFiles from "./ProjectEditFiles";
-// import ProjectEditLocation from "./ProjectEditLocation";
 import ProjectEditContactFields from "./ProjectEditContactFields";
 import { EditFeatures } from "./EditFeatures";
 import { Label } from "@/components/ui/label";
@@ -20,8 +19,6 @@ import ProjectEditSelectFields from "./ProjectEditSelectFields";
 import { EditSeeViews } from "./EditSeeViews";
 import { Textarea } from "@/components/ui/textarea";
 import YearMultiSelect from "./SelectYear";
-// import debounce from "debounce";
-// import { getCoordinates } from "@/utils/getCoordinates";
 import ProjectEditLocation from "./ProjectEditLocation";
 import { getAddressFromLatLng } from "@/helper/mapAddress";
 
@@ -38,26 +35,6 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
   const [seaViewBoolean, setSeaViewBoolean] = useState<boolean>(
     invoice.seaViewBoolean
   );
-
-  // const [searchLocation, setSearchLocation] = useState("");
-
-  // const [coordinates, setCoordinates] = useState<
-  //   { lat: number; lng: number }[] | null
-  // >([{ lat: invoice?.latitude ?? 0, lng: invoice?.longitude ?? 0 }]);
-
-  // const handleNames = debounce(async () => {
-  //   if (searchLocation.trim() !== "") {
-  //     const res = await getCoordinates(searchLocation); // your API function
-
-  //     setCoordinates(res?.data || []);
-  //   }
-  // }, 2000);
-
-  // useEffect(() => {
-  //   handleNames();
-  // }, [searchLocation]);
-
-  // map end-------------
 
   useEffect(() => {
     if (invoice?.seaView) {
@@ -82,7 +59,6 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
 
   useEffect(() => {
     if (invoice?.CompletionDate) {
-      // const year = new Date(invoice.CompletionDate).getFullYear().toString();
       setSelectedYears(invoice?.CompletionDate);
     }
   }, [invoice?.CompletionDate]);
@@ -313,15 +289,6 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
           markerPosition={markerPosition}
           setMarkerPosition={setMarkerPosition}
         />
-
-        {/* <Input
-          value={invoice?.location}
-          onChange={async (e) => {
-            const value = e.target.value;
-            setSearchLocation(value);
-          }}
-          placeholder="Enter your location"
-        /> */}
 
         <ProjectEditContactFields
           contactAddress={contactAddress}
