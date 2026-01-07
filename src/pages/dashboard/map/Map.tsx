@@ -144,7 +144,7 @@ export default function LocationPicker({
         <GoogleMap
           mapContainerStyle={{ width: "100%", height: "100%" }}
           center={markerPosition}
-          zoom={13}
+          zoom={10}
           onLoad={(map) => setMap(map)}
           onClick={handleMapClick}
         >
