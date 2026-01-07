@@ -7,7 +7,8 @@
     "dev": "vite --host 0.0.0.0",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview --host"
+    "preview": "vite preview --host",
+    "start": "npm run dev"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",

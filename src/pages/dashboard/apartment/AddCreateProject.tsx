@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { FormField } from "./FormField";
 import { ImageUpload } from "./ImageUpload";
@@ -18,7 +18,7 @@ import { apartmentDetailsData } from "@/demoData/AllDemoData";
 import SeaView from "./seaView";
 import { Label } from "@/components/ui/label";
 import YearMultiSelect from "./YearSelected";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { getCoordinates } from "@/utils/getCoordinates";
 // import { getCoordinates } from "@/utils/getCoordinates";
@@ -78,37 +78,45 @@ export default function AddCreateProject({
 
   const [seaViewBoolean, setSeaViewBoolean] = useState(false);
 
-  const [coordinates, setCoordinates] = useState<
-    { lat: number; lng: number }[] | null
-  >(null);
-  const [searchParams, setSearchParams] = useSearchParams();
-  const address = searchParams.get("location");
-
   // ✅ Sea View state
   const [seaViewSpecs, setSeaViewSpecs] = useState<{ [key: string]: string }>({
     seaView1: "",
   });
-
   const [searchLocation, setSearchLocation] = useState("");
-  const handleNames = useCallback(
-    debounce((value) => {
-      setSearchParams((prev) => {
-        const params = new URLSearchParams(prev);
-        params.set("location", value);
-        return params;
-      });
-    }, 1000),
-    []
-  );
+  const [coordinates, setCoordinates] = useState<
+    { lat: number; lng: number }[] | null
+  >(null);
+
+  const handleSelectLocation = (
+    latLng: { lat: number; lng: number },
+    city?: string
+  ) => {
+    setCoordinates([latLng]);
+    if (city) setSearchLocation(city);
+  };
+  const handleNames = debounce(async () => {
+    if (searchLocation.trim() !== "") {
+      const res = await getCoordinates(searchLocation); // your API function
+
+      setCoordinates(res?.data || []);
+    }
+  }, 2000);
 
   useEffect(() => {
-    handleNames(searchLocation);
-
-    // cleanup (important!)
-    // return () => {
-    //   handleNames.cancel();
-    // };
-  }, [searchLocation, handleNames]);
+    const params = new URLSearchParams(window.location.search);
+    if (searchLocation) {
+      params.set("location", searchLocation);
+      window.history.replaceState(
+        {},
+        "",
+        `${window.location.pathname}?${params.toString()}`
+      );
+    } else {
+      params.delete("location");
+      window.history.replaceState({}, "", `${window.location.pathname}`);
+    }
+    handleNames();
+  }, [searchLocation]);
 
   // ✅ Sea View handlers
   const handleSeaViewChange = (key: string, value: string) => {
@@ -133,17 +141,6 @@ export default function AddCreateProject({
       return updated;
     });
   };
-
-  // map implement ---------------------------------------------------------------------------------
-
-  useEffect(() => {
-    (async () => {
-      if (address) {
-        const res = await getCoordinates(address);
-        setCoordinates(res?.data || []);
-      }
-    })();
-  }, [searchParams]);
 
   const handleSelectChange = (field: string, value: string) => {
     setSelectValues((prev) => ({ ...prev, [field]: value }));
@@ -331,9 +328,17 @@ export default function AddCreateProject({
         <div>
           {/* map */}
 
-          <LocationPicker locations={coordinates!} />
+          <LocationPicker
+            locations={coordinates || []}
+            onSelectLocation={handleSelectLocation}
+          />
+
           <Input
-            onChange={(e) => setSearchLocation(e.target.value)}
+            value={searchLocation}
+            onChange={async (e) => {
+              const value = e.target.value;
+              setSearchLocation(value);
+            }}
             placeholder="Enter your location"
           />
 
@@ -377,14 +382,11 @@ export default function AddCreateProject({
             value={selectValues.completionYear}
             onSelect={(value) => handleSelectChange("completionYear", value)}
           /> */}
-
           {/* <Label className="text-black">Completion Year</Label> */}
-
           <YearMultiSelect
             selectedYears={selectedYears}
             setSelectedYears={setSelectedYears}
           />
-
           <Label className="text-gray-900">Sea Views</Label>
           <div
             onClick={() => setSeaViewBoolean(!seaViewBoolean)}
@@ -402,7 +404,6 @@ export default function AddCreateProject({
               }`}
             />
           </div>
-
           <QualitySpecsInput
             title="Features"
             specs={qualitySpecs}

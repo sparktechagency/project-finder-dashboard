@@ -83,12 +83,11 @@ export default function NewApartment() {
       setValue(field, file);
     };
 
-  const onSubmit = (data: FormData) => {
-    const submitData = {
-      ...data,
-      updatedDate: new Date().toISOString(),
-    };
-    console.log("Form Data:", submitData);
+  const onSubmit = () => {
+    // const submitData = {
+    //   ...data,
+    //   updatedDate: new Date().toISOString(),
+    // };
   };
 
   return (

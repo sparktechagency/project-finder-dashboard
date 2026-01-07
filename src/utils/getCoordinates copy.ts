@@ -14,33 +14,24 @@ export const getCoordinates = async (
       };
     }
 
-    // Make sure to replace with your actual Google Maps API key
-    const API_KEY = "AIzaSyBr0c6xuLTeqbSqCi5FlFm_7LuJ9KSVoUo";
-    if (!API_KEY) {
-      return {
-        success: false,
-        message: "Google Maps API key is missing",
-      };
-    }
-
-    const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
       location
-    )}&key=${API_KEY}`;
+    )}`;
 
     const res = await fetch(url);
     const data = await res.json();
 
-    if (data.status !== "OK" || !data.results.length) {
+    if (!data.length) {
       return {
         success: false,
-        message: `No results found for the specified location. Status: ${data.status}`,
+        message: "No results found for the specified location.",
         data: [],
       };
     }
 
-    const newLocations = data.results.map((result: any) => ({
-      lat: result.geometry.location.lat,
-      lng: result.geometry.location.lng,
+    const newLocations = data.map((loc: any) => ({
+      lat: Number(loc.lat),
+      lng: Number(loc.lon),
     }));
 
     return {

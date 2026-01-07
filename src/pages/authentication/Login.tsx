@@ -18,18 +18,11 @@ export default function Login() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const { register, handleSubmit } = useForm<FormData>();
 
-  // useEffect(() => {
-  //   if (isLoading) {
-  //     toast.loading("Loading...", { id: "login" });
-  //   } else {
-  //     toast.dismiss("login");
-  //   }
-  // }, [isLoading]);
-
   const onSubmit = async (form: FormData) => {
     toast.loading("Processing....", { id: "login" });
     try {
       const result = await login(form).unwrap();
+
       if (result.success) {
         toast.success("Login successfully", { id: "login" });
         Cookies.set("accessToken", result.data.accessToken);
