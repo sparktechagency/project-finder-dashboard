@@ -76,7 +76,7 @@ export default function LocationPicker({
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [markerPosition, setMarkerPosition] = useState({
     lat: 23.8041,
-    lng: 90.4152,
+    lng: 88.4152,
   });
 
   // Update marker if parent sends coordinates

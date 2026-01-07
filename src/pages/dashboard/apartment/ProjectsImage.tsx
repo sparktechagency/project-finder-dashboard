@@ -47,7 +47,7 @@ export default function ProjectsImages({
             {/* Hidden file input for replacement */}
             <input
               type="file"
-              accept="image/jpeg,image/png,image/gif,image/jpg"
+              accept=".jpg, .jpeg, .png"
               onChange={(e) => handleImageChange(e, idx)}
               className="absolute inset-0 opacity-0 cursor-pointer"
               multiple
@@ -59,7 +59,7 @@ export default function ProjectsImages({
           +
           <input
             type="file"
-            accept="image/*"
+            accept=".jpg, .jpeg, .png"
             onChange={handleImageChange}
             className="hidden"
             multiple

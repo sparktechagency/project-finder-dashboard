@@ -8,7 +8,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useUpdateProjectMutation } from "@/redux/apiSlice/apartments/apartments";
-import { getAddressFromLatLng } from "@/helper/mapAddress";
 import { contactFields } from "@/demoData/ProjectEditData";
 import ProjectEditFiles from "./ProjectEditFiles";
 // import ProjectEditLocation from "./ProjectEditLocation";
@@ -22,6 +21,8 @@ import { EditSeeViews } from "./EditSeeViews";
 import { Textarea } from "@/components/ui/textarea";
 import YearMultiSelect from "./SelectYear";
 import LocationPicker from "@/pages/dashboard/map/Map";
+import debounce from "debounce";
+import { getCoordinates } from "@/utils/getCoordinates";
 
 export default function ProjectEditForm({ invoice }: { invoice: any }) {
   const [updateProject] = useUpdateProjectMutation();
@@ -37,6 +38,30 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
     invoice.seaViewBoolean
   );
 
+  const [searchLocation, setSearchLocation] = useState("");
+
+  const [coordinates, setCoordinates] = useState<
+    { lat: number; lng: number }[] | null
+  >([{ lat: invoice?.latitude ?? 0, lng: invoice?.longitude ?? 0 }]);
+
+  const handleNames = debounce(async () => {
+    if (searchLocation.trim() !== "") {
+      const res = await getCoordinates(searchLocation); // your API function
+
+      setCoordinates(res?.data || []);
+    }
+  }, 2000);
+
+  useEffect(() => {
+    handleNames();
+  }, [searchLocation]);
+
+  const handleSelectLocation = (latLng: { lat: number; lng: number }) => {
+    setCoordinates([latLng]);
+  };
+
+  // map end-------------
+
   useEffect(() => {
     if (invoice?.seaView) {
       setSeaViews(invoice.seaView || []);
@@ -44,33 +69,10 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
   }, []);
 
   const [date, setDate] = useState<string>("");
-  const [, setAddress] = useState("");
-
-  const [markerPosition, setMarkerPosition] = useState<{
-    lat: number;
-    lng: number;
-  } | null>(null);
 
   const [contactAddress, setContactAddress] = useState({
     name: invoice?.contact || "",
   });
-
-  useEffect(() => {
-    if (invoice?.latitude && invoice?.longitude) {
-      const latitude = Number(invoice.latitude);
-      const longitude = Number(invoice.longitude);
-
-      setMarkerPosition({ lat: latitude, lng: longitude });
-
-      getAddressFromLatLng(
-        latitude,
-        longitude,
-        import.meta.env.VITE_GOOGLE_API_KEY
-      ).then((data) => {
-        setAddress(data ?? "Address not available");
-      });
-    }
-  }, [invoice?.latitude, invoice?.longitude]);
 
   useEffect(() => {
     if (invoice?.updatedDate) {
@@ -193,8 +195,8 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
       formData.append("salesCompany", selected.salesCompany);
     if (selected.location) formData.append("location", selected.location);
 
-    formData.append("latitude", markerPosition?.lat?.toString() ?? "");
-    formData.append("longitude", markerPosition?.lng?.toString() ?? "");
+    formData.append("latitude", coordinates?.[0]?.lat?.toString() ?? "");
+    formData.append("longitude", coordinates?.[0]?.lng?.toString() ?? "");
 
     const contactData = {
       phone: values.phone,
@@ -285,15 +287,19 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
           setApartmentFile={setApartmentFile}
         />
 
-        {/* <ProjectEditLocation
-          address={address}
-          setAddress={setAddress}
-          markerPosition={markerPosition}
-          setMarkerPosition={setMarkerPosition}
-        /> */}
-
-        <LocationPicker locations={markerPosition ? [markerPosition] : []} />
-        <Input placeholder="Enter your location" />
+        <LocationPicker
+          locations={coordinates || []}
+          onSelectLocation={handleSelectLocation}
+          // onSelectLocation={handleSelectLocation}
+        />
+        <Input
+          value={invoice?.location}
+          onChange={async (e) => {
+            const value = e.target.value;
+            setSearchLocation(value);
+          }}
+          placeholder="Enter your location"
+        />
 
         <ProjectEditContactFields
           contactAddress={contactAddress}
