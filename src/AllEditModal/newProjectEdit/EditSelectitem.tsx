@@ -34,8 +34,8 @@ export default function EditSelectItems({
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            {options.map((opt) => (
-              <SelectItem key={opt} value={opt?.value}>
+            {options.map((opt: any, index: number) => (
+              <SelectItem key={index} value={opt?.value}>
                 {opt.title}
               </SelectItem>
             ))}

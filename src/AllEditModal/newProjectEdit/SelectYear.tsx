@@ -49,9 +49,9 @@ const YearMultiSelect = ({
         Select Completion Years
       </label>
       <div className="grid grid-cols-6 gap-3 mb-3">
-        {completionYear?.map((item: any) => (
+        {completionYear?.map((item: any, index) => (
           <label
-            key={item.value}
+            key={index}
             className="flex items-center space-x-2 bg-gray-50 cursor-pointer"
           >
             <input

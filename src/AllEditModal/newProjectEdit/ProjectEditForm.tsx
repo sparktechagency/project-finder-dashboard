@@ -331,10 +331,7 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
           </div>
         </div>
         {/* select year */}
-        {/* <SelectYear
-          selectedYear={selectedYear}
-          handleYearChange={handleYearChange}
-        /> */}
+
         <YearMultiSelect
           selectedYears={selectedYears}
           setSelectedYears={setSelectedYears}

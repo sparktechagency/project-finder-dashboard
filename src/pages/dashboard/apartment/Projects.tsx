@@ -194,11 +194,13 @@ export default function Projects() {
               <TableCell className="w-2">
                 <div className="grid grid-cols-2 gap-2">
                   {Array.isArray(invoice.CompletionDate) &&
-                    invoice.CompletionDate.map((date: string) => (
-                      <span key={date} className="">
-                        {date}
-                      </span>
-                    ))}
+                    invoice.CompletionDate.map(
+                      (date: string, index: number) => (
+                        <span key={index} className="">
+                          {date}
+                        </span>
+                      )
+                    )}
                 </div>
               </TableCell>
 
