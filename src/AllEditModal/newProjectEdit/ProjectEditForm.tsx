@@ -131,8 +131,6 @@ export default function ProjectEditForm({ invoice }: { invoice: any }) {
     lng: number;
   } | null>(null);
 
-  console.log("markerPosition", markerPosition);
-
   useEffect(() => {
     if (invoice?.latitude && invoice?.longitude) {
       const { latitude, longitude } = invoice;

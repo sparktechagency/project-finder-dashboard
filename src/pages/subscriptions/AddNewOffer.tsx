@@ -14,7 +14,7 @@ type AddNewOfferProps = {
     duration: string | undefined;
     product_id: string | number;
     paymentType: string;
-    status: boolean;
+    disable: boolean;
   };
   setFormState: React.Dispatch<
     React.SetStateAction<{
@@ -27,7 +27,7 @@ type AddNewOfferProps = {
       duration: string | undefined;
       product_id: string | number;
       paymentType: string;
-      status: boolean;
+      disable: boolean;
     }>
   >;
 };

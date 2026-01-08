@@ -18,4 +18,5 @@ const subscriber = api.injectEndpoints({
   }),
 });
 
-export const { useGetSubscriberQuery, useDeleteSubscriberMutation } = subscriber;
+export const { useGetSubscriberQuery, useDeleteSubscriberMutation } =
+  subscriber;

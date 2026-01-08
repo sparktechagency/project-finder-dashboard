@@ -4,7 +4,7 @@ const subscriptions = api.injectEndpoints({
   endpoints: (builder) => ({
     getSubscriptions: builder.query({
       query: () => ({
-        url: "/package",
+        url: "/package/admin",
         method: "GET",
       }),
       providesTags: ["subcription"],

@@ -30,7 +30,7 @@ interface PackageModalProps {
     description?: string[];
     paymentType?: string;
     duration?: string | number;
-    status: boolean;
+    disable: boolean;
   };
 }
 
@@ -52,7 +52,7 @@ export default function DublicateSubscribeEditModal({
     duration: string | undefined;
     product_id: string | number;
     paymentType: string;
-    status: boolean;
+    disable: boolean;
   }>({
     title: "",
     price: undefined,
@@ -63,7 +63,7 @@ export default function DublicateSubscribeEditModal({
     duration: "",
     product_id: "",
     paymentType: "",
-    status: false,
+    disable: false,
   });
 
   useEffect(() => {
@@ -83,7 +83,7 @@ export default function DublicateSubscribeEditModal({
       offers: desc,
       paymentType: edit.paymentType ?? "",
       duration: String(edit.duration ?? ""),
-      status: edit.status,
+      disable: edit.disable,
     }));
   }, [edit]);
 
@@ -120,7 +120,7 @@ export default function DublicateSubscribeEditModal({
       product_id,
       paymentType,
       description,
-      status,
+      disable,
     } = formState;
 
     // ✅ Build data safely (optional fields allowed)
@@ -130,7 +130,7 @@ export default function DublicateSubscribeEditModal({
       price,
       duration,
       paymentType,
-      status,
+      disable,
       ...(product_id && { product_id }), // optional
     };
 
@@ -295,17 +295,17 @@ export default function DublicateSubscribeEditModal({
             {/*switch */}
             <div className="flex items-center space-x-2 mt-9">
               <Switch
-                id="status"
-                checked={formState.status}
+                id="disable"
+                checked={formState.disable}
                 onCheckedChange={(checked) =>
                   setFormState((prev) => ({
                     ...prev,
-                    status: checked,
+                    disable: checked,
                   }))
                 }
               />
-              <Label htmlFor="status">
-                {formState.status ? "Active" : "Delete"}
+              <Label htmlFor="disable">
+                {formState.disable === true ? "Active" : "Inactive"}
               </Label>
             </div>
           </div>

@@ -21,7 +21,7 @@ type FormInputFieldsProps = {
       duration: string | undefined;
       product_id: string | number;
       paymentType: string;
-      status: boolean;
+      disable: boolean;
     }>
   >;
 };
