@@ -72,8 +72,8 @@ export default function DublicateSubscribeEditModal({
     const desc = Array.isArray(edit.description)
       ? edit.description
       : edit.description
-      ? [edit.description]
-      : [];
+        ? [edit.description]
+        : [];
 
     setFormState((prev) => ({
       ...prev,
@@ -98,7 +98,7 @@ export default function DublicateSubscribeEditModal({
 
   const onSubmit = async () => {
     const missingRequiredField = inputFields.some(
-      (field) => field.required && !formState[field.id as FormFieldKey]
+      (field) => field.required && !formState[field.id as FormFieldKey],
     );
 
     if (
@@ -108,7 +108,7 @@ export default function DublicateSubscribeEditModal({
       formState.description.filter(Boolean).length === 0
     ) {
       toast.error(
-        "Please fill in all required fields and add at least one Package Offer."
+        "Please fill in all required fields and add at least one Package Offer.",
       );
       return;
     }
@@ -296,16 +296,16 @@ export default function DublicateSubscribeEditModal({
             <div className="flex items-center space-x-2 mt-9">
               <Switch
                 id="disable"
-                checked={formState.disable}
+                checked={!formState.disable}
                 onCheckedChange={(checked) =>
                   setFormState((prev) => ({
                     ...prev,
-                    disable: checked,
+                    disable: !checked,
                   }))
                 }
               />
               <Label htmlFor="disable">
-                {formState.disable === true ? "Active" : "Inactive"}
+                {formState.disable === true ? "Inactive" : "Active"}
               </Label>
             </div>
           </div>

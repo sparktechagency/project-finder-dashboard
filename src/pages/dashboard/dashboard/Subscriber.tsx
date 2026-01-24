@@ -90,7 +90,7 @@ export default function Subscriber() {
               <TableCell>{item?.user?.name}</TableCell>
               <TableCell>{item?.package?.paymentType}</TableCell>
               <TableCell className="">{item?.package?.duration}</TableCell>
-              <TableCell className="">€{item.price}</TableCell>
+              <TableCell className="">€ {item.package?.price}</TableCell>
               {/* <TableCell className="">{item.remaining}%</TableCell> */}
               <TableCell
                 className=" cursor-pointer "

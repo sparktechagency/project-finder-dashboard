@@ -71,13 +71,13 @@ export default function Premium() {
                       </span>
                       <p className="text-sm text-[#81888C]">{contentItem}</p>
                     </div>
-                  )
+                  ),
               )}
             </div>
 
             {/* disable get */}
             <p className="text-sm font-medium mb-10">
-              Status : {item?.disable === true ? "Active" : "Inactive"}
+              Status : {item?.disable === true ? "Inactive" : "Active"}
             </p>
           </div>
         ))}
