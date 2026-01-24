@@ -152,7 +152,11 @@ export default function EditProfile() {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter Your Email" {...field} />
+                      <Input
+                        disabled
+                        placeholder="Enter Your Email"
+                        {...field}
+                      />
                     </FormControl>
 
                     <FormMessage />
