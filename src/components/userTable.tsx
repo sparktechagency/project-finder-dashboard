@@ -68,7 +68,6 @@ const UserTable = () => {
           ))}
         </TableBody>
       </Table>{" "}
-      <p>sssssss</p>
       {/* Pagination Controls */}
       <div className="flex justify-center items-center mt-4">
         <Pagination
