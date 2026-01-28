@@ -29,8 +29,6 @@ const UserTable = () => {
 
   const usersData = users.data || [];
 
-  console.log("usersData", usersData);
-
   return (
     <>
       <Table>
