@@ -35,7 +35,7 @@ export default function Login() {
     } catch (err: any) {
       toast.error(
         err?.data?.message || err?.error || "Login failed. Please try again.",
-        { id: "login" }
+        { id: "login" },
       );
     }
   };

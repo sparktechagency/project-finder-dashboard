@@ -10,6 +10,8 @@ import {
 import { GetProfileImageUrl } from "./layout/shared/GetProfileImageUrl";
 import Pagination from "./layout/shared/Pagination";
 import { useState } from "react";
+import { Button } from "./ui/button";
+import UserAprrovemodal from "@/modal/UserAprrovemodal";
 
 const UserTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -27,9 +29,10 @@ const UserTable = () => {
 
   const usersData = users.data || [];
 
+  console.log("usersData", usersData);
+
   return (
     <>
-      {" "}
       <Table>
         <TableHeader>
           <TableRow>
@@ -60,7 +63,25 @@ const UserTable = () => {
                 {users.isSubscribe === true ? "Yes" : "No"}
               </TableCell>
               <TableCell>{users.contact || "N/A"}</TableCell>
-              <TableCell>{users.verified ? "Yes" : "No"}</TableCell>
+              <TableCell>
+                {users.isAdminVerified ? (
+                  <UserAprrovemodal
+                    data={users}
+                    trigger={
+                      <Button className="w-22 bg-green-700 hover:bg-green-700">
+                        Yes
+                      </Button>
+                    }
+                  />
+                ) : (
+                  <UserAprrovemodal
+                    data={users}
+                    trigger={
+                      <Button className="w-22 bg-red-800">Approve</Button>
+                    }
+                  />
+                )}
+              </TableCell>
               <TableCell>
                 {new Date(users.createdAt).toLocaleDateString()}
               </TableCell>

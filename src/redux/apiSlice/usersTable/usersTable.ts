@@ -9,6 +9,15 @@ const usersTable = api.injectEndpoints({
       }),
       providesTags: ["users"],
     }),
+
+    approvedUser: builder.mutation({
+      query: ({ userId, isAdminVerified }) => ({
+        url: `/auth/admin-approval/${userId}`,
+        method: "PATCH",
+        body: { isAdminVerified },
+      }),
+      invalidatesTags: ["users"],
+    }),
   }),
 });
-export const { useGetAllUserQuery } = usersTable;
+export const { useGetAllUserQuery, useApprovedUserMutation } = usersTable;
