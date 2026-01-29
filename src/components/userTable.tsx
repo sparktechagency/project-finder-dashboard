@@ -63,14 +63,9 @@ const UserTable = () => {
               <TableCell>{users.contact || "N/A"}</TableCell>
               <TableCell>
                 {users.isAdminVerified ? (
-                  <UserAprrovemodal
-                    data={users}
-                    trigger={
-                      <Button className="w-22 bg-green-700 hover:bg-green-700">
-                        Yes
-                      </Button>
-                    }
-                  />
+                  <Button className="w-22 bg-green-700 hover:bg-green-700">
+                    Yes
+                  </Button>
                 ) : (
                   <UserAprrovemodal
                     data={users}
