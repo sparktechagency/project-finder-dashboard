@@ -7,6 +7,7 @@ interface ApartmentData {
   package: {
     paymentType: string;
     duration: string;
+    price: string;
   };
   remaining: string;
 
@@ -24,7 +25,8 @@ const SubscriberModal = ({ isOpen, onClose, data }: dataDetailProps) => {
   if (!data) {
     return null;
   }
-  const { price, user, package: pkg } = data;
+  const { user, package: pkg } = data;
+
   const { name } = user;
   const { paymentType, duration } = pkg;
 
@@ -54,7 +56,7 @@ const SubscriberModal = ({ isOpen, onClose, data }: dataDetailProps) => {
         </div> */}
         <div className="grid grid-cols-2 py-2">
           <span className="font-semibold capitalize"> Price : </span>
-          <span>{price}</span>
+          <span>€{data?.package?.price}</span>
         </div>
       </div>
     </Modal>

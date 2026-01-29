@@ -25,6 +25,7 @@ type item = {
   package: {
     paymentType: string;
     duration: string;
+    price: string;
   };
   remaining: string;
 
@@ -90,7 +91,7 @@ export default function SellerChart() {
               <TableCell>{item?.user?.name}</TableCell>
               <TableCell>{item?.package?.paymentType}</TableCell>
               <TableCell className="">{item?.package?.duration}</TableCell>
-              <TableCell className="">€{item.price}</TableCell>
+              <TableCell className="">€{item?.package?.price}</TableCell>
               {/* <TableCell className="">{item.remaining}%</TableCell> */}
               <TableCell
                 className=" cursor-pointer "

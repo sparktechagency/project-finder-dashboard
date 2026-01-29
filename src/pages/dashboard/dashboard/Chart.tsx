@@ -1,11 +1,4 @@
 import Loading from "@/components/layout/shared/Loading";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useGetChartQuery } from "@/redux/apiSlice/dashboard/dashboard";
 import {
   BarChart,
@@ -39,7 +32,7 @@ export default function Chart() {
     (item: { month: string; count: string }) => ({
       name: item?.month,
       count: item?.count,
-    })
+    }),
   );
   //   const [selectedYear, setSelectedYear] = useState("Year");
 
@@ -62,7 +55,7 @@ export default function Chart() {
             <p className="h-3 w-3 bg-[#F79535] rounded-full"></p>
             <h1>Projects list</h1>
           </div>
-          <div>
+          {/* <div>
             <Select defaultValue="2025">
               <SelectTrigger className="w-[120px]">
                 <SelectValue />
@@ -75,7 +68,7 @@ export default function Chart() {
                 ))}
               </SelectContent>
             </Select>
-          </div>
+          </div> */}
         </div>
       </div>
       <ResponsiveContainer width="100%" height={260}>

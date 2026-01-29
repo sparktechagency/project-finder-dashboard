@@ -25,6 +25,7 @@ type item = {
   package: {
     paymentType: string;
     duration: string;
+    price: string;
   };
   remaining: string;
 

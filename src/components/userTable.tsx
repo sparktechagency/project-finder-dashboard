@@ -36,10 +36,10 @@ const UserTable = () => {
           <TableRow>
             <TableHead>Profile</TableHead>
             <TableHead>Name</TableHead>
-            <TableHead>Role</TableHead>
+            {/* <TableHead>Role</TableHead> */}
             <TableHead>Email</TableHead>
             <TableHead>Subscription</TableHead>
-            <TableHead>Contact</TableHead>
+            <TableHead>NIE</TableHead>
             <TableHead>Verified</TableHead>
             <TableHead>Account Open</TableHead>
           </TableRow>
@@ -55,7 +55,7 @@ const UserTable = () => {
                 />
               </TableCell>
               <TableCell>{users.name || "N/A"}</TableCell>
-              <TableCell>{users.role || "N/A"}</TableCell>
+              {/* <TableCell>{users.role || "N/A"}</TableCell> */}
               <TableCell>{users.email || "N/A"}</TableCell>
               <TableCell className="pl-8">
                 {users.isSubscribe === true ? "Yes" : "No"}
