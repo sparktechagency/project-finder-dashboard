@@ -24,7 +24,7 @@ export default function PrivateRoute({
     return <Navigate to="/login" state={{ form: location }} replace />;
   }
 
-  if (profile?.data.role === "SUPER_ADMIN") {
+  if (profile?.data.role === "SUPER_ADMIN" && profile.data.role === "") {
     return children;
   }
 
